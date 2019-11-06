@@ -1,7 +1,6 @@
 package org.openchat.api;
 
 import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.User;
 import org.openchat.usercases.FindAllUserService;
 import spark.Request;
@@ -28,16 +27,9 @@ public class GetAllUserApi implements Route {
 
         JsonArray jsonUserList = new JsonArray();
 
-        userList.stream().map(this::createNewUserResponse).forEach(jsonUserList::add);
+        userList.stream().map(user -> new CreateNewUserResponse(user).invoke()).forEach(jsonUserList::add);
 
         return jsonUserList.toString();
     }
 
-    private String createNewUserResponse(User user) {
-        return new JsonObject()
-                .add("id", user.getId())
-                .add("username", user.getUsername())
-                .add("about", user.getAbout()
-                ).toString();
-    }
 }

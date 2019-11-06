@@ -2,6 +2,7 @@ package org.openchat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.Route;
 import spark.Spark;
 
 import static org.eclipse.jetty.http.HttpStatus.NOT_IMPLEMENTED_501;
@@ -9,12 +10,12 @@ import static spark.Spark.*;
 
 public class OpenChat {
 
-    private static Logger logger = LoggerFactory.getLogger(OpenChat.class);
+    private static final Logger logger = LoggerFactory.getLogger(OpenChat.class);
 
     private static final String API_NOT_IMPLEMENTED = "API not implemented.";
     private static final String INTERNAL_SERVER_ERROR = "Internal server error.";
 
-    private Routes routes = new Routes();
+    private final Routes routes = new Routes();
 
     public void start() {
         port(4321);
@@ -34,19 +35,11 @@ public class OpenChat {
     }
 
     private void configureInternalServerError() {
-        internalServerError((req, res) -> {
-            res.status(NOT_IMPLEMENTED_501);
-            logger.error(INTERNAL_SERVER_ERROR + ": " + req.pathInfo());
-            return INTERNAL_SERVER_ERROR;
-        });
+        internalServerError(getDefaultNotImplementedRoute(INTERNAL_SERVER_ERROR));
     }
 
     private void configureNotImplemented() {
-        notFound((req, res) -> {
-            res.status(NOT_IMPLEMENTED_501);
-            logger.error(API_NOT_IMPLEMENTED + ": " + req.pathInfo());
-            return API_NOT_IMPLEMENTED;
-        });
+        notFound(getDefaultNotImplementedRoute(API_NOT_IMPLEMENTED));
     }
 
     private void enableCORS() {
@@ -58,10 +51,16 @@ public class OpenChat {
         });
     }
 
+    private Route getDefaultNotImplementedRoute(String internalServerError) {
+        return (req, res) -> {
+            res.status(NOT_IMPLEMENTED_501);
+            logger.error(internalServerError + ": " + req.pathInfo());
+            return internalServerError;
+        };
+    }
+
     private void setLog() {
-        before((request, response) -> {
-            logger.info("URL request: " + request.requestMethod() + " " + request.uri() + " - headers: " + request.headers());
-        });
+        before((request, response) -> logger.info("URL request: " + request.requestMethod() + " " + request.uri() + " - headers: " + request.headers()));
     }
 
 }

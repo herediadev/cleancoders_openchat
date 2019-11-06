@@ -10,7 +10,7 @@ import org.openchat.entities.User;
 import org.openchat.repository.InMemoryUserRepository;
 import org.openchat.usercases.CreateNewUserRequest;
 import org.openchat.usercases.CreateNewUserService;
-import org.openchat.usercases.FindUserByUsernameService;
+import org.openchat.usercases.ValidaIfUserAlreadyExistService;
 import spark.Request;
 import spark.Response;
 
@@ -20,6 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
+import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 class CreateNewUserApiTest {
@@ -34,7 +35,7 @@ class CreateNewUserApiTest {
     private CreateNewUserService createNewUserService;
 
     @Mock
-    private FindUserByUsernameService findUserByUsernameService;
+    private ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService;
 
     @Test
     void given_the_request_and_response_it_will_response_the_new_created_user() {
@@ -42,7 +43,7 @@ class CreateNewUserApiTest {
         given(request.body()).willReturn(createRequestJsonBody());
         given(createNewUserService.execute(any(CreateNewUserRequest.class))).willReturn(createNewUser());
 
-        CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, new FindUserByUsernameService(new InMemoryUserRepository()));
+        CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, new ValidaIfUserAlreadyExistService(new InMemoryUserRepository()));
 
         //act
         String result = createNewUserApi.handle(request, response);
@@ -59,11 +60,10 @@ class CreateNewUserApiTest {
     @Test
     void given_the_same_username_it_will_throw_an_userAlreadyExistException() {
         //arrange
-        User userFound = new User("id", "username", "password", "about");
         given(request.body()).willReturn(createRequestJsonBody());
-        given(findUserByUsernameService.execute(anyString())).willReturn(userFound);
+        doThrow(new RuntimeException("user already exists")).when(validaIfUserAlreadyExistService).execute(anyString());
 
-        CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, findUserByUsernameService);
+        CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
 
         //act
         String userAlreadyExist = createNewUserApi.handle(request, response);

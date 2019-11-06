@@ -1,29 +1,31 @@
 package org.openchat;
 
-import org.openchat.api.*;
+import org.openchat.api.CreateNewUserApi;
+import org.openchat.api.GetAllUserApi;
+import org.openchat.api.LoginUserApi;
 import org.openchat.repository.InMemoryUserRepository;
 import org.openchat.usercases.CreateNewUserService;
 import org.openchat.usercases.FindAllUserService;
-import org.openchat.usercases.FindUserByUsernameService;
 import org.openchat.usercases.LoginUserService;
+import org.openchat.usercases.ValidaIfUserAlreadyExistService;
 
 import static spark.Spark.*;
 
-public class Routes {
+class Routes {
 
-    public void create() {
+    void create() {
         swaggerRoutes();
-        openchatRoutes();
+        openChatRoutes();
     }
 
-    private void openchatRoutes() {
+    private void openChatRoutes() {
         InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
         CreateNewUserService createNewUserService = new CreateNewUserService(inMemoryUserRepository);
-        FindUserByUsernameService findUserByUsernameService = new FindUserByUsernameService(inMemoryUserRepository);
+        ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService = new ValidaIfUserAlreadyExistService(inMemoryUserRepository);
         FindAllUserService findAllUserService = new FindAllUserService(inMemoryUserRepository);
-        LoginUserService loginUserService = new LoginUserService(findUserByUsernameService);
+        LoginUserService loginUserService = new LoginUserService(inMemoryUserRepository);
 
-        CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, findUserByUsernameService);
+        CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
         LoginUserApi loginUserApi = new LoginUserApi(loginUserService);
         GetAllUserApi getAllUserApi = new GetAllUserApi(findAllUserService);
 

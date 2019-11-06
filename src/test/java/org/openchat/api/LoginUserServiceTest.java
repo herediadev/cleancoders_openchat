@@ -16,9 +16,8 @@ class LoginUserServiceTest {
     @BeforeEach
     void setUp() {
         InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-        FindUserByUsernameService findUserByUsernameService = new FindUserByUsernameService(inMemoryUserRepository);
         createNewUserService = new CreateNewUserService(inMemoryUserRepository);
-        loginUserService = new LoginUserService(findUserByUsernameService);
+        loginUserService = new LoginUserService(inMemoryUserRepository);
     }
 
     @Test

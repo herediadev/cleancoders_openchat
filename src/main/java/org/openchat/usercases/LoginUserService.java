@@ -1,22 +1,26 @@
 package org.openchat.usercases;
 
-import org.openchat.usercases.exceptions.InvalidCredentialException;
 import org.openchat.entities.User;
+import org.openchat.repository.InMemoryUserRepository;
+import org.openchat.usercases.exceptions.InvalidCredentialException;
+
+import java.util.Optional;
 
 public class LoginUserService {
 
-    private final FindUserByUsernameService findUserByUsernameService;
+    private final InMemoryUserRepository inMemoryUserRepository;
 
-    public LoginUserService(FindUserByUsernameService findUserByUsernameService) {
-        this.findUserByUsernameService = findUserByUsernameService;
+    public LoginUserService(InMemoryUserRepository inMemoryUserRepository) {
+        this.inMemoryUserRepository = inMemoryUserRepository;
     }
 
     public User execute(LoginUserRequest loginUserRequest) {
-        User userFound = findUserByUsernameService.execute(loginUserRequest.getUsername());
+        Optional<User> userByUsername = inMemoryUserRepository.findUserByUsername(loginUserRequest.getUsername());
 
-        if (userFound == null || !userFound.getPassword().equals(loginUserRequest.getPassword()))
-            throw new InvalidCredentialException();
+        userByUsername
+                .filter(user -> user.getPassword().equals(loginUserRequest.getPassword()))
+                .orElseThrow(InvalidCredentialException::new);
 
-        return userFound;
+        return userByUsername.get();
     }
 }

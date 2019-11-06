@@ -1,10 +1,9 @@
 package org.openchat.usercases;
 
-import org.openchat.repository.InMemoryUserRepository;
 import org.openchat.entities.User;
+import org.openchat.repository.InMemoryUserRepository;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class FindAllUserService {
 
@@ -15,11 +14,6 @@ public class FindAllUserService {
     }
 
     public List<User> execute() {
-
-        AtomicReference<List<User>> allUsers = new AtomicReference<>();
-
-        inMemoryUserRepository.execute(allUsers::set);
-
-        return allUsers.get();
+        return inMemoryUserRepository.getUserList();
     }
 }
