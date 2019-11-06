@@ -1,4 +1,7 @@
-package org.openchat.api;
+package org.openchat.usercases;
+
+import org.openchat.repository.InMemoryUserRepository;
+import org.openchat.entities.User;
 
 import java.util.concurrent.atomic.AtomicReference;
 

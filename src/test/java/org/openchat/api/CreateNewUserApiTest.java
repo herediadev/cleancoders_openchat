@@ -6,6 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openchat.entities.User;
+import org.openchat.repository.InMemoryUserRepository;
+import org.openchat.usercases.CreateNewUserRequest;
+import org.openchat.usercases.CreateNewUserService;
+import org.openchat.usercases.FindUserByUsernameService;
 import spark.Request;
 import spark.Response;
 
@@ -54,7 +59,7 @@ class CreateNewUserApiTest {
     @Test
     void given_the_same_username_it_will_throw_an_userAlreadyExistException() {
         //arrange
-        User userFound = new User("id", "username", "about");
+        User userFound = new User("id", "username", "password", "about");
         given(request.body()).willReturn(createRequestJsonBody());
         given(findUserByUsernameService.execute(anyString())).willReturn(userFound);
 
@@ -69,7 +74,7 @@ class CreateNewUserApiTest {
     }
 
     private User createNewUser() {
-        return new User("aaaaaaaa-ffff-ffff-ffff-aaaaaaaaaaaa", "username", "about");
+        return new User("aaaaaaaa-ffff-ffff-ffff-aaaaaaaaaaaa", "username", "password", "about");
     }
 
     private String createRequestJsonBody() {

@@ -1,4 +1,6 @@
-package org.openchat.api;
+package org.openchat.repository;
+
+import org.openchat.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;

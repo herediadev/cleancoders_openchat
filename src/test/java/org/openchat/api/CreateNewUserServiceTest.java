@@ -4,10 +4,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openchat.entities.User;
+import org.openchat.repository.InMemoryUserRepository;
+import org.openchat.usercases.CreateNewUserRequest;
+import org.openchat.usercases.CreateNewUserService;
 
 import static integration.APITestSuit.UUID_PATTERN;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CreateNewUserServiceTest {

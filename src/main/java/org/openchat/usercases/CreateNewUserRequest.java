@@ -1,4 +1,4 @@
-package org.openchat.api;
+package org.openchat.usercases;
 
 public class CreateNewUserRequest {
     private final String username;

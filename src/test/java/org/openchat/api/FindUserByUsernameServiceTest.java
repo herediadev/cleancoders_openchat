@@ -2,6 +2,11 @@ package org.openchat.api;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.openchat.entities.User;
+import org.openchat.repository.InMemoryUserRepository;
+import org.openchat.usercases.CreateNewUserRequest;
+import org.openchat.usercases.CreateNewUserService;
+import org.openchat.usercases.FindUserByUsernameService;
 
 public class FindUserByUsernameServiceTest {
     @Test

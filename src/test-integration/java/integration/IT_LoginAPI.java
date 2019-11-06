@@ -26,7 +26,7 @@ public class IT_LoginAPI {
         given()
                 .body(withJsonContaining(ANTONY.username(), ANTONY.password()))
         .when()
-                .post(BASE_URL + "/login")
+                .post(BASE_URL + "/v2/login")
         .then()
                 .statusCode(200)
                 .contentType(JSON)
