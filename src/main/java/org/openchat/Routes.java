@@ -8,6 +8,7 @@ import org.openchat.usercases.CreateNewUserService;
 import org.openchat.usercases.FindAllUserService;
 import org.openchat.usercases.LoginUserService;
 import org.openchat.usercases.ValidaIfUserAlreadyExistService;
+import spark.Route;
 
 import static spark.Spark.*;
 
@@ -20,6 +21,7 @@ class Routes {
 
     private void openChatRoutes() {
         InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+
         CreateNewUserService createNewUserService = new CreateNewUserService(inMemoryUserRepository);
         ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService = new ValidaIfUserAlreadyExistService(inMemoryUserRepository);
         FindAllUserService findAllUserService = new FindAllUserService(inMemoryUserRepository);
@@ -30,10 +32,18 @@ class Routes {
         GetAllUserApi getAllUserApi = new GetAllUserApi(findAllUserService);
 
 
-        get("status", (req, res) -> "OpenChat: OK!");
-        post("v2/users", createNewUserApi);
-        post("v2/login", loginUserApi);
-        get("v2/users", getAllUserApi);
+        createGetRoute("status", (req, res) -> "OpenChat: OK!");
+        createPostRoute("v2/users", createNewUserApi);
+        createGetRoute("v2/users", getAllUserApi);
+        createPostRoute("v2/login", loginUserApi);
+    }
+
+    void createPostRoute(String path, Route route) {
+        post(path, route);
+    }
+
+    void createGetRoute(String path, Route route) {
+        get(path, route);
     }
 
     private void swaggerRoutes() {
