@@ -1,14 +1,17 @@
-package org.openchat.api;
+package org.openchat;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openchat.api.LoginUserApi;
 import org.openchat.entities.User;
 import org.openchat.usercases.LoginUserRequest;
 import org.openchat.usercases.LoginUserService;
+import org.openchat.usercases.exceptions.InvalidCredentialException;
 import spark.Request;
 import spark.Response;
 
@@ -48,6 +51,22 @@ class LoginUserApiTest {
         assertThat(jsonResult.getString("id", "")).matches(UUID_PATTERN);
         assertThat(jsonResult.getString("username", "")).isEqualTo("username");
         assertThat(jsonResult.getString("about", "")).isEqualTo("about");
+    }
+
+    @Test
+    void given_the_request_with_invalid_password_it_will_response_invalid_credential() {
+        //arrange
+        given(request.body()).willReturn(createRequestJsonBody());
+        given(loginUserService.execute(any(LoginUserRequest.class))).willThrow(new InvalidCredentialException());
+        LoginUserApi loginUserApi = new LoginUserApi(loginUserService);
+
+        //act
+        String result = loginUserApi.handle(request, response);
+
+        //assert
+        verify(response).status(404);
+        verify(loginUserService).execute(any(LoginUserRequest.class));
+        Assertions.assertThat(result).isEqualTo("Invalid credentials.");
     }
 
     private User createNewUser() {

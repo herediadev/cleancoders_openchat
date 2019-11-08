@@ -1,4 +1,4 @@
-package org.openchat.api;
+package org.openchat;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openchat.api.GetAllUserApi;
 import org.openchat.entities.User;
 import org.openchat.usercases.FindAllUserService;
 import spark.Request;

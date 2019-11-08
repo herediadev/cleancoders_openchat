@@ -11,6 +11,7 @@ import spark.Response;
 import spark.Route;
 
 public class LoginUserApi implements Route {
+
     private final LoginUserService loginUserService;
 
     public LoginUserApi(LoginUserService loginUserService) {
@@ -26,11 +27,7 @@ public class LoginUserApi implements Route {
             response.status(200);
             response.type("application/json");
 
-            return new JsonObject()
-                    .add("id", user.getId())
-                    .add("username", user.getUsername())
-                    .add("about", user.getAbout())
-                    .toString();
+            return new CreateNewUserResponse(user).invoke();
         } catch (InvalidCredentialException e) {
             response.status(404);
             return "Invalid credentials.";
