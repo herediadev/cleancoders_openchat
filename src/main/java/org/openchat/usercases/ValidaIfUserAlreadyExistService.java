@@ -18,6 +18,6 @@ public class ValidaIfUserAlreadyExistService {
     }
 
     private void throwUserAlreadyExistException(User user) {
-        throw new RuntimeException("user" + user.getUsername() + " already exist");
+        throw new UserAlreadyExistException("user" + user.getUsername() + " already exist");
     }
 }

@@ -11,6 +11,7 @@ import org.openchat.entities.User;
 import org.openchat.repository.InMemoryUserRepository;
 import org.openchat.usercases.CreateNewUserRequest;
 import org.openchat.usercases.CreateNewUserService;
+import org.openchat.usercases.UserAlreadyExistException;
 import org.openchat.usercases.ValidaIfUserAlreadyExistService;
 import spark.Request;
 import spark.Response;
@@ -62,7 +63,7 @@ class CreateNewUserApiTest {
     void given_the_same_username_it_will_throw_an_userAlreadyExistException() {
         //arrange
         given(request.body()).willReturn(createRequestJsonBody());
-        doThrow(new RuntimeException("user already exists")).when(validaIfUserAlreadyExistService).execute(anyString());
+        doThrow(new UserAlreadyExistException("user already exists")).when(validaIfUserAlreadyExistService).execute(anyString());
 
         CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
 
