@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openchat.usercases.CreateNewFollowingsService;
-import org.openchat.usercases.FollowingAlreadyExistException;
+import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
 import org.openchat.usercases.FollowingRequest;
 import org.openchat.usercases.ValidateFollowingExistService;
 import spark.Request;

@@ -8,10 +8,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openchat.api.CreateNewUserApi;
 import org.openchat.entities.User;
-import org.openchat.repository.InMemoryUserRepository;
 import org.openchat.usercases.CreateNewUserRequest;
 import org.openchat.usercases.CreateNewUserService;
-import org.openchat.usercases.UserAlreadyExistException;
+import org.openchat.usercases.exceptions.UserAlreadyExistException;
 import org.openchat.usercases.ValidaIfUserAlreadyExistService;
 import spark.Request;
 import spark.Response;
@@ -45,7 +44,7 @@ class CreateNewUserApiTest {
         given(request.body()).willReturn(createRequestJsonBody());
         given(createNewUserService.execute(any(CreateNewUserRequest.class))).willReturn(createNewUser());
 
-        CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, new ValidaIfUserAlreadyExistService(new InMemoryUserRepository()));
+        CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
 
         //act
         String result = createNewUserApi.handle(request, response);

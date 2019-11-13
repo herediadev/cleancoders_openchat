@@ -2,6 +2,7 @@ package org.openchat.usercases;
 
 import org.openchat.entities.User;
 import org.openchat.repository.InMemoryUserRepository;
+import org.openchat.usercases.exceptions.UserAlreadyExistException;
 
 public class ValidaIfUserAlreadyExistService {
 
@@ -18,6 +19,6 @@ public class ValidaIfUserAlreadyExistService {
     }
 
     private void throwUserAlreadyExistException(User user) {
-        throw new UserAlreadyExistException("user" + user.getUsername() + " already exist");
+        throw new UserAlreadyExistException("user " + user.getUsername() + " already exist");
     }
 }

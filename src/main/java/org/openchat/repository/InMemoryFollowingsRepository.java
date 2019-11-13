@@ -1,4 +1,6 @@
-package org.openchat.usercases;
+package org.openchat.repository;
+
+import org.openchat.usercases.FollowingRequest;
 
 import java.util.*;
 
@@ -11,7 +13,7 @@ public class InMemoryFollowingsRepository {
     }
 
     public Optional<String> checkIfExist(FollowingRequest followingRequest) {
-        List<String> followingList = getFollowing(followingRequest.getFollowingId());
+        List<String> followingList = getFollowingFor(followingRequest.getFollowingId());
 
         if (followingList.isEmpty())
             return Optional.empty();
@@ -22,19 +24,19 @@ public class InMemoryFollowingsRepository {
                 .findFirst();
     }
 
-    public List<String> getFollowing(String followingId) {
-        return followings.getOrDefault(followingId, new ArrayList<>());
+    public List<String> getAll(String followingId) {
+        return Collections.unmodifiableList(getFollowingFor(followingId));
     }
 
     public void addNewFollowing(FollowingRequest followingRequest) {
-        if (checkIfExist(followingRequest).isEmpty())
-            createNewFollowingRelationship(followingRequest);
-    }
-
-    private void createNewFollowingRelationship(FollowingRequest followingRequest) {
         String followingId = followingRequest.getFollowingId();
-        List<String> following = getFollowing(followingId);
+        List<String> following = getFollowingFor(followingId);
         following.add(followingRequest.getFolloweeId());
         followings.put(followingId, following);
     }
+
+    private List<String> getFollowingFor(String followingId) {
+        return followings.getOrDefault(followingId, new ArrayList<>());
+    }
+
 }

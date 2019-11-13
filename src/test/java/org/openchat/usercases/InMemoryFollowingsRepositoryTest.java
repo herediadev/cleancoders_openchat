@@ -2,6 +2,7 @@ package org.openchat.usercases;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.openchat.repository.InMemoryFollowingsRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ class InMemoryFollowingsRepositoryTest {
         //act
         inMemoryFollowingsRepository.addNewFollowing(new FollowingRequest("test_followeeId1", "test_followingId"));
         inMemoryFollowingsRepository.addNewFollowing(new FollowingRequest("test_followeeId2", "test_followingId"));
-        List<String> followings = inMemoryFollowingsRepository.getFollowing("test_followingId");
+        List<String> followings = inMemoryFollowingsRepository.getAll("test_followingId");
 
         //assert
         Assertions.assertThat(followings).containsExactly("test_followeeId1", "test_followeeId2");

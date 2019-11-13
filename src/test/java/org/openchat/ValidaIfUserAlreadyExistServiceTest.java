@@ -1,10 +1,11 @@
 package org.openchat;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openchat.repository.InMemoryUserRepository;
 import org.openchat.usercases.CreateNewUserRequest;
 import org.openchat.usercases.CreateNewUserService;
-import org.openchat.usercases.UserAlreadyExistException;
+import org.openchat.usercases.exceptions.UserAlreadyExistException;
 import org.openchat.usercases.ValidaIfUserAlreadyExistService;
 
 public class ValidaIfUserAlreadyExistServiceTest {
@@ -15,14 +16,16 @@ public class ValidaIfUserAlreadyExistServiceTest {
         InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
         ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService = new ValidaIfUserAlreadyExistService(inMemoryUserRepository);
         CreateNewUserService createNewUserService = new CreateNewUserService(inMemoryUserRepository);
-        CreateNewUserRequest createNewUserRequest = new CreateNewUserRequest("username", "password", "about");
+        CreateNewUserRequest createNewUserRequest = new CreateNewUserRequest(username, "password", "about");
 
         //act
         createNewUserService.execute(createNewUserRequest);
 
         //assert
-        org.junit.jupiter.api.Assertions.assertThrows(UserAlreadyExistException.class, () -> {
+        UserAlreadyExistException userAlreadyExistException = Assertions.assertThrows(UserAlreadyExistException.class, () -> {
             validaIfUserAlreadyExistService.execute(username);
         });
+
+        org.assertj.core.api.Assertions.assertThat(userAlreadyExistException.getMessage()).isEqualTo("user username already exist");
     }
 }

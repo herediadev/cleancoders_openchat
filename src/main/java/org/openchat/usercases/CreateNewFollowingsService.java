@@ -1,5 +1,7 @@
 package org.openchat.usercases;
 
+import org.openchat.repository.InMemoryFollowingsRepository;
+
 public class CreateNewFollowingsService {
 
     private final InMemoryFollowingsRepository inMemoryFollowingsRepository;

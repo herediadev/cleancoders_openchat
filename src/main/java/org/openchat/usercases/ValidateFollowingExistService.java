@@ -1,5 +1,8 @@
 package org.openchat.usercases;
 
+import org.openchat.repository.InMemoryFollowingsRepository;
+import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
+
 public class ValidateFollowingExistService {
     private final InMemoryFollowingsRepository inMemoryFollowingsRepository;
 

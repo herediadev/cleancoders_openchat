@@ -1,4 +1,4 @@
-package org.openchat.usercases;
+package org.openchat.usercases.exceptions;
 
 public class FollowingAlreadyExistException extends RuntimeException {
 }

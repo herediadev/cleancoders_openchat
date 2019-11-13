@@ -4,6 +4,7 @@ import org.openchat.api.CreateNewUserApi;
 import org.openchat.api.FollowingsApi;
 import org.openchat.api.GetAllUserApi;
 import org.openchat.api.LoginUserApi;
+import org.openchat.repository.InMemoryFollowingsRepository;
 import org.openchat.repository.InMemoryUserRepository;
 import org.openchat.usercases.*;
 import spark.Route;

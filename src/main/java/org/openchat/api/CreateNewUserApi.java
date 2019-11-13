@@ -5,7 +5,7 @@ import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.User;
 import org.openchat.usercases.CreateNewUserRequest;
 import org.openchat.usercases.CreateNewUserService;
-import org.openchat.usercases.UserAlreadyExistException;
+import org.openchat.usercases.exceptions.UserAlreadyExistException;
 import org.openchat.usercases.ValidaIfUserAlreadyExistService;
 import spark.Request;
 import spark.Response;
