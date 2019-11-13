@@ -13,7 +13,7 @@ public class InMemoryFollowingsRepository {
     }
 
     public Optional<String> checkIfExist(FollowingRequest followingRequest) {
-        List<String> followingList = getFollowingFor(followingRequest.getFollowingId());
+        List<String> followingList = getAll(followingRequest.getFollowingId());
 
         if (followingList.isEmpty())
             return Optional.empty();
@@ -25,18 +25,14 @@ public class InMemoryFollowingsRepository {
     }
 
     public List<String> getAll(String followingId) {
-        return Collections.unmodifiableList(getFollowingFor(followingId));
+        return Collections.unmodifiableList(followings.getOrDefault(followingId, Collections.emptyList()));
     }
 
     public void addNewFollowing(FollowingRequest followingRequest) {
         String followingId = followingRequest.getFollowingId();
-        List<String> following = getFollowingFor(followingId);
+        List<String> following = new ArrayList<>(getAll(followingId));
         following.add(followingRequest.getFolloweeId());
         followings.put(followingId, following);
-    }
-
-    private List<String> getFollowingFor(String followingId) {
-        return followings.getOrDefault(followingId, new ArrayList<>());
     }
 
 }
