@@ -16,7 +16,7 @@ import spark.Response;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class FollowingsApiTest {
+class CreateNewFollowingApiTest {
 
     @Mock
     private Request request;
@@ -33,11 +33,11 @@ class FollowingsApiTest {
     @Test
     void given_the_request_when_add_new_following_it_will_response_following_created() {
         //arrange
-        FollowingsApi followingsApi = new FollowingsApi(createNewFollowingsService, validateFollowingExistService);
+        CreateNewFollowingApi createNewFollowingApi = new CreateNewFollowingApi(createNewFollowingsService, validateFollowingExistService);
         given(request.body()).willReturn(JsonContaining());
 
         //act
-        String result = followingsApi.handle(request, response);
+        String result = createNewFollowingApi.handle(request, response);
 
         //assert
         verify(response).status(201);
@@ -55,12 +55,12 @@ class FollowingsApiTest {
     @Test
     void given_the_request_when_adding_new_following_that_already_exist_it_will_response_an_400_error() {
         //arrange
-        FollowingsApi followingsApi = new FollowingsApi(createNewFollowingsService, validateFollowingExistService);
+        CreateNewFollowingApi createNewFollowingApi = new CreateNewFollowingApi(createNewFollowingsService, validateFollowingExistService);
         doThrow(FollowingAlreadyExistException.class).when(validateFollowingExistService).execute(any(FollowingRequest.class));
         given(request.body()).willReturn(JsonContaining());
 
         //act
-        String result = followingsApi.handle(request, response);
+        String result = createNewFollowingApi.handle(request, response);
 
         //assert
         verify(response).status(400);

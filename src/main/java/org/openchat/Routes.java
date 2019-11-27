@@ -31,14 +31,14 @@ class Routes {
         CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
         LoginUserApi loginUserApi = new LoginUserApi(loginUserService);
         GetAllUserApi getAllUserApi = new GetAllUserApi(findAllUserService);
-        FollowingsApi followingsApi = new FollowingsApi(createNewFollowingsService, validateFollowingExistService);
+        CreateNewFollowingApi createNewFollowingApi = new CreateNewFollowingApi(createNewFollowingsService, validateFollowingExistService);
         GetAllFollowingForUserApi route = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService);
 
         createGetRoute("status", (req, res) -> "OpenChat: OK!");
         createPostRoute("v2/users", createNewUserApi);
         createGetRoute("v2/users", getAllUserApi);
         createPostRoute("v2/login", loginUserApi);
-        createPostRoute("v2/followings", followingsApi);
+        createPostRoute("v2/followings", createNewFollowingApi);
         createGetRoute("v2/followings/:followerId/followees", route);
     }
 

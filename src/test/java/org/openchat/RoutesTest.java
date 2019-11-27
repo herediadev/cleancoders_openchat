@@ -48,7 +48,7 @@ class RoutesTest {
         spyRoute.create();
 
         //assert
-        verify(spyRoute).createPostRoute(eq("v2/followings"), isA(FollowingsApi.class));
+        verify(spyRoute).createPostRoute(eq("v2/followings"), isA(CreateNewFollowingApi.class));
     }
 
     @Test

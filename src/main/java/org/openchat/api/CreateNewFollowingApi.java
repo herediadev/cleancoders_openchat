@@ -10,12 +10,12 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class FollowingsApi implements Route {
+public class CreateNewFollowingApi implements Route {
 
     private final CreateNewFollowingsService createNewFollowingsService;
     private final ValidateFollowingExistService validateFollowingExistService;
 
-    public FollowingsApi(CreateNewFollowingsService createNewFollowingsService, ValidateFollowingExistService validateFollowingExistService) {
+    public CreateNewFollowingApi(CreateNewFollowingsService createNewFollowingsService, ValidateFollowingExistService validateFollowingExistService) {
         this.createNewFollowingsService = createNewFollowingsService;
         this.validateFollowingExistService = validateFollowingExistService;
     }
