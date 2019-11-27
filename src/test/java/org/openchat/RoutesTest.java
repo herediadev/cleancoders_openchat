@@ -2,10 +2,7 @@ package org.openchat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openchat.api.CreateNewUserApi;
-import org.openchat.api.FollowingsApi;
-import org.openchat.api.GetAllUserApi;
-import org.openchat.api.LoginUserApi;
+import org.openchat.api.*;
 
 import static org.mockito.Mockito.*;
 
@@ -52,5 +49,14 @@ class RoutesTest {
 
         //assert
         verify(spyRoute).createPostRoute(eq("v2/followings"), isA(FollowingsApi.class));
+    }
+
+    @Test
+    void given_the_route_when_the_method_create_is_called_it_will_create_the_get_route_for_followings_api() {
+        //act
+        spyRoute.create();
+
+        //assert
+        verify(spyRoute).createGetRoute(eq("v2/followings/:followerId/followees"), isA(GetAllFollowingForUserApi.class));
     }
 }

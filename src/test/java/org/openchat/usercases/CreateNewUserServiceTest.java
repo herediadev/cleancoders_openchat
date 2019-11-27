@@ -1,4 +1,4 @@
-package org.openchat;
+package org.openchat.usercases;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,4 +1,4 @@
-package org.openchat;
+package org.openchat.api;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
@@ -47,7 +47,7 @@ class GetAllUserApiTest {
         //act
         String users = getAllUserApi.handle(request, response);
         JsonArray userJsonList = Json.parse(users).asArray();
-        JsonObject jsonUser = Json.parse(userJsonList.get(0).asString()).asObject();
+        JsonObject jsonUser = Json.parse(userJsonList.get(0).toString()).asObject();
 
         //assert
         verify(response).status(200);

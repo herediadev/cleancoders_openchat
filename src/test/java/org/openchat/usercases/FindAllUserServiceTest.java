@@ -1,4 +1,4 @@
-package org.openchat;
+package org.openchat.usercases;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -27,7 +27,7 @@ public class LoginUserApi implements Route {
             response.status(200);
             response.type("application/json");
 
-            return new CreateNewUserResponse(user).invoke();
+            return new CreateNewUserResponse(user).invoke().toString();
         } catch (InvalidCredentialException e) {
             response.status(404);
             return "Invalid credentials.";

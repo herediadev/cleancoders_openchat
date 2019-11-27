@@ -25,7 +25,7 @@ public class IT_UsersAPI {
         STEVE  = register(STEVE );
         PEDRO  = register(PEDRO );
 
-        Response response = when().get(BASE_URL + "/users");
+        Response response = when().get(BASE_URL + "/v2/users");
 
         assertAllUsersAreReturned(response, asList(SANDRO, MASH, STEVE, PEDRO));
     }

@@ -1,8 +1,9 @@
-package org.openchat.usercases;
+package org.openchat.repository;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openchat.repository.InMemoryFollowingsRepository;
+import org.openchat.usercases.FollowingRequest;
 
 import java.util.List;
 import java.util.Optional;

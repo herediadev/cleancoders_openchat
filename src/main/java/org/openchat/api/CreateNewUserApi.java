@@ -27,7 +27,7 @@ public class CreateNewUserApi implements Route {
         try {
             validaIfUserAlreadyExistService.execute(newUserRequestFromRequest.getUsername());
             User user = this.createNewUserService.execute(newUserRequestFromRequest);
-            String newUserResponse = new CreateNewUserResponse(user).invoke();
+            String newUserResponse = new CreateNewUserResponse(user).invoke().toString();
             return setResponse(newUserResponse, response);
 
         } catch (UserAlreadyExistException e) {

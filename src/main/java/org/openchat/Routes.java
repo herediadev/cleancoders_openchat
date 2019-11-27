@@ -1,9 +1,6 @@
 package org.openchat;
 
-import org.openchat.api.CreateNewUserApi;
-import org.openchat.api.FollowingsApi;
-import org.openchat.api.GetAllUserApi;
-import org.openchat.api.LoginUserApi;
+import org.openchat.api.*;
 import org.openchat.repository.InMemoryFollowingsRepository;
 import org.openchat.repository.InMemoryUserRepository;
 import org.openchat.usercases.*;
@@ -27,17 +24,22 @@ class Routes {
         FindAllUserService findAllUserService = new FindAllUserService(inMemoryUserRepository);
         LoginUserService loginUserService = new LoginUserService(inMemoryUserRepository);
         ValidateFollowingExistService validateFollowingExistService = new ValidateFollowingExistService(inMemoryFollowingsRepository);
+        CreateNewFollowingsService createNewFollowingsService = new CreateNewFollowingsService(inMemoryFollowingsRepository);
+        GetAllFollowingForUserService getAllFollowingForUserService = new GetAllFollowingForUserService(inMemoryUserRepository, inMemoryFollowingsRepository);
+        FindUserByIdService findUserByIdService = new FindUserByIdService(inMemoryUserRepository);
 
         CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
         LoginUserApi loginUserApi = new LoginUserApi(loginUserService);
         GetAllUserApi getAllUserApi = new GetAllUserApi(findAllUserService);
-        FollowingsApi followingsApi = new FollowingsApi(new CreateNewFollowingsService(inMemoryFollowingsRepository), validateFollowingExistService);
+        FollowingsApi followingsApi = new FollowingsApi(createNewFollowingsService, validateFollowingExistService);
+        GetAllFollowingForUserApi route = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService);
 
         createGetRoute("status", (req, res) -> "OpenChat: OK!");
         createPostRoute("v2/users", createNewUserApi);
         createGetRoute("v2/users", getAllUserApi);
         createPostRoute("v2/login", loginUserApi);
         createPostRoute("v2/followings", followingsApi);
+        createGetRoute("v2/followings/:followerId/followees", route);
     }
 
     void createPostRoute(String path, Route route) {
