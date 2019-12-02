@@ -2,6 +2,7 @@ package org.openchat;
 
 import org.openchat.api.*;
 import org.openchat.repository.InMemoryFollowingsRepository;
+import org.openchat.repository.InMemoryPostRepository;
 import org.openchat.repository.InMemoryUserRepository;
 import org.openchat.usercases.*;
 import spark.Route;
@@ -18,6 +19,7 @@ class Routes {
     private void openChatRoutes() {
         InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
         InMemoryFollowingsRepository inMemoryFollowingsRepository = new InMemoryFollowingsRepository();
+        InMemoryPostRepository inMemoryPostRepository = new InMemoryPostRepository();
 
         CreateNewUserService createNewUserService = new CreateNewUserService(inMemoryUserRepository);
         ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService = new ValidaIfUserAlreadyExistService(inMemoryUserRepository);
@@ -27,19 +29,23 @@ class Routes {
         CreateNewFollowingsService createNewFollowingsService = new CreateNewFollowingsService(inMemoryFollowingsRepository);
         GetAllFollowingForUserService getAllFollowingForUserService = new GetAllFollowingForUserService(inMemoryUserRepository, inMemoryFollowingsRepository);
         FindUserByIdService findUserByIdService = new FindUserByIdService(inMemoryUserRepository);
+        CreateNewPostService createNewPostService = new CreateNewPostService(inMemoryPostRepository);
 
         CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
         LoginUserApi loginUserApi = new LoginUserApi(loginUserService);
         GetAllUserApi getAllUserApi = new GetAllUserApi(findAllUserService);
         CreateNewFollowingApi createNewFollowingApi = new CreateNewFollowingApi(createNewFollowingsService, validateFollowingExistService);
-        GetAllFollowingForUserApi route = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService);
+        GetAllFollowingForUserApi getAllFollowingForUserApi = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService);
+        CreateNewPostApi createNewPostApi = new CreateNewPostApi(createNewPostService);
 
         createGetRoute("status", (req, res) -> "OpenChat: OK!");
         createPostRoute("v2/users", createNewUserApi);
         createGetRoute("v2/users", getAllUserApi);
         createPostRoute("v2/login", loginUserApi);
         createPostRoute("v2/followings", createNewFollowingApi);
-        createGetRoute("v2/followings/:followerId/followees", route);
+        createGetRoute("v2/followings/:followerId/followees", getAllFollowingForUserApi);
+        createPostRoute("v2/users/:userId/timeline", createNewPostApi);
+
     }
 
     void createPostRoute(String path, Route route) {

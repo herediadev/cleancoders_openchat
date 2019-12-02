@@ -38,8 +38,10 @@ public class CreateNewPostService {
                 .stream()
                 .filter(word -> text.toLowerCase().contains(word))
                 .findFirst()
-                .ifPresent(word -> {
-                    throw new InappropriateLanguageException();
-                });
+                .ifPresent(this::throwInappropriateLanguageException);
+    }
+
+    private void throwInappropriateLanguageException(String word) {
+        throw new InappropriateLanguageException();
     }
 }

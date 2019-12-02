@@ -59,4 +59,15 @@ class RoutesTest {
         //assert
         verify(spyRoute).createGetRoute(eq("v2/followings/:followerId/followees"), isA(GetAllFollowingForUserApi.class));
     }
+
+    @Test
+    void given_the_route_when_the_method_create_is_called_it_will_create_the_post_route_create_new_post_api() {
+        //act
+        spyRoute.create();
+
+        //assert
+        verify(spyRoute).createGetRoute(eq("v2/users/:userId/timeline"), isA(GetAllFollowingForUserApi.class));
+    }
+
+
 }
