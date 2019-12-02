@@ -66,7 +66,7 @@ class RoutesTest {
         spyRoute.create();
 
         //assert
-        verify(spyRoute).createGetRoute(eq("v2/users/:userId/timeline"), isA(GetAllFollowingForUserApi.class));
+        verify(spyRoute).createPostRoute(eq("v2/users/:userId/timeline"), isA(CreateNewPostApi.class));
     }
 
 
