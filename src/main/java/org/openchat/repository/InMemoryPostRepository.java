@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.stream.Collectors.toList;
+
 public class InMemoryPostRepository {
 
     private final List<Post> posts;
@@ -23,5 +25,12 @@ public class InMemoryPostRepository {
                 .stream()
                 .filter(post -> postId.equals(post.getPostId()))
                 .findFirst();
+    }
+
+    public List<Post> findPostsByUserId(String userId) {
+        return posts
+                .stream()
+                .filter(post -> userId.equals(post.getUserId()))
+                .collect(toList());
     }
 }

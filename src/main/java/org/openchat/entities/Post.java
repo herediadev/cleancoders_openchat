@@ -1,12 +1,15 @@
 package org.openchat.entities;
 
+import java.time.LocalDateTime;
+
 public class Post {
     private final String postId;
     private final String userId;
     private final String text;
-    private final String dateTime;
+    private final LocalDateTime dateTime;
 
-    public Post(String postId, String userId, String text, String dateTime) {
+
+    public Post(String postId, String userId, String text, LocalDateTime dateTime) {
         this.postId = postId;
         this.userId = userId;
         this.text = text;
@@ -25,7 +28,7 @@ public class Post {
         return text;
     }
 
-    public String getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 }

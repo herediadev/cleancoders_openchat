@@ -19,10 +19,9 @@ public class CreateNewPostService {
     }
 
     public Post execute(CreatePostRequest createPostRequest) {
-
         validateInappropriateWords(createPostRequest.getText());
 
-        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+        LocalDateTime now = LocalDateTime.now();
 
         Post post = new Post(UUID.randomUUID().toString(), createPostRequest.getUserId(), createPostRequest.getText(), now);
 

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.openchat.entities.Post;
 import org.openchat.repository.InMemoryPostRepository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 class InMemoryPostRepositoryTest {
@@ -16,7 +17,7 @@ class InMemoryPostRepositoryTest {
         InMemoryPostRepository inMemoryPostRepository = new InMemoryPostRepository();
 
         //act
-        inMemoryPostRepository.save(new Post(postId, "test_user_id", "test text", "test_date_time"));
+        inMemoryPostRepository.save(new Post(postId, "test_user_id", "test text", LocalDateTime.now()));
         Optional<Post> postByIdFound = inMemoryPostRepository.findPostById(postId);
 
         //assert

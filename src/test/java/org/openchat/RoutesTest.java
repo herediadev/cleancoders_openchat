@@ -69,5 +69,14 @@ class RoutesTest {
         verify(spyRoute).createPostRoute(eq("v2/users/:userId/timeline"), isA(CreateNewPostApi.class));
     }
 
+    @Test
+    void given_the_route_when_the_method_create_is_called_it_will_create_the_get_route_get_all_post_from_user_api() {
+        //act
+        spyRoute.create();
+
+        //assert
+        verify(spyRoute).createGetRoute(eq("v2/users/:userId/timeline"), isA(GetAllPostFromUserApi.class));
+    }
+
 
 }

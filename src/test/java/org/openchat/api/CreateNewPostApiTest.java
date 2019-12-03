@@ -13,6 +13,8 @@ import org.openchat.usercases.exceptions.InappropriateLanguageException;
 import spark.Request;
 import spark.Response;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -29,11 +31,16 @@ public class CreateNewPostApiTest {
 
     @Mock
     private CreateNewPostService createNewPostService;
+
+    private FormatDateService formatDateService;
     private CreateNewPostApi createNewPostApi;
+
 
     @BeforeEach
     void setUp() {
-        createNewPostApi = new CreateNewPostApi(createNewPostService);
+        formatDateService = new FormatDateService();
+
+        createNewPostApi = new CreateNewPostApi(createNewPostService, formatDateService);
         given(request.params("userId")).willReturn("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
         given(request.body()).willReturn(getBody());
     }
@@ -41,7 +48,11 @@ public class CreateNewPostApiTest {
     @Test
     void given_a_request_when_create_new_post_it_will_response_the_post_created() {
         //arrange
-        Post postCreated = new Post("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "text", "2018-01-10T11:30:00Z");
+        Post postCreated = new Post(
+                "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "text",
+                LocalDateTime.of(2018, 1, 10, 11, 30, 0));
         given(createNewPostService.execute(any(CreatePostRequest.class))).willReturn(postCreated);
 
         //act
@@ -75,7 +86,7 @@ public class CreateNewPostApiTest {
 
     private String getJsonResult(Post postCreated) {
         return new JsonObject()
-                .add("dateTime", postCreated.getDateTime())
+                .add("dateTime", formatDateService.execute(postCreated.getDateTime()))
                 .add("postId", postCreated.getPostId())
                 .add("text", postCreated.getText())
                 .add("userId", postCreated.getUserId())

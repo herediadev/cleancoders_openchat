@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openchat.api.FormatDateService;
 import org.openchat.entities.Post;
 import org.openchat.repository.InMemoryPostRepository;
 import org.openchat.usercases.exceptions.InappropriateLanguageException;
@@ -33,6 +34,7 @@ public class CreateNewPostServiceTest {
     @Test
     void given_a_new_post_request_it_will_create_a_post() {
         //arrange
+        FormatDateService formatDateService = new FormatDateService();
         CreatePostRequest createPostRequest = new CreatePostRequest(UUID.randomUUID().toString(), "test text");
         doNothing().when(inMemoryPostRepository).save(any(Post.class));
 
@@ -44,7 +46,7 @@ public class CreateNewPostServiceTest {
         Assertions.assertThat(newPostCreated.getPostId()).matches(APITestSuit.UUID_PATTERN);
         Assertions.assertThat(newPostCreated.getUserId()).matches(APITestSuit.UUID_PATTERN);
         Assertions.assertThat(newPostCreated.getText()).isEqualTo("test text");
-        Assertions.assertThat(newPostCreated.getDateTime()).matches(APITestSuit.DATE_PATTERN);
+        Assertions.assertThat(formatDateService.execute(newPostCreated.getDateTime())).matches(APITestSuit.DATE_PATTERN);
     }
 
     @Test
