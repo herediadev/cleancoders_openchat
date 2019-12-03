@@ -8,7 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openchat.entities.Post;
-import org.openchat.usercases.GetAllPostFromUserIdService;
+import org.openchat.usercases.GetTimelineFromUserIdService;
 import spark.Request;
 import spark.Response;
 
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class GetAllPostFromUserApiApiTest {
+public class GetTimelineFromUserApiTest {
 
     @Mock
     private Request request;
@@ -32,7 +32,7 @@ public class GetAllPostFromUserApiApiTest {
     private Response response;
 
     @Mock
-    private GetAllPostFromUserIdService getAllPostFromUserIdService;
+    private GetTimelineFromUserIdService getTimelineFromUserIdService;
 
     private FormatDateService formatDateService;
 
@@ -48,20 +48,20 @@ public class GetAllPostFromUserApiApiTest {
                 new Post("test_post_id_1", "test_user_id", "text", LocalDateTime.now()),
                 new Post("test_post_id_2", "test_user_id", "text", LocalDateTime.now())
         );
-        GetAllPostFromUserApi getAllPostFromUserApi = new GetAllPostFromUserApi(getAllPostFromUserIdService, formatDateService);
+        GetTimelineFromUserApi getTimelineFromUserApi = new GetTimelineFromUserApi(getTimelineFromUserIdService, formatDateService);
         given(request.params(anyString())).willReturn("test_user_id");
-        given(getAllPostFromUserIdService.execute(anyString())).willReturn(posts);
+        given(getTimelineFromUserIdService.execute(anyString())).willReturn(posts);
 
 
         //act
-        String result = getAllPostFromUserApi.handle(request, response);
+        String result = getTimelineFromUserApi.handle(request, response);
 
 
         //assert
         verify(request).params(eq("userId"));
         verify(response).status(200);
         verify(response).type("application/json");
-        verify(getAllPostFromUserIdService).execute(anyString());
+        verify(getTimelineFromUserIdService).execute(anyString());
         assertThat(result).isEqualTo(getJson(posts));
     }
 

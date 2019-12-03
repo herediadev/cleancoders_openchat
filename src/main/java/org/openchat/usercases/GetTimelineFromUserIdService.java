@@ -5,11 +5,11 @@ import org.openchat.repository.InMemoryPostRepository;
 
 import java.util.List;
 
-public class GetAllPostFromUserIdService {
+public class GetTimelineFromUserIdService {
 
     private final InMemoryPostRepository inMemoryPostRepository;
 
-    public GetAllPostFromUserIdService(InMemoryPostRepository inMemoryPostRepository) {
+    public GetTimelineFromUserIdService(InMemoryPostRepository inMemoryPostRepository) {
         this.inMemoryPostRepository = inMemoryPostRepository;
     }
 

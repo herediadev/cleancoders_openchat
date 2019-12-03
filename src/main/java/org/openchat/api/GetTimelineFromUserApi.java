@@ -3,26 +3,26 @@ package org.openchat.api;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.Post;
-import org.openchat.usercases.GetAllPostFromUserIdService;
+import org.openchat.usercases.GetTimelineFromUserIdService;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 import java.util.List;
 
-public class GetAllPostFromUserApi implements Route {
+public class GetTimelineFromUserApi implements Route {
 
-    private final GetAllPostFromUserIdService getAllPostFromUserIdService;
+    private final GetTimelineFromUserIdService getTimelineFromUserIdService;
     private final FormatDateService formatDateService;
 
-    public GetAllPostFromUserApi(GetAllPostFromUserIdService getAllPostFromUserIdService, FormatDateService formatDateService) {
-        this.getAllPostFromUserIdService = getAllPostFromUserIdService;
+    public GetTimelineFromUserApi(GetTimelineFromUserIdService getTimelineFromUserIdService, FormatDateService formatDateService) {
+        this.getTimelineFromUserIdService = getTimelineFromUserIdService;
         this.formatDateService = formatDateService;
     }
 
     public String handle(Request request, Response response) {
         String userId = request.params("userId");
-        List<Post> userPosts = this.getAllPostFromUserIdService.execute(userId);
+        List<Post> userPosts = this.getTimelineFromUserIdService.execute(userId);
 
         response.status(200);
         response.type("application/json");

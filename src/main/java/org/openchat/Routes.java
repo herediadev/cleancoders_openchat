@@ -30,7 +30,7 @@ class Routes {
         GetAllFollowingForUserService getAllFollowingForUserService = new GetAllFollowingForUserService(inMemoryUserRepository, inMemoryFollowingsRepository);
         FindUserByIdService findUserByIdService = new FindUserByIdService(inMemoryUserRepository);
         CreateNewPostService createNewPostService = new CreateNewPostService(inMemoryPostRepository);
-        GetAllPostFromUserIdService getAllPostFromUserIdService = new GetAllPostFromUserIdService(inMemoryPostRepository);
+        GetTimelineFromUserIdService getTimelineFromUserIdService = new GetTimelineFromUserIdService(inMemoryPostRepository);
         FormatDateService formatDateService = new FormatDateService();
 
         CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
@@ -39,7 +39,7 @@ class Routes {
         CreateNewFollowingApi createNewFollowingApi = new CreateNewFollowingApi(createNewFollowingsService, validateFollowingExistService);
         GetAllFollowingForUserApi getAllFollowingForUserApi = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService);
         CreateNewPostApi createNewPostApi = new CreateNewPostApi(createNewPostService, formatDateService);
-        GetAllPostFromUserApi getAllPostFromUserApi = new GetAllPostFromUserApi(getAllPostFromUserIdService, formatDateService);
+        GetTimelineFromUserApi getTimelineFromUserApi = new GetTimelineFromUserApi(getTimelineFromUserIdService, formatDateService);
 
 
         createGetRoute("status", (req, res) -> "OpenChat: OK!");
@@ -49,7 +49,7 @@ class Routes {
         createPostRoute("v2/followings", createNewFollowingApi);
         createGetRoute("v2/followings/:followerId/followees", getAllFollowingForUserApi);
         createPostRoute("v2/users/:userId/timeline", createNewPostApi);
-        createGetRoute("v2/users/:userId/timeline", getAllPostFromUserApi);
+        createGetRoute("v2/users/:userId/timeline", getTimelineFromUserApi);
     }
 
     void createPostRoute(String path, Route route) {
