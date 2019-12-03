@@ -1,10 +1,6 @@
 package org.openchat;
 
 import org.openchat.api.*;
-import org.openchat.repository.InMemoryFollowingsRepository;
-import org.openchat.repository.InMemoryPostRepository;
-import org.openchat.repository.InMemoryUserRepository;
-import org.openchat.usercases.*;
 import spark.Route;
 
 import static spark.Spark.*;
@@ -17,31 +13,14 @@ class Routes {
     }
 
     private void openChatRoutes() {
-        InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-        InMemoryFollowingsRepository inMemoryFollowingsRepository = new InMemoryFollowingsRepository();
-        InMemoryPostRepository inMemoryPostRepository = new InMemoryPostRepository();
-
-        CreateNewUserService createNewUserService = new CreateNewUserService(inMemoryUserRepository);
-        ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService = new ValidaIfUserAlreadyExistService(inMemoryUserRepository);
-        FindAllUserService findAllUserService = new FindAllUserService(inMemoryUserRepository);
-        LoginUserService loginUserService = new LoginUserService(inMemoryUserRepository);
-        ValidateFollowingExistService validateFollowingExistService = new ValidateFollowingExistService(inMemoryFollowingsRepository);
-        CreateNewFollowingsService createNewFollowingsService = new CreateNewFollowingsService(inMemoryFollowingsRepository);
-        GetAllFollowingForUserService getAllFollowingForUserService = new GetAllFollowingForUserService(inMemoryUserRepository, inMemoryFollowingsRepository);
-        FindUserByIdService findUserByIdService = new FindUserByIdService(inMemoryUserRepository);
-        CreateNewPostService createNewPostService = new CreateNewPostService(inMemoryPostRepository);
-        GetTimelineFromUserIdService getTimelineFromUserIdService = new GetTimelineFromUserIdService(inMemoryPostRepository);
-        FormatDateService formatDateService = new FormatDateService();
-        GetUserWallService getUserWallService = new GetUserWallService(getTimelineFromUserIdService, getAllFollowingForUserService, findUserByIdService);
-
-        CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
-        LoginUserApi loginUserApi = new LoginUserApi(loginUserService);
-        GetAllUserApi getAllUserApi = new GetAllUserApi(findAllUserService);
-        CreateNewFollowingApi createNewFollowingApi = new CreateNewFollowingApi(createNewFollowingsService, validateFollowingExistService);
-        GetAllFollowingForUserApi getAllFollowingForUserApi = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService);
-        CreateNewPostApi createNewPostApi = new CreateNewPostApi(createNewPostService, formatDateService);
-        GetTimelineFromUserApi getTimelineFromUserApi = new GetTimelineFromUserApi(getTimelineFromUserIdService, formatDateService);
-        GetUserWallApi getUserWallApi = new GetUserWallApi(getUserWallService, formatDateService);
+        Route createNewUserApi = new CreateNewUserApi(Context.createNewUserService, Context.validaIfUserAlreadyExistService);
+        Route loginUserApi = new LoginUserApi(Context.loginUserService);
+        Route getAllUserApi = new GetAllUserApi(Context.findAllUserService);
+        Route createNewFollowingApi = new CreateNewFollowingApi(Context.createNewFollowingsService, Context.validateFollowingExistService);
+        Route getAllFollowingForUserApi = new GetAllFollowingForUserApi(Context.getAllFollowingForUserService, Context.findUserByIdService);
+        Route createNewPostApi = new CreateNewPostApi(Context.createNewPostService, Context.formatDateService);
+        Route getTimelineFromUserApi = new GetTimelineFromUserApi(Context.getTimelineFromUserIdService, Context.formatDateService);
+        Route getUserWallApi = new GetUserWallApi(Context.getUserWallService, Context.formatDateService);
 
         createGetRoute("status", (req, res) -> "OpenChat: OK!");
         createPostRoute("v2/users", createNewUserApi);

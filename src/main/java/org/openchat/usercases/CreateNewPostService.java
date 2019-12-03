@@ -5,7 +5,6 @@ import org.openchat.repository.InMemoryPostRepository;
 import org.openchat.usercases.exceptions.InappropriateLanguageException;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;

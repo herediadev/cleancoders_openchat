@@ -43,8 +43,8 @@ public class GetTimelineFromUserApi implements Route {
     private JsonObject createJsonPost(Post post) {
         return new JsonObject()
                 .add("dateTime", formatDateService.execute(post.getDateTime()))
-                .add("postId",post.getPostId())
-                .add("text",post.getText())
-                .add("userId",post.getUserId());
+                .add("postId", post.getPostId())
+                .add("text", post.getText())
+                .add("userId", post.getUserId());
     }
 }
