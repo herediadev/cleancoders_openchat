@@ -2,9 +2,6 @@ package org.openchat.usercases;
 
 import org.openchat.entities.Post;
 import org.openchat.entities.User;
-import org.openchat.repository.InMemoryFollowingsRepository;
-import org.openchat.repository.InMemoryPostRepository;
-import org.openchat.repository.InMemoryUserRepository;
 
 import java.util.Collection;
 import java.util.List;
@@ -32,6 +29,7 @@ public class GetUserWallService {
                 .stream()
                 .map(user -> this.getTimelineFromUserIdService.execute(user.getId()))
                 .flatMap(Collection::stream)
+                .sorted((post1, post2) -> post2.getDateTime().compareTo(post1.getDateTime()))
                 .collect(Collectors.toList());
     }
 }
