@@ -70,7 +70,7 @@ class RoutesTest {
     }
 
     @Test
-    void given_the_route_when_the_method_create_is_called_it_will_create_the_get_route_get_all_post_from_user_api() {
+    void given_the_route_when_the_method_create_is_called_it_will_create_the_get_route_get_timeline_from_user_api() {
         //act
         spyRoute.create();
 
@@ -78,5 +78,12 @@ class RoutesTest {
         verify(spyRoute).createGetRoute(eq("v2/users/:userId/timeline"), isA(GetTimelineFromUserApi.class));
     }
 
+    @Test
+    void given_the_route_when_the_method_create_is_called_it_will_create_the_get_route_get_user_wall_api() {
+        //act
+        spyRoute.create();
 
+        //assert
+        verify(spyRoute).createGetRoute(eq("v2/users/:userId/wall"), isA(GetUserWallApi.class));
+    }
 }

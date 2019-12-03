@@ -32,6 +32,7 @@ class Routes {
         CreateNewPostService createNewPostService = new CreateNewPostService(inMemoryPostRepository);
         GetTimelineFromUserIdService getTimelineFromUserIdService = new GetTimelineFromUserIdService(inMemoryPostRepository);
         FormatDateService formatDateService = new FormatDateService();
+        GetUserWallService getUserWallService = new GetUserWallService(getTimelineFromUserIdService, getAllFollowingForUserService, findUserByIdService);
 
         CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
         LoginUserApi loginUserApi = new LoginUserApi(loginUserService);
@@ -40,7 +41,7 @@ class Routes {
         GetAllFollowingForUserApi getAllFollowingForUserApi = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService);
         CreateNewPostApi createNewPostApi = new CreateNewPostApi(createNewPostService, formatDateService);
         GetTimelineFromUserApi getTimelineFromUserApi = new GetTimelineFromUserApi(getTimelineFromUserIdService, formatDateService);
-
+        GetUserWallApi getUserWallApi = new GetUserWallApi(getUserWallService, formatDateService);
 
         createGetRoute("status", (req, res) -> "OpenChat: OK!");
         createPostRoute("v2/users", createNewUserApi);
@@ -50,6 +51,7 @@ class Routes {
         createGetRoute("v2/followings/:followerId/followees", getAllFollowingForUserApi);
         createPostRoute("v2/users/:userId/timeline", createNewPostApi);
         createGetRoute("v2/users/:userId/timeline", getTimelineFromUserApi);
+        createGetRoute("v2/users/:userId/wall", getUserWallApi);
     }
 
     void createPostRoute(String path, Route route) {
