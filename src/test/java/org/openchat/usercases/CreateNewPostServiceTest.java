@@ -46,7 +46,7 @@ public class CreateNewPostServiceTest {
         Assertions.assertThat(newPostCreated.getPostId()).matches(APITestSuit.UUID_PATTERN);
         Assertions.assertThat(newPostCreated.getUserId()).matches(APITestSuit.UUID_PATTERN);
         Assertions.assertThat(newPostCreated.getText()).isEqualTo("test text");
-        Assertions.assertThat(formatDateService.execute(newPostCreated.getDateTime())).matches(APITestSuit.DATE_PATTERN);
+        Assertions.assertThat(formatDateService.apply(newPostCreated.getDateTime())).matches(APITestSuit.DATE_PATTERN);
     }
 
     @Test

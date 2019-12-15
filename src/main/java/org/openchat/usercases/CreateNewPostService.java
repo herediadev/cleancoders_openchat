@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
-public class CreateNewPostService implements Function<CreatePostRequest,Post> {
+public class CreateNewPostService implements Function<CreatePostRequest, Post> {
 
     private final InMemoryPostRepository inMemoryPostRepository;
 

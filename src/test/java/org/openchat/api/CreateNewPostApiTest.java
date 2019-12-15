@@ -5,20 +5,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openchat.entities.Post;
-import org.openchat.usercases.CreateNewPostService;
 import org.openchat.usercases.CreatePostRequest;
 import org.openchat.usercases.exceptions.InappropriateLanguageException;
 import spark.Request;
 import spark.Response;
 
 import java.time.LocalDateTime;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CreateNewPostApiTest {
@@ -29,20 +29,19 @@ class CreateNewPostApiTest {
     @Mock
     private Response response;
 
-    @Mock
-    private CreateNewPostService createNewPostService;
+    @Spy
+    private Function<CreatePostRequest, Post> createNewPostService;
 
+    @Spy
     private FormatDateService formatDateService;
-    private CreateNewPostApi createNewPostApi;
 
+    private CreateNewPostApi createNewPostApi;
 
     @BeforeEach
     void setUp() {
-        formatDateService = new FormatDateService();
-
         createNewPostApi = new CreateNewPostApi(createNewPostService, formatDateService);
-        given(request.params("userId")).willReturn("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        given(request.body()).willReturn(getBody());
+        doReturn("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx").when(request).params("userId");
+        doReturn(getBody()).when(request).body();
     }
 
     @Test
@@ -53,13 +52,14 @@ class CreateNewPostApiTest {
                 "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                 "text",
                 LocalDateTime.of(2018, 1, 10, 11, 30, 0));
-        given(createNewPostService.apply(any(CreatePostRequest.class))).willReturn(postCreated);
+        doReturn(postCreated).when(createNewPostService).apply(any(CreatePostRequest.class));
 
         //act
         String result = createNewPostApi.handle(request, response);
 
         //assert
         verify(createNewPostService).apply(any(CreatePostRequest.class));
+        verify(formatDateService).apply(any(LocalDateTime.class));
         verify(response).type("application/json");
         verify(response).status(201);
         assertThat(result).contains(getJsonResult(postCreated));
@@ -68,7 +68,7 @@ class CreateNewPostApiTest {
     @Test
     void given_a_request_when_creating_a_new_post_with_inappropriate_words_it_will_response_an_error() {
         //arrange
-        given(createNewPostService.apply(any(CreatePostRequest.class))).willThrow(new InappropriateLanguageException());
+        doThrow(InappropriateLanguageException.class).when(createNewPostService).apply(any(CreatePostRequest.class));
 
         //act
         String result = createNewPostApi.handle(request, response);
@@ -86,7 +86,7 @@ class CreateNewPostApiTest {
 
     private String getJsonResult(Post postCreated) {
         return new JsonObject()
-                .add("dateTime", formatDateService.execute(postCreated.getDateTime()))
+                .add("dateTime", "2018-01-10T11:30:00Z")
                 .add("postId", postCreated.getPostId())
                 .add("text", postCreated.getText())
                 .add("userId", postCreated.getUserId())

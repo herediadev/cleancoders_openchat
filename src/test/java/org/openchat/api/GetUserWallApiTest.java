@@ -72,7 +72,7 @@ public class GetUserWallApiTest {
 
     private JsonObject createJsonPost(Post post) {
         return new JsonObject()
-                .add("dateTime", this.formatDateService.execute(post.getDateTime()))
+                .add("dateTime", this.formatDateService.apply(post.getDateTime()))
                 .add("postId", post.getPostId())
                 .add("text", post.getText())
                 .add("userId", post.getUserId());
