@@ -20,7 +20,7 @@ public class GetTimelineFromUserIdServiceTest {
         //act
         Post post1 = createNewPostService.apply(new CreatePostRequest(userId, "test_post_1"));
         Post post2 = createNewPostService.apply(new CreatePostRequest(userId, "test_post_2"));
-        List<Post> allPostFromUser = getTimelineFromUserIdService.execute(userId);
+        List<Post> allPostFromUser = getTimelineFromUserIdService.apply(userId);
 
         //assert
         Assertions.assertThat(allPostFromUser).containsExactly(post2, post1);

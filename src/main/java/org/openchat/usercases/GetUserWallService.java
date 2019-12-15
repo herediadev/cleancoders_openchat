@@ -27,7 +27,7 @@ public class GetUserWallService {
 
         return userList
                 .stream()
-                .map(user -> this.getTimelineFromUserIdService.execute(user.getId()))
+                .map(user -> this.getTimelineFromUserIdService.apply(user.getId()))
                 .flatMap(Collection::stream)
                 .sorted((post1, post2) -> post2.getDateTime().compareTo(post1.getDateTime()))
                 .collect(Collectors.toList());
