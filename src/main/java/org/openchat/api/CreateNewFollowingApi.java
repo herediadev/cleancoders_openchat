@@ -2,31 +2,30 @@ package org.openchat.api;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
-import org.openchat.usercases.CreateNewFollowingsService;
 import org.openchat.usercases.FollowingRequest;
-import org.openchat.usercases.ValidateFollowingExistService;
 import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.util.function.Consumer;
+
 public class CreateNewFollowingApi implements Route {
 
-    private final CreateNewFollowingsService createNewFollowingsService;
-    private final ValidateFollowingExistService validateFollowingExistService;
+    private final Consumer<FollowingRequest> createNewFollowingsService;
+    private final Consumer<FollowingRequest> validateFollowingExistService;
 
-    public CreateNewFollowingApi(CreateNewFollowingsService createNewFollowingsService, ValidateFollowingExistService validateFollowingExistService) {
+    public CreateNewFollowingApi(Consumer<FollowingRequest> createNewFollowingsService, Consumer<FollowingRequest> validateFollowingExistService) {
         this.createNewFollowingsService = createNewFollowingsService;
         this.validateFollowingExistService = validateFollowingExistService;
     }
 
     @Override
     public String handle(Request request, Response response) {
-        FollowingRequest followingRequest = createFollowingRequest(request);
-
         try {
-            validateFollowingExistService.execute(followingRequest);
-            createNewFollowingsService.execute(followingRequest);
+            validateFollowingExistService
+                    .andThen(createNewFollowingsService)
+                    .accept(createFollowingRequest(request));
             response.status(201);
             return "Following created.";
         } catch (FollowingAlreadyExistException e) {

@@ -18,8 +18,8 @@ public class GetTimelineFromUserIdServiceTest {
         GetTimelineFromUserIdService getTimelineFromUserIdService = new GetTimelineFromUserIdService(inMemoryPostRepository);
 
         //act
-        Post post1 = createNewPostService.execute(new CreatePostRequest(userId, "test_post_1"));
-        Post post2 = createNewPostService.execute(new CreatePostRequest(userId, "test_post_2"));
+        Post post1 = createNewPostService.apply(new CreatePostRequest(userId, "test_post_1"));
+        Post post2 = createNewPostService.apply(new CreatePostRequest(userId, "test_post_2"));
         List<Post> allPostFromUser = getTimelineFromUserIdService.execute(userId);
 
         //assert

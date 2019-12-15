@@ -31,10 +31,10 @@ public class GetUserWallServiceTest {
         //act
         User userCreated = createNewUserService.execute(new CreateNewUserRequest("test_user_name", "test_password", "test_about"));
         User userCreated2 = createNewUserService.execute(new CreateNewUserRequest("test_user_name2", "test_password2", "test_about2"));
-        createNewFollowingsService.execute(new FollowingRequest(userCreated2.getId(), userCreated.getId()));
-        Post post1 = createNewPostService.execute(new CreatePostRequest(userCreated.getId(), "text"));
-        Post post2 = createNewPostService.execute(new CreatePostRequest(userCreated.getId(), "text"));
-        Post post3 = createNewPostService.execute(new CreatePostRequest(userCreated2.getId(), "text"));
+        createNewFollowingsService.accept(new FollowingRequest(userCreated2.getId(), userCreated.getId()));
+        Post post1 = createNewPostService.apply(new CreatePostRequest(userCreated.getId(), "text"));
+        Post post2 = createNewPostService.apply(new CreatePostRequest(userCreated.getId(), "text"));
+        Post post3 = createNewPostService.apply(new CreatePostRequest(userCreated2.getId(), "text"));
 
         List<Post> userWall = getUserWallService.execute(userCreated.getId());
 

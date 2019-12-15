@@ -28,7 +28,7 @@ class ValidateFollowingExistServiceTest {
 
         //act and assert
         Assertions.assertThrows(FollowingAlreadyExistException.class, () -> {
-            validateFollowingExistService.execute(followingRequest);
+            validateFollowingExistService.accept(followingRequest);
         });
     }
 }

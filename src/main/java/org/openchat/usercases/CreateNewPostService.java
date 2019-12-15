@@ -8,8 +8,9 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
-public class CreateNewPostService {
+public class CreateNewPostService implements Function<CreatePostRequest,Post> {
 
     private final InMemoryPostRepository inMemoryPostRepository;
 
@@ -17,7 +18,7 @@ public class CreateNewPostService {
         this.inMemoryPostRepository = inMemoryPostRepository;
     }
 
-    public Post execute(CreatePostRequest createPostRequest) {
+    public Post apply(CreatePostRequest createPostRequest) {
         validateInappropriateWords(createPostRequest.getText());
 
         LocalDateTime now = LocalDateTime.now();

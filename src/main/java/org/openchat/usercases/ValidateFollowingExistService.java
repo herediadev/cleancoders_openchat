@@ -3,14 +3,17 @@ package org.openchat.usercases;
 import org.openchat.repository.InMemoryFollowingsRepository;
 import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
 
-public class ValidateFollowingExistService {
+import java.util.function.Consumer;
+
+public class ValidateFollowingExistService implements Consumer<FollowingRequest> {
     private final InMemoryFollowingsRepository inMemoryFollowingsRepository;
 
     public ValidateFollowingExistService(InMemoryFollowingsRepository inMemoryFollowingsRepository) {
         this.inMemoryFollowingsRepository = inMemoryFollowingsRepository;
     }
 
-    public void execute(FollowingRequest followingRequest) {
+    @Override
+    public void accept(FollowingRequest followingRequest) {
         inMemoryFollowingsRepository
                 .checkIfExist(followingRequest)
                 .ifPresent(this::throwFollowingAlreadyExistException);

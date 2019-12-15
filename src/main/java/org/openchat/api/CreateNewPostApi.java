@@ -25,7 +25,7 @@ public class CreateNewPostApi implements Route {
         CreatePostRequest createPostRequest = createPostRequest(request);
 
         try {
-            Post postCreated = createNewPostService.execute(createPostRequest);
+            Post postCreated = createNewPostService.apply(createPostRequest);
             response.status(201);
             response.type("application/json");
 

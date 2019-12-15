@@ -21,7 +21,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateNewPostApiTest {
+class CreateNewPostApiTest {
 
     @Mock
     private Request request;
@@ -53,22 +53,22 @@ public class CreateNewPostApiTest {
                 "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                 "text",
                 LocalDateTime.of(2018, 1, 10, 11, 30, 0));
-        given(createNewPostService.execute(any(CreatePostRequest.class))).willReturn(postCreated);
+        given(createNewPostService.apply(any(CreatePostRequest.class))).willReturn(postCreated);
 
         //act
         String result = createNewPostApi.handle(request, response);
 
         //assert
-        verify(createNewPostService).execute(any(CreatePostRequest.class));
+        verify(createNewPostService).apply(any(CreatePostRequest.class));
         verify(response).type("application/json");
         verify(response).status(201);
         assertThat(result).contains(getJsonResult(postCreated));
     }
 
     @Test
-    void given_a_request_when_creating_a_new_post_with_inappropiate_words_it_will_response_an_error() {
+    void given_a_request_when_creating_a_new_post_with_inappropriate_words_it_will_response_an_error() {
         //arrange
-        given(createNewPostService.execute(any(CreatePostRequest.class))).willThrow(new InappropriateLanguageException());
+        given(createNewPostService.apply(any(CreatePostRequest.class))).willThrow(new InappropriateLanguageException());
 
         //act
         String result = createNewPostApi.handle(request, response);

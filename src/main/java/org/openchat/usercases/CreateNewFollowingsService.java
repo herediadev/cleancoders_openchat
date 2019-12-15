@@ -2,7 +2,9 @@ package org.openchat.usercases;
 
 import org.openchat.repository.InMemoryFollowingsRepository;
 
-public class CreateNewFollowingsService {
+import java.util.function.Consumer;
+
+public class CreateNewFollowingsService implements Consumer<FollowingRequest> {
 
     private final InMemoryFollowingsRepository inMemoryFollowingsRepository;
 
@@ -10,7 +12,8 @@ public class CreateNewFollowingsService {
         this.inMemoryFollowingsRepository = inMemoryFollowingsRepository;
     }
 
-    public void execute(FollowingRequest followingRequest) {
+    @Override
+    public void accept(FollowingRequest followingRequest) {
         inMemoryFollowingsRepository.addNewFollowing(followingRequest);
     }
 }

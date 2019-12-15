@@ -5,13 +5,15 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.openchat.usercases.CreateNewFollowingsService;
-import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
 import org.openchat.usercases.FollowingRequest;
-import org.openchat.usercases.ValidateFollowingExistService;
+import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
 import spark.Request;
 import spark.Response;
+
+import java.util.function.Consumer;
 
 import static org.mockito.BDDMockito.*;
 
@@ -24,11 +26,11 @@ class CreateNewFollowingApiTest {
     @Mock
     private Response response;
 
-    @Mock
-    private CreateNewFollowingsService createNewFollowingsService;
+    @Spy
+    private Consumer<FollowingRequest> createNewFollowingsService;
 
-    @Mock
-    private ValidateFollowingExistService validateFollowingExistService;
+    @Spy
+    private Consumer<FollowingRequest> validateFollowingExistService;
 
     @Test
     void given_the_request_when_add_new_following_it_will_response_following_created() {
@@ -41,22 +43,16 @@ class CreateNewFollowingApiTest {
 
         //assert
         verify(response).status(201);
-        verify(createNewFollowingsService).execute(any(FollowingRequest.class));
+        verify(createNewFollowingsService).accept(any(FollowingRequest.class));
+        verify(validateFollowingExistService).accept(any(FollowingRequest.class));
         Assertions.assertThat(result).isEqualTo("Following created.");
-    }
-
-    private String JsonContaining() {
-        return new JsonObject()
-                .add("followeeId", "test_followeeId")
-                .add("followerId", "test_followingId")
-                .toString();
     }
 
     @Test
     void given_the_request_when_adding_new_following_that_already_exist_it_will_response_an_400_error() {
         //arrange
         CreateNewFollowingApi createNewFollowingApi = new CreateNewFollowingApi(createNewFollowingsService, validateFollowingExistService);
-        doThrow(FollowingAlreadyExistException.class).when(validateFollowingExistService).execute(any(FollowingRequest.class));
+        doThrow(FollowingAlreadyExistException.class).when(validateFollowingExistService).accept(any(FollowingRequest.class));
         given(request.body()).willReturn(JsonContaining());
 
         //act
@@ -64,7 +60,14 @@ class CreateNewFollowingApiTest {
 
         //assert
         verify(response).status(400);
-        verify(validateFollowingExistService).execute(any(FollowingRequest.class));
+        verify(validateFollowingExistService).accept(any(FollowingRequest.class));
         Assertions.assertThat(result).isEqualTo("Following already exist.");
+    }
+
+    private String JsonContaining() {
+        return new JsonObject()
+                .add("followeeId", "test_followeeId")
+                .add("followerId", "test_followingId")
+                .toString();
     }
 }

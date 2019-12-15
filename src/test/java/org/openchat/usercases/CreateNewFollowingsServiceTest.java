@@ -22,7 +22,7 @@ class CreateNewFollowingsServiceTest {
         CreateNewFollowingsService createNewFollowingsService = new CreateNewFollowingsService(inMemoryFollowingsRepository);
 
         //act
-        createNewFollowingsService.execute(followingRequest);
+        createNewFollowingsService.accept(followingRequest);
 
         //assert
         verify(inMemoryFollowingsRepository).addNewFollowing(eq(followingRequest));

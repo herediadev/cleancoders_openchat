@@ -39,7 +39,7 @@ public class CreateNewPostServiceTest {
         doNothing().when(inMemoryPostRepository).save(any(Post.class));
 
         //act
-        Post newPostCreated = createNewPostService.execute(createPostRequest);
+        Post newPostCreated = createNewPostService.apply(createPostRequest);
 
         //assert
         verify(inMemoryPostRepository).save(any(Post.class));
@@ -55,6 +55,6 @@ public class CreateNewPostServiceTest {
         CreatePostRequest createPostRequest = new CreatePostRequest("test_user_id", "inappropriate word ice cream");
 
         //act and assert
-        org.junit.jupiter.api.Assertions.assertThrows(InappropriateLanguageException.class, () -> createNewPostService.execute(createPostRequest));
+        org.junit.jupiter.api.Assertions.assertThrows(InappropriateLanguageException.class, () -> createNewPostService.apply(createPostRequest));
     }
 }
