@@ -4,8 +4,9 @@ import org.openchat.entities.User;
 import org.openchat.repository.InMemoryUserRepository;
 
 import java.util.List;
+import java.util.function.Supplier;
 
-public class FindAllUserService {
+public class FindAllUserService implements Supplier<List<User>> {
 
     private final InMemoryUserRepository inMemoryUserRepository;
 
@@ -13,7 +14,7 @@ public class FindAllUserService {
         this.inMemoryUserRepository = inMemoryUserRepository;
     }
 
-    public List<User> execute() {
+    public List<User> get() {
         return inMemoryUserRepository.getUserList();
     }
 }

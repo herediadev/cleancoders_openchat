@@ -24,7 +24,7 @@ class FindAllUserServiceTest {
     void it_will_return_all_the_users() {
         //act
         User userAdded = createNewUserService.apply(new CreateNewUserRequest("username", "password", "about"));
-        List<User> users = findAllUserService.execute();
+        List<User> users = findAllUserService.get();
 
         //assert
         Assertions.assertThat(users).containsExactly(userAdded);

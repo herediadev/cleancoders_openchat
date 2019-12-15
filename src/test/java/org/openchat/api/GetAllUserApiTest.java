@@ -9,16 +9,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.openchat.api.GetAllUserApi;
 import org.openchat.entities.User;
-import org.openchat.usercases.FindAllUserService;
 import spark.Request;
 import spark.Response;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import static integration.APITestSuit.UUID_PATTERN;
 import static java.util.Collections.singletonList;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class GetAllUserApiTest {
@@ -30,7 +31,7 @@ class GetAllUserApiTest {
     private Response response;
 
     @Mock
-    private FindAllUserService findAllUserService;
+    private Supplier<List<User>> findAllUserService;
 
     private GetAllUserApi getAllUserApi;
 
@@ -42,17 +43,17 @@ class GetAllUserApiTest {
     @Test
     void given_a_request_it_will_return_all_the_users() {
         //arrange
-        given(findAllUserService.execute()).willReturn(singletonList(createNewUser()));
+        doReturn(singletonList(createNewUser())).when(findAllUserService).get();
 
         //act
         String users = getAllUserApi.handle(request, response);
         JsonArray userJsonList = Json.parse(users).asArray();
-        JsonObject jsonUser = Json.parse(userJsonList.get(0).toString()).asObject();
+        JsonObject jsonUser = Json.parse(userJsonList.get(0).asString()).asObject();
 
         //assert
         verify(response).status(200);
         verify(response).type("application/json");
-        verify(findAllUserService).execute();
+        verify(findAllUserService).get();
         Assertions.assertThat(userJsonList.size()).isEqualTo(1);
         Assertions.assertThat(jsonUser.getString("id", "")).matches(UUID_PATTERN);
         Assertions.assertThat(jsonUser.getString("username", "")).isEqualTo("username");
