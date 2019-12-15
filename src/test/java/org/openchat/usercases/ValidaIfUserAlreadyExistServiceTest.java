@@ -3,10 +3,7 @@ package org.openchat.usercases;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openchat.repository.InMemoryUserRepository;
-import org.openchat.usercases.CreateNewUserRequest;
-import org.openchat.usercases.CreateNewUserService;
 import org.openchat.usercases.exceptions.UserAlreadyExistException;
-import org.openchat.usercases.ValidaIfUserAlreadyExistService;
 
 public class ValidaIfUserAlreadyExistServiceTest {
     @Test
@@ -19,11 +16,11 @@ public class ValidaIfUserAlreadyExistServiceTest {
         CreateNewUserRequest createNewUserRequest = new CreateNewUserRequest(username, "password", "about");
 
         //act
-        createNewUserService.execute(createNewUserRequest);
+        createNewUserService.apply(createNewUserRequest);
 
         //assert
         UserAlreadyExistException userAlreadyExistException = Assertions.assertThrows(UserAlreadyExistException.class, () -> {
-            validaIfUserAlreadyExistService.execute(username);
+            validaIfUserAlreadyExistService.accept(username);
         });
 
         org.assertj.core.api.Assertions.assertThat(userAlreadyExistException.getMessage()).isEqualTo("user username already exist");

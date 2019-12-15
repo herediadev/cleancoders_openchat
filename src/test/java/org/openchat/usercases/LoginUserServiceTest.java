@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openchat.entities.User;
 import org.openchat.repository.InMemoryUserRepository;
-import org.openchat.usercases.*;
 import org.openchat.usercases.exceptions.InvalidCredentialException;
 
 class LoginUserServiceTest {
@@ -27,7 +26,7 @@ class LoginUserServiceTest {
         CreateNewUserRequest createNewUserRequest = new CreateNewUserRequest("username", "password", "about");
 
         //act
-        createNewUserService.execute(createNewUserRequest);
+        createNewUserService.apply(createNewUserRequest);
         User userLogged = loginUserService.execute(loginUserRequest);
 
         //assert
@@ -43,7 +42,7 @@ class LoginUserServiceTest {
         CreateNewUserRequest createNewUserRequest = new CreateNewUserRequest("username", "password", "about");
 
         //act and assert
-        createNewUserService.execute(createNewUserRequest);
+        createNewUserService.apply(createNewUserRequest);
         org.junit.jupiter.api.Assertions.assertThrows(InvalidCredentialException.class, () -> loginUserService.execute(loginUserRequestClass));
     }
 
@@ -54,7 +53,7 @@ class LoginUserServiceTest {
         CreateNewUserRequest createNewUserRequest = new CreateNewUserRequest("username", "password", "about");
 
         //act and assert
-        createNewUserService.execute(createNewUserRequest);
+        createNewUserService.apply(createNewUserRequest);
         org.junit.jupiter.api.Assertions.assertThrows(InvalidCredentialException.class, () -> loginUserService.execute(loginUserRequestClass));
     }
 }

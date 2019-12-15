@@ -4,7 +4,9 @@ import org.openchat.entities.User;
 import org.openchat.repository.InMemoryUserRepository;
 import org.openchat.usercases.exceptions.UserAlreadyExistException;
 
-public class ValidaIfUserAlreadyExistService {
+import java.util.function.Consumer;
+
+public class ValidaIfUserAlreadyExistService implements Consumer<String> {
 
     private final InMemoryUserRepository inMemoryUserRepository;
 
@@ -12,7 +14,7 @@ public class ValidaIfUserAlreadyExistService {
         this.inMemoryUserRepository = inMemoryUserRepository;
     }
 
-    public void execute(String username) {
+    public void accept(String username) {
         inMemoryUserRepository
                 .findUserByUsername(username)
                 .ifPresent(this::throwUserAlreadyExistException);

@@ -5,9 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openchat.entities.User;
 import org.openchat.repository.InMemoryUserRepository;
-import org.openchat.usercases.CreateNewUserRequest;
-import org.openchat.usercases.CreateNewUserService;
-import org.openchat.usercases.FindAllUserService;
 
 import java.util.List;
 
@@ -26,7 +23,7 @@ class FindAllUserServiceTest {
     @Test
     void it_will_return_all_the_users() {
         //act
-        User userAdded = createNewUserService.execute(new CreateNewUserRequest("username", "password", "about"));
+        User userAdded = createNewUserService.apply(new CreateNewUserRequest("username", "password", "about"));
         List<User> users = findAllUserService.execute();
 
         //assert

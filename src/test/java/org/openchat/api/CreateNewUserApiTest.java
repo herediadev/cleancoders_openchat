@@ -2,25 +2,27 @@ package org.openchat.api;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.openchat.api.CreateNewUserApi;
 import org.openchat.entities.User;
 import org.openchat.usercases.CreateNewUserRequest;
-import org.openchat.usercases.CreateNewUserService;
 import org.openchat.usercases.exceptions.UserAlreadyExistException;
-import org.openchat.usercases.ValidaIfUserAlreadyExistService;
 import spark.Request;
 import spark.Response;
+
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static integration.APITestSuit.UUID_PATTERN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,19 +34,24 @@ class CreateNewUserApiTest {
     @Mock
     private Response response;
 
-    @Mock
-    private CreateNewUserService createNewUserService;
+    @Spy
+    private Function<CreateNewUserRequest, User> createNewUserService;
 
-    @Mock
-    private ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService;
+    @Spy
+    private Consumer<String> validaIfUserAlreadyExistService;
+
+    private CreateNewUserApi createNewUserApi;
+
+    @BeforeEach
+    void setUp() {
+        createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
+    }
 
     @Test
     void given_the_request_and_response_it_will_response_the_new_created_user() {
         //arrange
-        given(request.body()).willReturn(createRequestJsonBody());
-        given(createNewUserService.execute(any(CreateNewUserRequest.class))).willReturn(createNewUser());
-
-        CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
+        doReturn(createRequestJsonBody()).when(request).body();
+        doReturn(createNewUser()).when(createNewUserService).apply(any(CreateNewUserRequest.class));
 
         //act
         String result = createNewUserApi.handle(request, response);
@@ -53,6 +60,8 @@ class CreateNewUserApiTest {
         //assert
         verify(response).status(201);
         verify(response).type("application/json");
+        verify(createNewUserService).apply(any(CreateNewUserRequest.class));
+        verify(validaIfUserAlreadyExistService).accept(anyString());
         assertThat(jsonResult.getString("id", "")).matches(UUID_PATTERN);
         assertThat(jsonResult.getString("username", "")).isEqualTo("username");
         assertThat(jsonResult.getString("about", "")).isEqualTo("about");
@@ -61,10 +70,8 @@ class CreateNewUserApiTest {
     @Test
     void given_the_same_username_it_will_throw_an_userAlreadyExistException() {
         //arrange
-        given(request.body()).willReturn(createRequestJsonBody());
-        doThrow(new UserAlreadyExistException("user already exists")).when(validaIfUserAlreadyExistService).execute(anyString());
-
-        CreateNewUserApi createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService);
+        doReturn(createRequestJsonBody()).when(request).body();
+        doThrow(new UserAlreadyExistException("user already exists")).when(validaIfUserAlreadyExistService).accept(anyString());
 
         //act
         String userAlreadyExist = createNewUserApi.handle(request, response);

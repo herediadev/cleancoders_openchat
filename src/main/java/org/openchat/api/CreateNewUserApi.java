@@ -4,37 +4,44 @@ import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.User;
 import org.openchat.usercases.CreateNewUserRequest;
-import org.openchat.usercases.CreateNewUserService;
-import org.openchat.usercases.ValidaIfUserAlreadyExistService;
 import org.openchat.usercases.exceptions.UserAlreadyExistException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 public class CreateNewUserApi implements Route {
 
-    private final CreateNewUserService createNewUserService;
-    private final ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService;
+    private final Function<CreateNewUserRequest, User> createNewUserService;
+    private final Consumer<String> validaIfUserAlreadyExistService;
 
-    public CreateNewUserApi(CreateNewUserService createNewUserService, ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService) {
+    public CreateNewUserApi(Function<CreateNewUserRequest, User> createNewUserService, Consumer<String> validaIfUserAlreadyExistService) {
         this.createNewUserService = createNewUserService;
         this.validaIfUserAlreadyExistService = validaIfUserAlreadyExistService;
     }
 
     public String handle(Request request, Response response) {
-        CreateNewUserRequest newUserRequestFromRequest = this.createNewUserRequestFromRequest(request);
-
         try {
-            validaIfUserAlreadyExistService.execute(newUserRequestFromRequest.getUsername());
-            User user = this.createNewUserService.execute(newUserRequestFromRequest);
-            String newUserResponse = new CreateNewUserResponse(user).invoke().toString();
-            return setResponse(newUserResponse, response);
-
+            return this.createNewUserService
+                    .compose(this::validaIfUserAlreadyExist)
+                    .compose(this::createNewUserRequestFromRequest)
+                    .andThen(this::createNewUserResponse)
+                    .andThen(newUserResponse -> setResponse(newUserResponse, response))
+                    .apply(request);
         } catch (UserAlreadyExistException e) {
             return setUserAlreadyExistResponse(response);
         }
+    }
 
+    private String createNewUserResponse(User user) {
+        return new CreateNewUserResponse(user).invoke();
+    }
 
+    private CreateNewUserRequest validaIfUserAlreadyExist(CreateNewUserRequest newUserRequestFromRequest) {
+        validaIfUserAlreadyExistService.accept(newUserRequestFromRequest.getUsername());
+        return newUserRequestFromRequest;
     }
 
     private String setUserAlreadyExistResponse(Response response) {

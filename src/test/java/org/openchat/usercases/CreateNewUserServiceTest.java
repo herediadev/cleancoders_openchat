@@ -6,8 +6,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openchat.entities.User;
 import org.openchat.repository.InMemoryUserRepository;
-import org.openchat.usercases.CreateNewUserRequest;
-import org.openchat.usercases.CreateNewUserService;
 
 import static integration.APITestSuit.UUID_PATTERN;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +23,7 @@ class CreateNewUserServiceTest {
         CreateNewUserService createNewUserService = new CreateNewUserService(userRepository);
 
         //act
-        User user = createNewUserService.execute(createNewUserRequest);
+        User user = createNewUserService.apply(createNewUserRequest);
 
         //assert
         assertThat(user.getId()).matches(UUID_PATTERN);

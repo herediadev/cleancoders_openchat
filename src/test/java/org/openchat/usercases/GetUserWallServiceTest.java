@@ -29,8 +29,8 @@ public class GetUserWallServiceTest {
 
 
         //act
-        User userCreated = createNewUserService.execute(new CreateNewUserRequest("test_user_name", "test_password", "test_about"));
-        User userCreated2 = createNewUserService.execute(new CreateNewUserRequest("test_user_name2", "test_password2", "test_about2"));
+        User userCreated = createNewUserService.apply(new CreateNewUserRequest("test_user_name", "test_password", "test_about"));
+        User userCreated2 = createNewUserService.apply(new CreateNewUserRequest("test_user_name2", "test_password2", "test_about2"));
         createNewFollowingsService.accept(new FollowingRequest(userCreated2.getId(), userCreated.getId()));
         Post post1 = createNewPostService.apply(new CreatePostRequest(userCreated.getId(), "text"));
         Post post2 = createNewPostService.apply(new CreatePostRequest(userCreated.getId(), "text"));

@@ -10,11 +10,11 @@ class CreateNewUserResponse {
         this.user = user;
     }
 
-    JsonObject invoke() {
+    String invoke() {
         return new JsonObject()
                 .add("id", user.getId())
                 .add("username", user.getUsername())
                 .add("about", user.getAbout()
-                );
+                ).toString();
     }
 }
