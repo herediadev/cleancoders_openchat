@@ -22,7 +22,8 @@ public class GetAllUserApi implements Route {
         response.status(200);
         response.type("application/json");
 
-        return findAllUserService.get()
+        return findAllUserService
+                .get()
                 .stream()
                 .map(user -> new CreateNewUserResponse(user).invoke())
                 .collect(JsonArray::new, JsonArray::add, (jsonValues, jsonValues2) -> jsonValues2.forEach(jsonValues::add))

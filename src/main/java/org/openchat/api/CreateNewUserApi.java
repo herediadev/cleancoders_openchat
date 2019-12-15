@@ -36,7 +36,7 @@ public class CreateNewUserApi implements Route {
     }
 
     private String createNewUserResponse(User user) {
-        return new CreateNewUserResponse(user).invoke();
+        return new CreateNewUserResponse(user).invoke().toString();
     }
 
     private CreateNewUserRequest validaIfUserAlreadyExist(CreateNewUserRequest newUserRequestFromRequest) {
