@@ -3,7 +3,6 @@ package org.openchat.repository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openchat.entities.Post;
-import org.openchat.repository.InMemoryPostRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

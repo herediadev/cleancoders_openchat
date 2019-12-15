@@ -27,7 +27,7 @@ class LoginUserServiceTest {
 
         //act
         createNewUserService.apply(createNewUserRequest);
-        User userLogged = loginUserService.execute(loginUserRequest);
+        User userLogged = loginUserService.apply(loginUserRequest);
 
         //assert
         Assertions.assertThat(userLogged.getUsername()).isEqualTo("username");
@@ -43,7 +43,7 @@ class LoginUserServiceTest {
 
         //act and assert
         createNewUserService.apply(createNewUserRequest);
-        org.junit.jupiter.api.Assertions.assertThrows(InvalidCredentialException.class, () -> loginUserService.execute(loginUserRequestClass));
+        org.junit.jupiter.api.Assertions.assertThrows(InvalidCredentialException.class, () -> loginUserService.apply(loginUserRequestClass));
     }
 
     @Test
@@ -54,6 +54,6 @@ class LoginUserServiceTest {
 
         //act and assert
         createNewUserService.apply(createNewUserRequest);
-        org.junit.jupiter.api.Assertions.assertThrows(InvalidCredentialException.class, () -> loginUserService.execute(loginUserRequestClass));
+        org.junit.jupiter.api.Assertions.assertThrows(InvalidCredentialException.class, () -> loginUserService.apply(loginUserRequestClass));
     }
 }

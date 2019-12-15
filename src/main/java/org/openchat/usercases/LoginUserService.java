@@ -5,8 +5,9 @@ import org.openchat.repository.InMemoryUserRepository;
 import org.openchat.usercases.exceptions.InvalidCredentialException;
 
 import java.util.Optional;
+import java.util.function.Function;
 
-public class LoginUserService {
+public class LoginUserService implements Function<LoginUserRequest, User> {
 
     private final InMemoryUserRepository inMemoryUserRepository;
 
@@ -14,7 +15,7 @@ public class LoginUserService {
         this.inMemoryUserRepository = inMemoryUserRepository;
     }
 
-    public User execute(LoginUserRequest loginUserRequest) {
+    public User apply(LoginUserRequest loginUserRequest) {
         Optional<User> userByUsername = inMemoryUserRepository.findUserByUsername(loginUserRequest.getUsername());
 
         userByUsername
