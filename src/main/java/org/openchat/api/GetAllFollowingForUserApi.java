@@ -22,17 +22,24 @@ public class GetAllFollowingForUserApi implements Route {
 
     @Override
     public String handle(Request request, Response response) {
-        String followerId = request.params("followerId");
-        User username = findUserByIdService.apply(followerId);
-        List<User> followingUserList = getAllFollowingForUserService.apply(username.getUsername());
-
-        JsonArray collect = followingUserList.parallelStream()
-                .map(this::createUserJson)
-                .collect(JsonArray::new, JsonArray::add, (jsonValues, jsonValues2) -> jsonValues2.forEach(jsonValues::add));
-
         response.status(200);
         response.type("application/json");
-        return collect.toString();
+
+        List<User> usersFollowings = getAllFollowingForUserService
+                .compose(User::getUsername)
+                .compose(findUserByIdService)
+                .compose(this::getFollowerIdFromRequest)
+                .apply(request);
+
+        return usersFollowings
+                .stream()
+                .map(this::createUserJson)
+                .collect(JsonArray::new, JsonArray::add, (jsonValues, jsonValues2) -> jsonValues2.forEach(jsonValues::add))
+                .toString();
+    }
+
+    private String getFollowerIdFromRequest(Request requestParam) {
+        return requestParam.params("followerId");
     }
 
     private JsonObject createUserJson(User user) {

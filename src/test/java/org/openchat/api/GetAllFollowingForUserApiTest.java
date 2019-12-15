@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openchat.entities.User;
 import spark.Request;
@@ -29,10 +30,10 @@ class GetAllFollowingForUserApiTest {
     @Mock
     private Response response;
 
-    @Mock
+    @Spy
     private Function<String, List<User>> getAllFollowingForUserService;
 
-    @Mock
+    @Spy
     private Function<String, User> findUserByIdService;
 
     private GetAllFollowingForUserApi getAllFollowingForUser;
