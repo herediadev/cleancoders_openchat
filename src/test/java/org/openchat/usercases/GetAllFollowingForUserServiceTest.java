@@ -28,7 +28,7 @@ class GetAllFollowingForUserServiceTest {
         inMemoryUserRepository.save(notFollowing);
         inMemoryFollowingsRepository.addNewFollowing(new FollowingRequest(following1.getId(), user.getId()));
         inMemoryFollowingsRepository.addNewFollowing(new FollowingRequest(following2.getId(), user.getId()));
-        List<User> followings = getAllFollowingForUserService.execute(user.getUsername());
+        List<User> followings = getAllFollowingForUserService.apply(user.getUsername());
 
         //assert
         Assertions.assertThat(followings).containsExactly(following1, following2);

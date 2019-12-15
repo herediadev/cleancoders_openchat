@@ -3,22 +3,23 @@ package org.openchat.api;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openchat.entities.User;
-import org.openchat.usercases.FindUserByIdService;
-import org.openchat.usercases.GetAllFollowingForUserService;
 import spark.Request;
 import spark.Response;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class GetAllFollowingForUserApiTest {
@@ -29,19 +30,25 @@ class GetAllFollowingForUserApiTest {
     private Response response;
 
     @Mock
-    private GetAllFollowingForUserService getAllFollowingForUserService;
+    private Function<String, List<User>> getAllFollowingForUserService;
 
     @Mock
-    private FindUserByIdService findUserByIdService;
+    private Function<String, User> findUserByIdService;
+
+    private GetAllFollowingForUserApi getAllFollowingForUser;
+
+    @BeforeEach
+    void setUp() {
+        getAllFollowingForUser = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService);
+    }
 
     @Test
     void given_the_request_when_calling_the_get_all_following_for_user_it_will_response_the_list_of_the_followings() {
         //arrange
         User user = new User("test_id", "test_name", "test_password", "test_about");
-        GetAllFollowingForUserApi getAllFollowingForUser = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService);
-        given(request.params("followerId")).willReturn("test_id");
-        given(findUserByIdService.execute(anyString())).willReturn(user);
-        given(getAllFollowingForUserService.execute(eq(user.getUsername()))).willReturn(Collections.singletonList(user));
+        doReturn("test_id").when(request).params("followerId");
+        doReturn(user).when(findUserByIdService).apply(anyString());
+        doReturn(Collections.singletonList(user)).when(getAllFollowingForUserService).apply(eq(user.getUsername()));
 
         //act
         String result = getAllFollowingForUser.handle(request, response);
@@ -49,8 +56,8 @@ class GetAllFollowingForUserApiTest {
         //assert
         Mockito.verify(response).status(200);
         Mockito.verify(response).type("application/json");
-        Mockito.verify(getAllFollowingForUserService).execute(anyString());
-        Mockito.verify(findUserByIdService).execute(anyString());
+        Mockito.verify(getAllFollowingForUserService).apply(anyString());
+        Mockito.verify(findUserByIdService).apply(anyString());
         Assertions.assertThat(result).isEqualTo(JsonContaining(user));
     }
 

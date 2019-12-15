@@ -8,9 +8,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class GetAllFollowingForUserService {
+public class GetAllFollowingForUserService implements Function<String, List<User>> {
 
     private final InMemoryUserRepository inMemoryUserRepository;
     private final InMemoryFollowingsRepository inMemoryFollowingsRepository;
@@ -20,7 +21,7 @@ public class GetAllFollowingForUserService {
         this.inMemoryFollowingsRepository = inMemoryFollowingsRepository;
     }
 
-    public List<User> execute(String username) {
+    public List<User> apply(String username) {
         Optional<User> optionalUserFound = inMemoryUserRepository.findUserByUsername(username);
 
         return optionalUserFound

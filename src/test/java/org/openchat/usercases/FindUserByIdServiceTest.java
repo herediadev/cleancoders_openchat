@@ -16,7 +16,7 @@ class FindUserByIdServiceTest {
 
         //act
         inMemoryUserRepository.save(user);
-        User userFound = findUserByIdService.execute(user.getId());
+        User userFound = findUserByIdService.apply(user.getId());
 
         //assert
         Assertions.assertThat(userFound.getUsername()).isEqualTo("test_user_name");

@@ -3,20 +3,19 @@ package org.openchat.api;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.User;
-import org.openchat.usercases.FindUserByIdService;
-import org.openchat.usercases.GetAllFollowingForUserService;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class GetAllFollowingForUserApi implements Route {
 
-    private final GetAllFollowingForUserService getAllFollowingForUserService;
-    private final FindUserByIdService findUserByIdService;
+    private final Function<String, List<User>> getAllFollowingForUserService;
+    private final Function<String, User> findUserByIdService;
 
-    public GetAllFollowingForUserApi(GetAllFollowingForUserService getAllFollowingForUserService, FindUserByIdService findUserByIdService) {
+    public GetAllFollowingForUserApi(Function<String, List<User>> getAllFollowingForUserService, Function<String, User> findUserByIdService) {
         this.getAllFollowingForUserService = getAllFollowingForUserService;
         this.findUserByIdService = findUserByIdService;
     }
@@ -24,8 +23,8 @@ public class GetAllFollowingForUserApi implements Route {
     @Override
     public String handle(Request request, Response response) {
         String followerId = request.params("followerId");
-        User username = findUserByIdService.execute(followerId);
-        List<User> followingUserList = getAllFollowingForUserService.execute(username.getUsername());
+        User username = findUserByIdService.apply(followerId);
+        List<User> followingUserList = getAllFollowingForUserService.apply(username.getUsername());
 
         JsonArray collect = followingUserList.parallelStream()
                 .map(this::createUserJson)

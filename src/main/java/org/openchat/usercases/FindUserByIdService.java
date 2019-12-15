@@ -3,7 +3,9 @@ package org.openchat.usercases;
 import org.openchat.entities.User;
 import org.openchat.repository.InMemoryUserRepository;
 
-public class FindUserByIdService {
+import java.util.function.Function;
+
+public class FindUserByIdService implements Function<String, User> {
 
     private final InMemoryUserRepository inMemoryUserRepository;
 
@@ -11,7 +13,7 @@ public class FindUserByIdService {
         this.inMemoryUserRepository = inMemoryUserRepository;
     }
 
-    public User execute(String userId) {
+    public User apply(String userId) {
         return inMemoryUserRepository
                 .findUserById(userId)
                 .orElse(new User("", "", "", ""));

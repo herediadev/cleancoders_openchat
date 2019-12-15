@@ -21,8 +21,8 @@ public class GetUserWallService {
     }
 
     public List<Post> execute(String userId) {
-        User userFound = findUserByIdService.execute(userId);
-        List<User> userList = getAllFollowingForUserService.execute(userFound.getUsername());
+        User userFound = findUserByIdService.apply(userId);
+        List<User> userList = getAllFollowingForUserService.apply(userFound.getUsername());
         userList.add(userFound);
 
         return userList
