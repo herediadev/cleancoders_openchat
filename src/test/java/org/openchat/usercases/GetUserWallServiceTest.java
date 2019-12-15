@@ -36,7 +36,7 @@ public class GetUserWallServiceTest {
         Post post2 = createNewPostService.apply(new CreatePostRequest(userCreated.getId(), "text"));
         Post post3 = createNewPostService.apply(new CreatePostRequest(userCreated2.getId(), "text"));
 
-        List<Post> userWall = getUserWallService.execute(userCreated.getId());
+        List<Post> userWall = getUserWallService.apply(userCreated.getId());
 
 
         //assert

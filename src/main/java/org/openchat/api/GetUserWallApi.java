@@ -3,31 +3,33 @@ package org.openchat.api;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.Post;
-import org.openchat.usercases.GetUserWallService;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
 
 public class GetUserWallApi implements Route {
 
-    private final GetUserWallService getUserWallService;
-    private final FormatDateService formatDateService;
+    private final Function<String, List<Post>> getUserWallService;
+    private final Function<LocalDateTime, String> formatDateService;
 
-    public GetUserWallApi(GetUserWallService getUserWallService, FormatDateService formatDateService) {
+    public GetUserWallApi(Function<String, List<Post>> getUserWallService, Function<LocalDateTime, String> formatDateService) {
         this.getUserWallService = getUserWallService;
         this.formatDateService = formatDateService;
     }
 
     @Override
     public String handle(Request request, Response response) {
-        String userId = request.params("userId");
-        List<Post> wall = getUserWallService.execute(userId);
-
         response.status(200);
         response.type("application/json");
-        return createJsonResponse(wall);
+
+        return getUserWallService
+                .compose((Request requestParam) -> requestParam.params("userId"))
+                .andThen(this::createJsonResponse)
+                .apply(request);
     }
 
     private String createJsonResponse(List<Post> userPosts) {

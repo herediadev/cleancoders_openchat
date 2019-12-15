@@ -5,9 +5,10 @@ import org.openchat.entities.User;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class GetUserWallService {
+public class GetUserWallService implements Function<String, List<Post>> {
 
     private final GetTimelineFromUserIdService getTimelineFromUserIdService;
     private final FindUserByIdService findUserByIdService;
@@ -17,10 +18,9 @@ public class GetUserWallService {
         this.findUserByIdService = findUserByIdService;
         this.getTimelineFromUserIdService = getTimelineFromUserIdService;
         this.getAllFollowingForUserService = getAllFollowingForUserService;
-
     }
 
-    public List<Post> execute(String userId) {
+    public List<Post> apply(String userId) {
         User userFound = findUserByIdService.apply(userId);
         List<User> userList = getAllFollowingForUserService.apply(userFound.getUsername());
         userList.add(userFound);
