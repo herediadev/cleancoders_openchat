@@ -12,10 +12,6 @@ import java.util.function.Predicate;
 public class InMemoryUserRepository {
     private final List<User> userList = new ArrayList<>();
 
-    public void execute(Consumer<List<User>> consumer) {
-        consumer.accept(userList);
-    }
-
     public Optional<User> findUserByUsername(String username) {
         return getUserBy(user -> username.equals(user.getUsername()));
     }
@@ -33,6 +29,6 @@ public class InMemoryUserRepository {
     }
 
     private Optional<User> getUserBy(Predicate<User> userPredicate) {
-        return userList.stream().filter(userPredicate).findFirst();
+        return getUserList().stream().filter(userPredicate).findFirst();
     }
 }
