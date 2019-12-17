@@ -31,9 +31,9 @@ public class OpenChatTestDSL {
     public static ITUser register(ITUser user) {
         logger.info("Register user: " + user);
         Response response = given()
-                                .body(withRegistrationJsonFor(user))
-                            .when()
-                                .post(BASE_URL + "/v2/users");
+                .body(withRegistrationJsonFor(user))
+                .when()
+                .post(BASE_URL + "/v2/users");
         logger.info("Registration response: " + response.body().asString());
         String userId = userIdFrom(response);
         ITUser registeredUser = aUser().clonedFrom(user).withId(userId).build();
@@ -45,9 +45,9 @@ public class OpenChatTestDSL {
         logger.info("Create post: " + post);
         given()
                 .body(withPostJsonContaining(post.text()))
-        .when()
+                .when()
                 .post(BASE_URL + "/v2/users/" + post.userId() + "/timeline")
-        .then()
+                .then()
                 .statusCode(201)
                 .contentType(JSON)
                 .body("postId", matchesPattern(UUID_PATTERN))
@@ -61,9 +61,9 @@ public class OpenChatTestDSL {
         logger.info("Create following - follower [" + follower + "], followee [" + followee + "]");
         given()
                 .body(withFollowingJsonContaining(follower, followee))
-        .when()
+                .when()
                 .post(BASE_URL + "/v2/followings")
-        .then()
+                .then()
                 .statusCode(201);
         logger.info("Following created");
     }
@@ -86,16 +86,16 @@ public class OpenChatTestDSL {
 
     private static JsonObject jsonFor(ITUser user) {
         return new JsonObject()
-                        .add("id", user.id())
-                        .add("username", user.username())
-                        .add("about", user.about());
+                .add("id", user.id())
+                .add("username", user.username())
+                .add("about", user.about());
     }
 
     private static String withFollowingJsonContaining(ITUser follower, ITUser followee) {
         return new JsonObject()
-                        .add("followerId", follower.id())
-                        .add("followeeId", followee.id())
-                        .toString();
+                .add("followerId", follower.id())
+                .add("followeeId", followee.id())
+                .toString();
     }
 
     private static String withPostJsonContaining(String text) {
@@ -109,9 +109,9 @@ public class OpenChatTestDSL {
 
     private static String withRegistrationJsonFor(ITUser user) {
         return new JsonObject()
-                        .add("username", user.username())
-                        .add("password", user.password())
-                        .add("about", user.about())
-                        .toString();
+                .add("username", user.username())
+                .add("password", user.password())
+                .add("about", user.about())
+                .toString();
     }
 }

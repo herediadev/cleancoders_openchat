@@ -35,7 +35,8 @@ public class IT_TimelineAPI {
         POSTS = createPostsFor(DAVID, 2);
     }
 
-    @Test public void
+    @Test
+    public void
     retrieve_a_timeline_with_all_posts_from_a_user_in_reverse_chronological_order() {
         givenDavidPosts(POSTS);
 

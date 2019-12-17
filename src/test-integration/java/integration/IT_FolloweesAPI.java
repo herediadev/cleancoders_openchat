@@ -14,17 +14,18 @@ import static java.util.Arrays.asList;
 public class IT_FolloweesAPI {
 
     private static ITUser VIVIANE = aUser().withUsername("Viviane").build();
-    private static ITUser SAMUEL  = aUser().withUsername("Samuel" ).build();
-    private static ITUser OLIVIA  = aUser().withUsername("Olivia" ).build();
+    private static ITUser SAMUEL = aUser().withUsername("Samuel").build();
+    private static ITUser OLIVIA = aUser().withUsername("Olivia").build();
 
     @Before
     public void initialise() {
         VIVIANE = register(VIVIANE);
-        SAMUEL  = register(SAMUEL);
-        OLIVIA  = register(OLIVIA);
+        SAMUEL = register(SAMUEL);
+        OLIVIA = register(OLIVIA);
     }
 
-    @Test public void
+    @Test
+    public void
     return_all_followees_for_a_given_user() {
         givenVivianeFollows(SAMUEL, OLIVIA);
 

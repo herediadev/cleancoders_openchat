@@ -12,13 +12,14 @@ import static org.hamcrest.Matchers.matchesPattern;
 
 public class IT_RegistrationAPI {
 
-    @Test public void
+    @Test
+    public void
     register_a_new_user() {
         given()
                 .body(withJsonContaining("Lucy", "alki324d", "About Lucy"))
-        .when()
+                .when()
                 .post(BASE_URL + "/v2/users")
-        .then()
+                .then()
                 .statusCode(201)
                 .contentType(JSON)
                 .body("id", matchesPattern(UUID_PATTERN))
@@ -28,9 +29,9 @@ public class IT_RegistrationAPI {
 
     private String withJsonContaining(String username, String password, String about) {
         return new JsonObject()
-                        .add("username", username)
-                        .add("password", password)
-                        .add("about", about)
-                        .toString();
+                .add("username", username)
+                .add("password", password)
+                .add("about", about)
+                .toString();
     }
 }

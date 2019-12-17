@@ -21,13 +21,14 @@ public class IT_LoginAPI {
         ANTONY = register(ANTONY);
     }
 
-    @Test public void
+    @Test
+    public void
     perform_login() {
         given()
                 .body(withJsonContaining(ANTONY.username(), ANTONY.password()))
-        .when()
+                .when()
                 .post(BASE_URL + "/v2/login")
-        .then()
+                .then()
                 .statusCode(200)
                 .contentType(JSON)
                 .body("id", is(ANTONY.id()))
