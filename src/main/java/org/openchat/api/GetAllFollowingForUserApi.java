@@ -25,13 +25,16 @@ public class GetAllFollowingForUserApi implements Route {
         response.status(200);
         response.type("application/json");
 
-        List<User> usersFollowings = getAllFollowingForUserService
+        return getAllFollowingForUserService
                 .compose(User::getUsername)
                 .compose(findUserByIdService)
                 .compose(this::getFollowerIdFromRequest)
+                .andThen(this::createJsonResponse)
                 .apply(request);
+    }
 
-        return usersFollowings
+    private String createJsonResponse(List<User> users) {
+        return users
                 .stream()
                 .map(this::createUserJson)
                 .collect(JsonArray::new, JsonArray::add, (jsonValues, jsonValues2) -> jsonValues2.forEach(jsonValues::add))

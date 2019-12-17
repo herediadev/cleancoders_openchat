@@ -23,12 +23,13 @@ public class GetTimelineFromUserApi implements Route {
 
     @Override
     public String handle(Request request, Response response) {
-        String userId = request.params("userId");
-        List<Post> userPosts = this.getTimelineFromUserIdService.apply(userId);
-
         response.status(200);
         response.type("application/json");
-        return createJsonResponse(userPosts);
+
+        return getTimelineFromUserIdService
+                .compose((Request requestParam) -> requestParam.params("userId"))
+                .andThen(this::createJsonResponse)
+                .apply(request);
     }
 
     private String createJsonResponse(List<Post> userPosts) {
