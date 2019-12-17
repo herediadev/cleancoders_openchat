@@ -21,9 +21,9 @@ public class GetUserWallService implements Function<String, List<Post>> {
     }
 
     public List<Post> apply(String userId) {
-        User userFound = findUserByIdService.apply(userId);
-        List<User> userList = getAllFollowingForUserService.apply(userFound.getUsername());
-        userList.add(userFound);
+        List<User> userList = findUserByIdService
+                .andThen(this::getAllFollowingForUser)
+                .apply(userId);
 
         return userList
                 .stream()
@@ -31,5 +31,16 @@ public class GetUserWallService implements Function<String, List<Post>> {
                 .flatMap(Collection::stream)
                 .sorted((post1, post2) -> post2.getDateTime().compareTo(post1.getDateTime()))
                 .collect(Collectors.toList());
+    }
+
+    private List<User> getAllFollowingForUser(User user) {
+        return getAllFollowingForUserService
+                .andThen(users -> addUserToFollowingList(user, users))
+                .apply(user.getUsername());
+    }
+
+    private List<User> addUserToFollowingList(User user, List<User> users) {
+        users.add(user);
+        return users;
     }
 }

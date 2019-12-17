@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetUserWallServiceTest {
+class GetUserWallServiceTest {
 
     @Test
     void given_user_id_it_will_get_the_user_wall() {
@@ -25,7 +25,7 @@ public class GetUserWallServiceTest {
         GetUserWallService getUserWallService = new GetUserWallService(getTimelineFromUserIdService, getAllFollowingForUserService, findUserByIdService);
         CreateNewUserService createNewUserService = new CreateNewUserService(inMemoryUserRepository);
         CreateNewFollowingsService createNewFollowingsService = new CreateNewFollowingsService(inMemoryFollowingsRepository);
-        CreateNewPostService createNewPostService = new CreateNewPostService(inMemoryPostRepository);
+        CreateNewPostService createNewPostService = new CreateNewPostService(inMemoryPostRepository, new ValidateInappropriateWordService());
 
 
         //act

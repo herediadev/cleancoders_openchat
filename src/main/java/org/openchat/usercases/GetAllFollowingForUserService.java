@@ -7,7 +7,6 @@ import org.openchat.repository.InMemoryUserRepository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -22,9 +21,8 @@ public class GetAllFollowingForUserService implements Function<String, List<User
     }
 
     public List<User> apply(String username) {
-        Optional<User> optionalUserFound = inMemoryUserRepository.findUserByUsername(username);
-
-        return optionalUserFound
+        return inMemoryUserRepository
+                .findUserByUsername(username)
                 .map(user -> inMemoryFollowingsRepository.getAll(user.getId())
                         .stream()
                         .map(userId -> inMemoryUserRepository.findUserById(userId).orElse(null))

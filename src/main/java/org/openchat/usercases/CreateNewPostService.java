@@ -2,45 +2,41 @@ package org.openchat.usercases;
 
 import org.openchat.entities.Post;
 import org.openchat.repository.InMemoryPostRepository;
-import org.openchat.usercases.exceptions.InappropriateLanguageException;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
 public class CreateNewPostService implements Function<CreatePostRequest, Post> {
 
     private final InMemoryPostRepository inMemoryPostRepository;
+    private final ValidateInappropriateWordService validateInappropriateWordService;
 
-    public CreateNewPostService(InMemoryPostRepository inMemoryPostRepository) {
+    public CreateNewPostService(InMemoryPostRepository inMemoryPostRepository, ValidateInappropriateWordService validateInappropriateWordService) {
         this.inMemoryPostRepository = inMemoryPostRepository;
+        this.validateInappropriateWordService = validateInappropriateWordService;
     }
 
     public Post apply(CreatePostRequest createPostRequest) {
-        validateInappropriateWords(createPostRequest.getText());
+        return Function.<Post>identity()
+                .compose(this::createPost)
+                .compose(this::validateInappropriateWords)
+                .andThen(this::savePostToRepository)
+                .apply(createPostRequest);
 
-        LocalDateTime now = LocalDateTime.now();
+    }
 
-        Post post = new Post(UUID.randomUUID().toString(), createPostRequest.getUserId(), createPostRequest.getText(), now);
+    private CreatePostRequest validateInappropriateWords(CreatePostRequest createPostRequestParam) {
+        validateInappropriateWordService.validate(createPostRequestParam.getText());
+        return createPostRequestParam;
+    }
 
+    private Post createPost(CreatePostRequest createPostRequest) {
+        return new Post(UUID.randomUUID().toString(), createPostRequest.getUserId(), createPostRequest.getText(), LocalDateTime.now());
+    }
+
+    private Post savePostToRepository(Post post) {
         inMemoryPostRepository.save(post);
-
         return post;
-    }
-
-    private void validateInappropriateWords(String text) {
-        List<String> inappropriateWords = Arrays.asList("orange", "ice cream", "elephant");
-
-        inappropriateWords
-                .stream()
-                .filter(word -> text.toLowerCase().contains(word))
-                .findFirst()
-                .ifPresent(this::throwInappropriateLanguageException);
-    }
-
-    private void throwInappropriateLanguageException(String word) {
-        throw new InappropriateLanguageException();
     }
 }

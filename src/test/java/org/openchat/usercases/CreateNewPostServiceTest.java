@@ -19,7 +19,7 @@ import static org.mockito.BDDMockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateNewPostServiceTest {
+class CreateNewPostServiceTest {
 
     @Mock
     private InMemoryPostRepository inMemoryPostRepository;
@@ -28,7 +28,8 @@ public class CreateNewPostServiceTest {
 
     @BeforeEach
     void setUp() {
-        createNewPostService = new CreateNewPostService(inMemoryPostRepository);
+        ValidateInappropriateWordService validateInappropriateWordService = new ValidateInappropriateWordService();
+        createNewPostService = new CreateNewPostService(inMemoryPostRepository, validateInappropriateWordService);
     }
 
     @Test

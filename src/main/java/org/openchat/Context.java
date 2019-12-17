@@ -14,8 +14,9 @@ class Context {
     private static InMemoryFollowingsRepository followingsRepository = new InMemoryFollowingsRepository();
 
     //services
+    private static ValidateInappropriateWordService validateInappropriateWordService = new ValidateInappropriateWordService();
     static CreateNewUserService createNewUserService = new CreateNewUserService(userRepository);
-    static CreateNewPostService createNewPostService = new CreateNewPostService(postRepository);
+    static CreateNewPostService createNewPostService = new CreateNewPostService(postRepository, validateInappropriateWordService);
     static CreateNewFollowingsService createNewFollowingsService = new CreateNewFollowingsService(followingsRepository);
 
     static FindAllUserService findAllUserService = new FindAllUserService(userRepository);

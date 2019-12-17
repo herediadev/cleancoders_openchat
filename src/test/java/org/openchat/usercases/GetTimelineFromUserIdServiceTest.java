@@ -14,7 +14,7 @@ public class GetTimelineFromUserIdServiceTest {
         //arrange
         String userId = "test_user_id";
         InMemoryPostRepository inMemoryPostRepository = new InMemoryPostRepository();
-        CreateNewPostService createNewPostService = new CreateNewPostService(inMemoryPostRepository);
+        CreateNewPostService createNewPostService = new CreateNewPostService(inMemoryPostRepository, new ValidateInappropriateWordService());
         GetTimelineFromUserIdService getTimelineFromUserIdService = new GetTimelineFromUserIdService(inMemoryPostRepository);
 
         //act
