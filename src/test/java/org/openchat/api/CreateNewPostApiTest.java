@@ -39,7 +39,7 @@ class CreateNewPostApiTest {
 
     @BeforeEach
     void setUp() {
-        createNewPostApi = new CreateNewPostApi(createNewPostService, formatDateService);
+        createNewPostApi = new CreateNewPostApi(createNewPostService, new CreatePostRequestService(), new CreateNewPostResponseService(formatDateService));
         doReturn("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx").when(request).params("userId");
         doReturn(getBody()).when(request).body();
     }

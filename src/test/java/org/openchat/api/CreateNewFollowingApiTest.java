@@ -34,7 +34,7 @@ class CreateNewFollowingApiTest {
     @Test
     void given_the_request_when_add_new_following_it_will_response_following_created() {
         //arrange
-        CreateNewFollowingApi createNewFollowingApi = new CreateNewFollowingApi(createNewFollowingsService, validateFollowingExistService);
+        CreateNewFollowingApi createNewFollowingApi = new CreateNewFollowingApi(createNewFollowingsService, validateFollowingExistService, new CreateNewFollowingRequestService());
         given(request.body()).willReturn(JsonContaining());
 
         //act
@@ -50,7 +50,7 @@ class CreateNewFollowingApiTest {
     @Test
     void given_the_request_when_adding_new_following_that_already_exist_it_will_response_an_400_error() {
         //arrange
-        CreateNewFollowingApi createNewFollowingApi = new CreateNewFollowingApi(createNewFollowingsService, validateFollowingExistService);
+        CreateNewFollowingApi createNewFollowingApi = new CreateNewFollowingApi(createNewFollowingsService, validateFollowingExistService, new CreateNewFollowingRequestService());
         doThrow(FollowingAlreadyExistException.class).when(validateFollowingExistService).accept(any(FollowingRequest.class));
         given(request.body()).willReturn(JsonContaining());
 

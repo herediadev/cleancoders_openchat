@@ -16,9 +16,9 @@ class Routes {
         Route createNewUserApi = new CreateNewUserApi(Context.createNewUserService, Context.validaIfUserAlreadyExistService);
         Route loginUserApi = new LoginUserApi(Context.loginUserService);
         Route getAllUserApi = new GetAllUserApi(Context.findAllUserService);
-        Route createNewFollowingApi = new CreateNewFollowingApi(Context.createNewFollowingsService, Context.validateFollowingExistService);
+        Route createNewFollowingApi = new CreateNewFollowingApi(Context.createNewFollowingsService, Context.validateFollowingExistService, new CreateNewFollowingRequestService());
         Route getAllFollowingForUserApi = new GetAllFollowingForUserApi(Context.getAllFollowingForUserService, Context.findUserByIdService);
-        Route createNewPostApi = new CreateNewPostApi(Context.createNewPostService, Context.formatDateService);
+        Route createNewPostApi = new CreateNewPostApi(Context.createNewPostService, new CreatePostRequestService(), new CreateNewPostResponseService(Context.formatDateService));
         Route getTimelineFromUserApi = new GetTimelineFromUserApi(Context.getTimelineFromUserIdService, Context.formatDateService);
         Route getUserWallApi = new GetUserWallApi(Context.getUserWallService, Context.formatDateService);
 
