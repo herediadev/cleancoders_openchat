@@ -13,14 +13,17 @@ class Context {
     private static InMemoryPostRepository postRepository = new InMemoryPostRepository();
     private static InMemoryFollowingsRepository followingsRepository = new InMemoryFollowingsRepository();
 
-    //services
+    static FindUserByIdService findUserByIdService = new FindUserByIdService(userRepository);
     private static ValidateInappropriateWordService validateInappropriateWordService = new ValidateInappropriateWordService();
+    static GetAllFollowingForUserService getAllFollowingForUserService = new GetAllFollowingForUserService(userRepository, followingsRepository);
+    static GetTimelineFromUserIdService getTimelineFromUserIdService = new GetTimelineFromUserIdService(postRepository);
+    //services
+    private static FormatDateService formatDateService = new FormatDateService();
+
     static CreateNewUserService createNewUserService = new CreateNewUserService(userRepository);
     static CreateNewPostService createNewPostService = new CreateNewPostService(postRepository, validateInappropriateWordService);
     static CreateNewFollowingsService createNewFollowingsService = new CreateNewFollowingsService(followingsRepository);
-
     static FindAllUserService findAllUserService = new FindAllUserService(userRepository);
-    static FindUserByIdService findUserByIdService = new FindUserByIdService(userRepository);
 
     static CreateNewUserRequestService createNewUserRequestService = new CreateNewUserRequestService();
     static CreateNewUserResponseService createNewUserResponseService = new CreateNewUserResponseService();
@@ -28,15 +31,10 @@ class Context {
     static CreateFollowingForUserResponseService createFollowingForUserResponseService = new CreateFollowingForUserResponseService();
     static CreatePostRequestService createPostRequestService = new CreatePostRequestService();
 
-
     static ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService = new ValidaIfUserAlreadyExistService(userRepository);
     static ValidateFollowingExistService validateFollowingExistService = new ValidateFollowingExistService(followingsRepository);
 
-    static GetAllFollowingForUserService getAllFollowingForUserService = new GetAllFollowingForUserService(userRepository, followingsRepository);
-    static GetTimelineFromUserIdService getTimelineFromUserIdService = new GetTimelineFromUserIdService(postRepository);
     static GetUserWallService getUserWallService = new GetUserWallService(getTimelineFromUserIdService, getAllFollowingForUserService, findUserByIdService);
-
-    static FormatDateService formatDateService = new FormatDateService();
     static LoginUserService loginUserService = new LoginUserService(userRepository);
 
     static CreateNewPostResponseService createNewPostResponseService = new CreateNewPostResponseService(formatDateService);
