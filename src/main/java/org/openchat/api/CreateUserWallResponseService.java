@@ -3,36 +3,19 @@ package org.openchat.api;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.Post;
-import spark.Request;
-import spark.Response;
-import spark.Route;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 
-public class GetTimelineFromUserApi implements Route {
-
-    private final Function<String, List<Post>> getTimelineFromUserIdService;
+public class CreateUserWallResponseService implements Function<List<Post>, String> {
     private final Function<LocalDateTime, String> formatDateService;
 
-    public GetTimelineFromUserApi(Function<String, List<Post>> getTimelineFromUserIdService, Function<LocalDateTime, String> formatDateService) {
-        this.getTimelineFromUserIdService = getTimelineFromUserIdService;
+    public CreateUserWallResponseService(Function<LocalDateTime, String> formatDateService) {
         this.formatDateService = formatDateService;
     }
 
-    @Override
-    public String handle(Request request, Response response) {
-        response.status(200);
-        response.type("application/json");
-
-        return getTimelineFromUserIdService
-                .compose((Request requestParam) -> requestParam.params("userId"))
-                .andThen(this::createJsonResponse)
-                .apply(request);
-    }
-
-    private String createJsonResponse(List<Post> userPosts) {
+    public String apply(List<Post> userPosts) {
         JsonArray jsonResponse = new JsonArray();
         userPosts
                 .stream()

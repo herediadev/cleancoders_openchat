@@ -1,7 +1,7 @@
 package org.openchat.api;
 
-import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 import org.openchat.entities.User;
 import org.openchat.usercases.CreateNewUserRequest;
 import org.openchat.usercases.exceptions.UserAlreadyExistException;
@@ -16,27 +16,32 @@ public class CreateNewUserApi implements Route {
 
     private final Function<CreateNewUserRequest, User> createNewUserService;
     private final Consumer<String> validaIfUserAlreadyExistService;
+    private final Function<Request, CreateNewUserRequest> createNewUserRequestService;
+    private final Function<User, JsonObject> createNewUserResponseService;
 
-    public CreateNewUserApi(Function<CreateNewUserRequest, User> createNewUserService, Consumer<String> validaIfUserAlreadyExistService) {
+    public CreateNewUserApi(Function<CreateNewUserRequest, User> createNewUserService,
+                            Consumer<String> validaIfUserAlreadyExistService,
+                            Function<Request, CreateNewUserRequest> createNewUserRequestService,
+                            Function<User, JsonObject> createNewUserResponseService) {
         this.createNewUserService = createNewUserService;
         this.validaIfUserAlreadyExistService = validaIfUserAlreadyExistService;
+        this.createNewUserRequestService = createNewUserRequestService;
+        this.createNewUserResponseService = createNewUserResponseService;
     }
 
     public String handle(Request request, Response response) {
+        response.status(201);
+        response.type("application/json");
         try {
             return this.createNewUserService
                     .compose(this::validaIfUserAlreadyExist)
-                    .compose(this::createNewUserRequestFromRequest)
-                    .andThen(this::createNewUserResponse)
-                    .andThen(newUserResponse -> setResponse(newUserResponse, response))
+                    .compose(createNewUserRequestService)
+                    .andThen(createNewUserResponseService)
+                    .andThen(JsonValue::toString)
                     .apply(request);
         } catch (UserAlreadyExistException e) {
             return setUserAlreadyExistResponse(response);
         }
-    }
-
-    private String createNewUserResponse(User user) {
-        return new CreateNewUserResponse(user).invoke().toString();
     }
 
     private CreateNewUserRequest validaIfUserAlreadyExist(CreateNewUserRequest newUserRequestFromRequest) {
@@ -47,20 +52,5 @@ public class CreateNewUserApi implements Route {
     private String setUserAlreadyExistResponse(Response response) {
         response.status(400);
         return "Username already in use.";
-    }
-
-    private String setResponse(String bodyResponse, Response response) {
-        response.status(201);
-        response.type("application/json");
-        return bodyResponse;
-    }
-
-    private CreateNewUserRequest createNewUserRequestFromRequest(Request request) {
-        JsonObject requestBodyJson = Json.parse(request.body()).asObject();
-        return new CreateNewUserRequest(
-                requestBodyJson.getString("username", ""),
-                requestBodyJson.getString("password", ""),
-                requestBodyJson.getString("about", "")
-        );
     }
 }

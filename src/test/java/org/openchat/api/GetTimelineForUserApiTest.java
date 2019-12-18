@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class GetTimelineFromUserApiTest {
+class GetTimelineForUserApiTest {
 
     @Mock
     private Request request;
@@ -35,12 +35,12 @@ class GetTimelineFromUserApiTest {
 
     private FormatDateService formatDateService;
 
-    private GetTimelineFromUserApi getTimelineFromUserApi;
+    private GetTimelineForUserApi getTimelineForUserApi;
 
     @BeforeEach
     void setUp() {
         formatDateService = new FormatDateService();
-        getTimelineFromUserApi = new GetTimelineFromUserApi(getTimelineFromUserIdService, formatDateService);
+        getTimelineForUserApi = new GetTimelineForUserApi(getTimelineFromUserIdService, new CreateTimelineForUserResponseService(formatDateService));
     }
 
     @Test
@@ -54,7 +54,7 @@ class GetTimelineFromUserApiTest {
         doReturn(posts).when(getTimelineFromUserIdService).apply(anyString());
 
         //act
-        String result = getTimelineFromUserApi.handle(request, response);
+        String result = getTimelineForUserApi.handle(request, response);
 
         //assert
         verify(request).params(eq("userId"));

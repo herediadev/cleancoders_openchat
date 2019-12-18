@@ -37,7 +37,7 @@ class GetAllUserApiTest {
 
     @BeforeEach
     void setUp() {
-        getAllUserApi = new GetAllUserApi(findAllUserService);
+        getAllUserApi = new GetAllUserApi(findAllUserService, new CreateNewUserResponseService());
     }
 
     @Test

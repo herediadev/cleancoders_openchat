@@ -75,7 +75,7 @@ class RoutesTest {
         spyRoute.create();
 
         //assert
-        verify(spyRoute).createGetRoute(eq("v2/users/:userId/timeline"), isA(GetTimelineFromUserApi.class));
+        verify(spyRoute).createGetRoute(eq("v2/users/:userId/timeline"), isA(GetTimelineForUserApi.class));
     }
 
     @Test

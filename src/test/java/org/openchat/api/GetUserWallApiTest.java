@@ -39,7 +39,7 @@ class GetUserWallApiTest {
     @BeforeEach
     void setUp() {
         formatDateService = new FormatDateService();
-        getUserWallApi = new GetUserWallApi(getUserWallService, formatDateService);
+        getUserWallApi = new GetUserWallApi(getUserWallService, new CreateUserWallResponseService(formatDateService));
     }
 
     @Test

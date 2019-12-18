@@ -1,7 +1,5 @@
 package org.openchat.api;
 
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.User;
 import spark.Request;
 import spark.Response;
@@ -14,10 +12,14 @@ public class GetAllFollowingForUserApi implements Route {
 
     private final Function<String, List<User>> getAllFollowingForUserService;
     private final Function<String, User> findUserByIdService;
+    private final Function<List<User>, String> createFollowingForUserResponseService;
 
-    public GetAllFollowingForUserApi(Function<String, List<User>> getAllFollowingForUserService, Function<String, User> findUserByIdService) {
+    public GetAllFollowingForUserApi(Function<String, List<User>> getAllFollowingForUserService,
+                                     Function<String, User> findUserByIdService,
+                                     Function<List<User>, String> createFollowingForUserResponseService) {
         this.getAllFollowingForUserService = getAllFollowingForUserService;
         this.findUserByIdService = findUserByIdService;
+        this.createFollowingForUserResponseService = createFollowingForUserResponseService;
     }
 
     @Override
@@ -28,27 +30,8 @@ public class GetAllFollowingForUserApi implements Route {
         return getAllFollowingForUserService
                 .compose(User::getUsername)
                 .compose(findUserByIdService)
-                .compose(this::getFollowerIdFromRequest)
-                .andThen(this::createJsonResponse)
+                .compose((Request requestParam) -> requestParam.params("followerId"))
+                .andThen(createFollowingForUserResponseService)
                 .apply(request);
-    }
-
-    private String createJsonResponse(List<User> users) {
-        return users
-                .stream()
-                .map(this::createUserJson)
-                .collect(JsonArray::new, JsonArray::add, (jsonValues, jsonValues2) -> jsonValues2.forEach(jsonValues::add))
-                .toString();
-    }
-
-    private String getFollowerIdFromRequest(Request requestParam) {
-        return requestParam.params("followerId");
-    }
-
-    private JsonObject createUserJson(User user) {
-        return new JsonObject()
-                .add("id", user.getId())
-                .add("username", user.getUsername())
-                .add("about", user.getAbout());
     }
 }

@@ -35,7 +35,7 @@ public class LoginUserApi implements Route {
     }
 
     private String createNewUserResponse(User user) {
-        return new CreateNewUserResponse(user).invoke().toString();
+        return new CreateNewUserResponseService().apply(user).toString();
     }
 
     private LoginUserRequest createLoginUserRequestFromRequest(Request request) {
