@@ -13,14 +13,14 @@ class Routes {
     }
 
     private void openChatRoutes() {
-        Route createNewUserApi = new CreateNewUserApi(Context.createNewUserService, Context.validaIfUserAlreadyExistService, new CreateNewUserRequestService(), new CreateNewUserResponseService());
+        Route createNewUserApi = new CreateNewUserApi(Context.createNewUserService, Context.validaIfUserAlreadyExistService, Context.createNewUserRequestService, Context.createNewUserResponseService);
         Route loginUserApi = new LoginUserApi(Context.loginUserService);
-        Route getAllUserApi = new GetAllUserApi(Context.findAllUserService, new CreateNewUserResponseService());
-        Route createNewFollowingApi = new CreateNewFollowingApi(Context.createNewFollowingsService, Context.validateFollowingExistService, new CreateNewFollowingRequestService());
-        Route getAllFollowingForUserApi = new GetAllFollowingForUserApi(Context.getAllFollowingForUserService, Context.findUserByIdService, new CreateFollowingForUserResponseService());
-        Route createNewPostApi = new CreateNewPostApi(Context.createNewPostService, new CreatePostRequestService(), new CreateNewPostResponseService(Context.formatDateService));
-        Route getTimelineFromUserApi = new GetTimelineForUserApi(Context.getTimelineFromUserIdService, new CreateTimelineForUserResponseService(Context.formatDateService));
-        Route getUserWallApi = new GetUserWallApi(Context.getUserWallService, new CreateUserWallResponseService(Context.formatDateService));
+        Route getAllUserApi = new GetAllUserApi(Context.findAllUserService, Context.createNewUserResponseService);
+        Route createNewFollowingApi = new CreateNewFollowingApi(Context.createNewFollowingsService, Context.validateFollowingExistService, Context.createNewFollowingRequestService);
+        Route getAllFollowingForUserApi = new GetAllFollowingForUserApi(Context.getAllFollowingForUserService, Context.findUserByIdService, Context.createFollowingForUserResponseService);
+        Route createNewPostApi = new CreateNewPostApi(Context.createNewPostService, Context.createPostRequestService, Context.createNewPostResponseService);
+        Route getTimelineFromUserApi = new GetTimelineForUserApi(Context.getTimelineFromUserIdService, Context.createTimelineForUserResponseService);
+        Route getUserWallApi = new GetUserWallApi(Context.getUserWallService, Context.createUserWallResponseService);
 
         createGetRoute("status", (req, res) -> "OpenChat: OK!");
         createPostRoute("v2/users", createNewUserApi);

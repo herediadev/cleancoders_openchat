@@ -1,6 +1,6 @@
 package org.openchat;
 
-import org.openchat.api.FormatDateService;
+import org.openchat.api.*;
 import org.openchat.repository.InMemoryFollowingsRepository;
 import org.openchat.repository.InMemoryPostRepository;
 import org.openchat.repository.InMemoryUserRepository;
@@ -22,6 +22,13 @@ class Context {
     static FindAllUserService findAllUserService = new FindAllUserService(userRepository);
     static FindUserByIdService findUserByIdService = new FindUserByIdService(userRepository);
 
+    static CreateNewUserRequestService createNewUserRequestService = new CreateNewUserRequestService();
+    static CreateNewUserResponseService createNewUserResponseService = new CreateNewUserResponseService();
+    static CreateNewFollowingRequestService createNewFollowingRequestService = new CreateNewFollowingRequestService();
+    static CreateFollowingForUserResponseService createFollowingForUserResponseService = new CreateFollowingForUserResponseService();
+    static CreatePostRequestService createPostRequestService = new CreatePostRequestService();
+
+
     static ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService = new ValidaIfUserAlreadyExistService(userRepository);
     static ValidateFollowingExistService validateFollowingExistService = new ValidateFollowingExistService(followingsRepository);
 
@@ -31,6 +38,10 @@ class Context {
 
     static FormatDateService formatDateService = new FormatDateService();
     static LoginUserService loginUserService = new LoginUserService(userRepository);
+
+    static CreateNewPostResponseService createNewPostResponseService = new CreateNewPostResponseService(formatDateService);
+    static CreateTimelineForUserResponseService createTimelineForUserResponseService = new CreateTimelineForUserResponseService(formatDateService);
+    static CreateUserWallResponseService createUserWallResponseService = new CreateUserWallResponseService(formatDateService);
 
     private Context() {
     }
