@@ -5,9 +5,9 @@ import org.openchat.entities.User;
 
 import java.util.function.Function;
 
-public class CreateNewUserResponseService implements Function<User, JsonObject> {
+public class CreateNewUserResponsePresenter implements Function<User, JsonObject> {
 
-    public CreateNewUserResponseService() {
+    public CreateNewUserResponsePresenter() {
     }
 
     public JsonObject apply(User user) {

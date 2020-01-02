@@ -14,12 +14,12 @@ import java.util.function.Supplier;
 public class GetAllUserApi implements Route {
 
     private final Supplier<List<User>> findAllUserService;
-    private final Function<User, JsonObject> createNewUserResponseService;
+    private final Function<User, JsonObject> createNewUserResponsePresenter;
 
     public GetAllUserApi(Supplier<List<User>> findAllUserService,
-                         Function<User, JsonObject> createNewUserResponseService) {
+                         Function<User, JsonObject> createNewUserResponsePresenter) {
         this.findAllUserService = findAllUserService;
-        this.createNewUserResponseService = createNewUserResponseService;
+        this.createNewUserResponsePresenter = createNewUserResponsePresenter;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class GetAllUserApi implements Route {
         return findAllUserService
                 .get()
                 .stream()
-                .map(createNewUserResponseService)
+                .map(createNewUserResponsePresenter)
                 .collect(JsonArray::new, JsonArray::add, (jsonValues, jsonValues2) -> jsonValues2.forEach(jsonValues::add))
                 .toString();
     }

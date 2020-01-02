@@ -12,14 +12,14 @@ public class GetAllFollowingForUserApi implements Route {
 
     private final Function<String, List<User>> getAllFollowingForUserService;
     private final Function<String, User> findUserByIdService;
-    private final Function<List<User>, String> createFollowingForUserResponseService;
+    private final Function<List<User>, String> createFollowingForUserResponsePresenter;
 
     public GetAllFollowingForUserApi(Function<String, List<User>> getAllFollowingForUserService,
                                      Function<String, User> findUserByIdService,
-                                     Function<List<User>, String> createFollowingForUserResponseService) {
+                                     Function<List<User>, String> createFollowingForUserResponsePresenter) {
         this.getAllFollowingForUserService = getAllFollowingForUserService;
         this.findUserByIdService = findUserByIdService;
-        this.createFollowingForUserResponseService = createFollowingForUserResponseService;
+        this.createFollowingForUserResponsePresenter = createFollowingForUserResponsePresenter;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class GetAllFollowingForUserApi implements Route {
                 .compose(User::getUsername)
                 .compose(findUserByIdService)
                 .compose((Request requestParam) -> requestParam.params("followerId"))
-                .andThen(createFollowingForUserResponseService)
+                .andThen(createFollowingForUserResponsePresenter)
                 .apply(request);
     }
 }

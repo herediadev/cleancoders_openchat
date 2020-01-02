@@ -40,7 +40,7 @@ class GetTimelineForUserApiTest {
     @BeforeEach
     void setUp() {
         formatDateService = new FormatDateService();
-        getTimelineForUserApi = new GetTimelineForUserApi(getTimelineFromUserIdService, new CreateTimelineForUserResponseService(formatDateService));
+        getTimelineForUserApi = new GetTimelineForUserApi(getTimelineFromUserIdService, new CreateTimelineForUserResponsePresenter(formatDateService));
     }
 
     @Test

@@ -17,6 +17,7 @@ class Context {
     private static ValidateInappropriateWordService validateInappropriateWordService = new ValidateInappropriateWordService();
     static GetAllFollowingForUserService getAllFollowingForUserService = new GetAllFollowingForUserService(userRepository, followingsRepository);
     static GetTimelineFromUserIdService getTimelineFromUserIdService = new GetTimelineFromUserIdService(postRepository);
+
     //services
     private static FormatDateService formatDateService = new FormatDateService();
 
@@ -26,9 +27,9 @@ class Context {
     static FindAllUserService findAllUserService = new FindAllUserService(userRepository);
 
     static CreateNewUserRequestService createNewUserRequestService = new CreateNewUserRequestService();
-    static CreateNewUserResponseService createNewUserResponseService = new CreateNewUserResponseService();
+    static CreateNewUserResponsePresenter createNewUserResponsePresenter = new CreateNewUserResponsePresenter();
     static CreateNewFollowingRequestService createNewFollowingRequestService = new CreateNewFollowingRequestService();
-    static CreateFollowingForUserResponseService createFollowingForUserResponseService = new CreateFollowingForUserResponseService();
+    static CreateFollowingForUserResponsePresenter createFollowingForUserResponsePresenter = new CreateFollowingForUserResponsePresenter();
     static CreatePostRequestService createPostRequestService = new CreatePostRequestService();
 
     static ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService = new ValidaIfUserAlreadyExistService(userRepository);
@@ -37,9 +38,9 @@ class Context {
     static GetUserWallService getUserWallService = new GetUserWallService(getTimelineFromUserIdService, getAllFollowingForUserService, findUserByIdService);
     static LoginUserService loginUserService = new LoginUserService(userRepository);
 
-    static CreateNewPostResponseService createNewPostResponseService = new CreateNewPostResponseService(formatDateService);
-    static CreateTimelineForUserResponseService createTimelineForUserResponseService = new CreateTimelineForUserResponseService(formatDateService);
-    static CreateUserWallResponseService createUserWallResponseService = new CreateUserWallResponseService(formatDateService);
+    static CreateNewPostResponsePresenter createNewPostResponsePresenter = new CreateNewPostResponsePresenter(formatDateService);
+    static CreateTimelineForUserResponsePresenter createTimelineForUserResponsePresenter = new CreateTimelineForUserResponsePresenter(formatDateService);
+    static CreateUserWallResponsePresenter createUserWallResponsePresenter = new CreateUserWallResponsePresenter(formatDateService);
 
     private Context() {
     }

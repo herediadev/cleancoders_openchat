@@ -13,14 +13,14 @@ public class CreateNewPostApi implements Route {
 
     private final Function<CreatePostRequest, Post> createNewPostService;
     private final Function<Request, CreatePostRequest> createPostRequestService;
-    private final Function<Post, String> createNewPostResponseService;
+    private final Function<Post, String> CreateNewPostResponsePresenter;
 
     public CreateNewPostApi(Function<CreatePostRequest, Post> createNewPostService,
                             Function<Request, CreatePostRequest> createPostRequestService,
-                            Function<Post, String> createNewPostResponseService) {
+                            Function<Post, String> CreateNewPostResponsePresenter) {
         this.createNewPostService = createNewPostService;
         this.createPostRequestService = createPostRequestService;
-        this.createNewPostResponseService = createNewPostResponseService;
+        this.CreateNewPostResponsePresenter = CreateNewPostResponsePresenter;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class CreateNewPostApi implements Route {
 
             return createNewPostService
                     .compose(createPostRequestService)
-                    .andThen(createNewPostResponseService)
+                    .andThen(CreateNewPostResponsePresenter)
                     .apply(request);
         } catch (InappropriateLanguageException e) {
             response.status(400);

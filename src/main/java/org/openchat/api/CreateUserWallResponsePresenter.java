@@ -8,21 +8,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 
-public class CreateTimelineForUserResponseService implements Function<List<Post>, String> {
-    private Function<LocalDateTime, String> formatDateService;
+public class CreateUserWallResponsePresenter implements Function<List<Post>, JsonArray> {
+    private final Function<LocalDateTime, String> formatDateService;
 
-    public CreateTimelineForUserResponseService(Function<LocalDateTime, String> formatDateService) {
+    public CreateUserWallResponsePresenter(Function<LocalDateTime, String> formatDateService) {
         this.formatDateService = formatDateService;
     }
 
-    public String apply(List<Post> userPosts) {
-        JsonArray jsonResponse = new JsonArray();
-        userPosts
+    public JsonArray apply(List<Post> userPosts) {
+        return userPosts
                 .stream()
                 .map(this::createJsonPost)
-                .forEach(jsonResponse::add);
-
-        return jsonResponse.toString();
+                .collect(JsonArray::new, JsonArray::add, (jsonValues, jsonValues2) -> jsonValues2.forEach(jsonValues::add));
     }
 
     private JsonObject createJsonPost(Post post) {

@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 
-public class CreateUserWallResponseService implements Function<List<Post>, String> {
-    private final Function<LocalDateTime, String> formatDateService;
+public class CreateTimelineForUserResponsePresenter implements Function<List<Post>, String> {
+    private Function<LocalDateTime, String> formatDateService;
 
-    public CreateUserWallResponseService(Function<LocalDateTime, String> formatDateService) {
+    public CreateTimelineForUserResponsePresenter(Function<LocalDateTime, String> formatDateService) {
         this.formatDateService = formatDateService;
     }
 

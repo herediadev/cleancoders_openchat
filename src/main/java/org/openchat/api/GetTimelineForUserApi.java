@@ -11,12 +11,12 @@ import java.util.function.Function;
 public class GetTimelineForUserApi implements Route {
 
     private final Function<String, List<Post>> getTimelineFromUserIdService;
-    private final Function<List<Post>, String> createTimelineForUserResponseService;
+    private final Function<List<Post>, String> createTimelineForUserResponsePresenter;
 
     public GetTimelineForUserApi(Function<String, List<Post>> getTimelineFromUserIdService,
-                                 Function<List<Post>, String> createTimelineForUserResponseService) {
+                                 Function<List<Post>, String> createTimelineForUserResponsePresenter) {
         this.getTimelineFromUserIdService = getTimelineFromUserIdService;
-        this.createTimelineForUserResponseService = createTimelineForUserResponseService;
+        this.createTimelineForUserResponsePresenter = createTimelineForUserResponsePresenter;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class GetTimelineForUserApi implements Route {
 
         return getTimelineFromUserIdService
                 .compose((Request requestParam) -> requestParam.params("userId"))
-                .andThen(createTimelineForUserResponseService)
+                .andThen(createTimelineForUserResponsePresenter)
                 .apply(request);
     }
 }

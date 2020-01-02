@@ -6,10 +6,10 @@ import org.openchat.entities.Post;
 import java.time.LocalDateTime;
 import java.util.function.Function;
 
-public class CreateNewPostResponseService implements Function<Post, String> {
+public class CreateNewPostResponsePresenter implements Function<Post, String> {
     private Function<LocalDateTime, String> formatDateService;
 
-    public CreateNewPostResponseService(Function<LocalDateTime, String> formatDateService) {
+    public CreateNewPostResponsePresenter(Function<LocalDateTime, String> formatDateService) {
         this.formatDateService = formatDateService;
     }
 

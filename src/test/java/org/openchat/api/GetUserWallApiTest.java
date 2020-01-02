@@ -1,7 +1,6 @@
 package org.openchat.api;
 
 import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,11 +34,13 @@ class GetUserWallApiTest {
     private FormatDateService formatDateService;
 
     private GetUserWallApi getUserWallApi;
+    private CreateUserWallResponsePresenter createUserWallResponsePresenter;
 
     @BeforeEach
     void setUp() {
         formatDateService = new FormatDateService();
-        getUserWallApi = new GetUserWallApi(getUserWallService, new CreateUserWallResponseService(formatDateService));
+        createUserWallResponsePresenter = new CreateUserWallResponsePresenter(formatDateService);
+        getUserWallApi = new GetUserWallApi(getUserWallService, createUserWallResponsePresenter);
     }
 
     @Test
@@ -53,30 +54,13 @@ class GetUserWallApiTest {
         doReturn(posts).when(getUserWallService).apply(anyString());
 
         //act
-        String result = getUserWallApi.handle(request, response);
+        JsonArray result = getUserWallApi.handle(request, response);
 
         //assert
         verify(request).params(eq("userId"));
         verify(response).status(200);
         verify(response).type("application/json");
         verify(getUserWallService).apply(anyString());
-        assertThat(result).isEqualTo(getJson(posts));
-    }
-
-    private String getJson(List<Post> posts) {
-        JsonArray jsonResponse = new JsonArray();
-        posts.stream()
-                .map(this::createJsonPost)
-                .forEach(jsonResponse::add);
-
-        return jsonResponse.toString();
-    }
-
-    private JsonObject createJsonPost(Post post) {
-        return new JsonObject()
-                .add("dateTime", formatDateService.apply(post.getDateTime()))
-                .add("postId", post.getPostId())
-                .add("text", post.getText())
-                .add("userId", post.getUserId());
+        assertThat(result).isEqualTo(createUserWallResponsePresenter.apply(posts));
     }
 }

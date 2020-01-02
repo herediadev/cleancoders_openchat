@@ -1,5 +1,6 @@
 package org.openchat.api;
 
+import com.eclipsesource.json.JsonArray;
 import org.openchat.entities.Post;
 import spark.Request;
 import spark.Response;
@@ -11,22 +12,22 @@ import java.util.function.Function;
 public class GetUserWallApi implements Route {
 
     private final Function<String, List<Post>> getUserWallService;
-    private final Function<List<Post>, String> createUserWallResponseService;
+    private final Function<List<Post>, JsonArray> createUserWallResponsePresenter;
 
     public GetUserWallApi(Function<String, List<Post>> getUserWallService,
-                          Function<List<Post>, String> createUserWallResponseService) {
+                          Function<List<Post>, JsonArray> createUserWallResponsePresenter) {
         this.getUserWallService = getUserWallService;
-        this.createUserWallResponseService = createUserWallResponseService;
+        this.createUserWallResponsePresenter = createUserWallResponsePresenter;
     }
 
     @Override
-    public String handle(Request request, Response response) {
+    public JsonArray handle(Request request, Response response) {
         response.status(200);
         response.type("application/json");
 
         return getUserWallService
                 .compose((Request requestParam) -> requestParam.params("userId"))
-                .andThen(createUserWallResponseService)
+                .andThen(createUserWallResponsePresenter)
                 .apply(request);
     }
 

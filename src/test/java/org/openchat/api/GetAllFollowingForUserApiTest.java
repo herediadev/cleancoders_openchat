@@ -40,7 +40,7 @@ class GetAllFollowingForUserApiTest {
 
     @BeforeEach
     void setUp() {
-        getAllFollowingForUser = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService, new CreateFollowingForUserResponseService());
+        getAllFollowingForUser = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService, new CreateFollowingForUserResponsePresenter());
     }
 
     @Test

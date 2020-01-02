@@ -3,6 +3,8 @@ package org.openchat;
 import org.openchat.api.*;
 import spark.Route;
 
+import java.util.Objects;
+
 import static spark.Spark.*;
 
 class Routes {
@@ -13,14 +15,14 @@ class Routes {
     }
 
     private void openChatRoutes() {
-        Route createNewUserApi = new CreateNewUserApi(Context.createNewUserService, Context.validaIfUserAlreadyExistService, Context.createNewUserRequestService, Context.createNewUserResponseService);
+        Route createNewUserApi = new CreateNewUserApi(Context.createNewUserService, Context.validaIfUserAlreadyExistService, Context.createNewUserRequestService, Context.createNewUserResponsePresenter);
         Route loginUserApi = new LoginUserApi(Context.loginUserService);
-        Route getAllUserApi = new GetAllUserApi(Context.findAllUserService, Context.createNewUserResponseService);
+        Route getAllUserApi = new GetAllUserApi(Context.findAllUserService, Context.createNewUserResponsePresenter);
         Route createNewFollowingApi = new CreateNewFollowingApi(Context.createNewFollowingsService, Context.validateFollowingExistService, Context.createNewFollowingRequestService);
-        Route getAllFollowingForUserApi = new GetAllFollowingForUserApi(Context.getAllFollowingForUserService, Context.findUserByIdService, Context.createFollowingForUserResponseService);
-        Route createNewPostApi = new CreateNewPostApi(Context.createNewPostService, Context.createPostRequestService, Context.createNewPostResponseService);
-        Route getTimelineFromUserApi = new GetTimelineForUserApi(Context.getTimelineFromUserIdService, Context.createTimelineForUserResponseService);
-        Route getUserWallApi = new GetUserWallApi(Context.getUserWallService, Context.createUserWallResponseService);
+        Route getAllFollowingForUserApi = new GetAllFollowingForUserApi(Context.getAllFollowingForUserService, Context.findUserByIdService, Context.createFollowingForUserResponsePresenter);
+        Route createNewPostApi = new CreateNewPostApi(Context.createNewPostService, Context.createPostRequestService, Context.createNewPostResponsePresenter);
+        Route getTimelineFromUserApi = new GetTimelineForUserApi(Context.getTimelineFromUserIdService, Context.createTimelineForUserResponsePresenter);
+        Route getUserWallApi = new GetUserWallApi(Context.getUserWallService, Context.createUserWallResponsePresenter);
 
         createGetRoute("status", (req, res) -> "OpenChat: OK!");
         createPostRoute("v2/users", createNewUserApi);
@@ -38,7 +40,7 @@ class Routes {
     }
 
     void createGetRoute(String path, Route route) {
-        get(path, route);
+        get(path, route, Objects::toString);
     }
 
     private void swaggerRoutes() {

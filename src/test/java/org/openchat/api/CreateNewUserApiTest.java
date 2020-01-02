@@ -44,7 +44,7 @@ class CreateNewUserApiTest {
 
     @BeforeEach
     void setUp() {
-        createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService, new CreateNewUserRequestService(), new CreateNewUserResponseService());
+        createNewUserApi = new CreateNewUserApi(createNewUserService, validaIfUserAlreadyExistService, new CreateNewUserRequestService(), new CreateNewUserResponsePresenter());
     }
 
     @Test

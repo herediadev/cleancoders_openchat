@@ -7,9 +7,9 @@ import org.openchat.entities.User;
 import java.util.List;
 import java.util.function.Function;
 
-public class CreateFollowingForUserResponseService implements Function<List<User>, String> {
+public class CreateFollowingForUserResponsePresenter implements Function<List<User>, String> {
 
-    public CreateFollowingForUserResponseService() {
+    public CreateFollowingForUserResponsePresenter() {
     }
 
     public String apply(List<User> users) {

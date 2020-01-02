@@ -17,16 +17,16 @@ public class CreateNewUserApi implements Route {
     private final Function<CreateNewUserRequest, User> createNewUserService;
     private final Consumer<String> validaIfUserAlreadyExistService;
     private final Function<Request, CreateNewUserRequest> createNewUserRequestService;
-    private final Function<User, JsonObject> createNewUserResponseService;
+    private final Function<User, JsonObject> createNewUserResponsePresenter;
 
     public CreateNewUserApi(Function<CreateNewUserRequest, User> createNewUserService,
                             Consumer<String> validaIfUserAlreadyExistService,
                             Function<Request, CreateNewUserRequest> createNewUserRequestService,
-                            Function<User, JsonObject> createNewUserResponseService) {
+                            Function<User, JsonObject> createNewUserResponsePresenter) {
         this.createNewUserService = createNewUserService;
         this.validaIfUserAlreadyExistService = validaIfUserAlreadyExistService;
         this.createNewUserRequestService = createNewUserRequestService;
-        this.createNewUserResponseService = createNewUserResponseService;
+        this.createNewUserResponsePresenter = createNewUserResponsePresenter;
     }
 
     public String handle(Request request, Response response) {
@@ -36,7 +36,7 @@ public class CreateNewUserApi implements Route {
             return this.createNewUserService
                     .compose(this::validaIfUserAlreadyExist)
                     .compose(createNewUserRequestService)
-                    .andThen(createNewUserResponseService)
+                    .andThen(createNewUserResponsePresenter)
                     .andThen(JsonValue::toString)
                     .apply(request);
         } catch (UserAlreadyExistException e) {
