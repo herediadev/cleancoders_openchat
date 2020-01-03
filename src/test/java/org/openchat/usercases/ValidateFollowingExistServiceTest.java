@@ -11,7 +11,7 @@ import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class ValidateFollowingExistServiceTest {
@@ -24,11 +24,9 @@ class ValidateFollowingExistServiceTest {
         //arrange
         FollowingRequest followingRequest = new FollowingRequest("test_followee_id", "test_following_id");
         ValidateFollowingExistService validateFollowingExistService = new ValidateFollowingExistService(inMemoryFollowingsRepository);
-        given(inMemoryFollowingsRepository.checkIfExist(eq(followingRequest))).willReturn(Optional.of("test_followeeId"));
+        doReturn(Optional.of("test_followeeId")).when(inMemoryFollowingsRepository).checkIfExist(eq(followingRequest));
 
         //act and assert
-        Assertions.assertThrows(FollowingAlreadyExistException.class, () -> {
-            validateFollowingExistService.accept(followingRequest);
-        });
+        Assertions.assertThrows(FollowingAlreadyExistException.class, () -> validateFollowingExistService.accept(followingRequest));
     }
 }
