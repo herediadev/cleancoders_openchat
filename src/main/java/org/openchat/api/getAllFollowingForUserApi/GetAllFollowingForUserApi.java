@@ -1,5 +1,6 @@
 package org.openchat.api.getAllFollowingForUserApi;
 
+import com.eclipsesource.json.JsonArray;
 import org.openchat.entities.User;
 import spark.Request;
 import spark.Response;
@@ -12,18 +13,18 @@ public class GetAllFollowingForUserApi implements Route {
 
     private final Function<String, List<User>> getAllFollowingForUserService;
     private final Function<String, User> findUserByIdService;
-    private final Function<List<User>, String> getAllFollowingForUserResponsePresenter;
+    private final Function<List<User>, JsonArray> getAllFollowingForUserResponsePresenter;
 
     public GetAllFollowingForUserApi(Function<String, List<User>> getAllFollowingForUserService,
                                      Function<String, User> findUserByIdService,
-                                     Function<List<User>, String> getAllFollowingForUserResponsePresenter) {
+                                     Function<List<User>, JsonArray> getAllFollowingForUserResponsePresenter) {
         this.getAllFollowingForUserService = getAllFollowingForUserService;
         this.findUserByIdService = findUserByIdService;
         this.getAllFollowingForUserResponsePresenter = getAllFollowingForUserResponsePresenter;
     }
 
     @Override
-    public String handle(Request request, Response response) {
+    public JsonArray handle(Request request, Response response) {
         response.status(200);
         response.type("application/json");
 

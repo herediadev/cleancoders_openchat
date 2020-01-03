@@ -54,7 +54,7 @@ class GetAllFollowingForUserApiTest {
         doReturn(Collections.singletonList(user)).when(getAllFollowingForUserService).apply(eq(user.getUsername()));
 
         //act
-        String result = getAllFollowingForUser.handle(request, response);
+        JsonArray result = getAllFollowingForUser.handle(request, response);
 
         //assert
         Mockito.verify(response).status(200);
@@ -64,16 +64,12 @@ class GetAllFollowingForUserApiTest {
         Assertions.assertThat(result).isEqualTo(JsonContaining(user));
     }
 
-    private String JsonContaining(User user) {
-        JsonArray jsonValues = new JsonArray();
-
-        jsonValues.add(
+    private JsonArray JsonContaining(User user) {
+        return new JsonArray().add(
                 new JsonObject()
                         .add("id", user.getId())
                         .add("username", user.getUsername())
                         .add("about", user.getAbout())
         );
-
-        return jsonValues.toString();
     }
 }

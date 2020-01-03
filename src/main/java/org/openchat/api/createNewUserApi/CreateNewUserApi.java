@@ -1,7 +1,6 @@
 package org.openchat.api.createNewUserApi;
 
 import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
 import org.openchat.entities.User;
 import org.openchat.usercases.CreateNewUserRequest;
 import org.openchat.usercases.exceptions.UserAlreadyExistException;
@@ -29,7 +28,8 @@ public class CreateNewUserApi implements Route {
         this.createNewUserResponsePresenter = createNewUserResponsePresenter;
     }
 
-    public String handle(Request request, Response response) {
+    @Override
+    public Object handle(Request request, Response response) {
         response.status(201);
         response.type("application/json");
         try {
@@ -37,7 +37,6 @@ public class CreateNewUserApi implements Route {
                     .compose(this::validaIfUserAlreadyExist)
                     .compose(createNewUserRequestService)
                     .andThen(createNewUserResponsePresenter)
-                    .andThen(JsonValue::toString)
                     .apply(request);
         } catch (UserAlreadyExistException e) {
             return setUserAlreadyExistResponse(response);

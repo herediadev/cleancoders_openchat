@@ -7,17 +7,17 @@ import org.openchat.entities.User;
 import java.util.List;
 import java.util.function.Function;
 
-public class GetAllFollowingForUserResponsePresenter implements Function<List<User>, String> {
+public class GetAllFollowingForUserResponsePresenter implements Function<List<User>, JsonArray> {
 
     public GetAllFollowingForUserResponsePresenter() {
     }
 
-    public String apply(List<User> users) {
+    @Override
+    public JsonArray apply(List<User> users) {
         return users
                 .stream()
                 .map(this::createUserJson)
-                .collect(JsonArray::new, JsonArray::add, (jsonValues, jsonValues2) -> jsonValues2.forEach(jsonValues::add))
-                .toString();
+                .collect(JsonArray::new, JsonArray::add, (jsonValues, jsonValues2) -> jsonValues2.forEach(jsonValues::add));
     }
 
     private JsonObject createUserJson(User user) {

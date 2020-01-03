@@ -56,7 +56,7 @@ class GetTimelineForUserApiTest {
         doReturn(posts).when(getTimelineFromUserIdService).apply(anyString());
 
         //act
-        String result = getTimelineForUserApi.handle(request, response);
+        JsonArray result = getTimelineForUserApi.handle(request, response);
 
         //assert
         verify(request).params(eq("userId"));
@@ -66,13 +66,13 @@ class GetTimelineForUserApiTest {
         assertThat(result).isEqualTo(getJson(posts));
     }
 
-    private String getJson(List<Post> posts) {
+    private JsonArray getJson(List<Post> posts) {
         JsonArray jsonResponse = new JsonArray();
         posts.stream()
                 .map(this::createJsonPost)
                 .forEach(jsonResponse::add);
 
-        return jsonResponse.toString();
+        return jsonResponse;
     }
 
     private JsonObject createJsonPost(Post post) {

@@ -1,6 +1,5 @@
 package org.openchat.api;
 
-import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,8 +56,7 @@ class CreateNewUserApiTest {
         doReturn(createNewUser()).when(createNewUserService).apply(any(CreateNewUserRequest.class));
 
         //act
-        String result = createNewUserApi.handle(request, response);
-        JsonObject jsonResult = Json.parse(result).asObject();
+        JsonObject jsonResult = (JsonObject) createNewUserApi.handle(request, response);
 
         //assert
         verify(response).status(201);
@@ -77,7 +75,7 @@ class CreateNewUserApiTest {
         doThrow(new UserAlreadyExistException("user already exists")).when(validaIfUserAlreadyExistService).accept(anyString());
 
         //act
-        String userAlreadyExist = createNewUserApi.handle(request, response);
+        String userAlreadyExist = (String) createNewUserApi.handle(request, response);
 
         //assert
         verify(response).status(400);

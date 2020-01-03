@@ -43,7 +43,7 @@ class Routes {
     }
 
     void createPostRoute(String path, Route route) {
-        post(path, route);
+        post(path, route, Objects::toString);
     }
 
     void createGetRoute(String path, Route route) {
