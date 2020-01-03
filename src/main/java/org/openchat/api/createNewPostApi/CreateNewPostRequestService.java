@@ -1,4 +1,4 @@
-package org.openchat.api;
+package org.openchat.api.createNewPostApi;
 
 import com.eclipsesource.json.Json;
 import org.openchat.usercases.CreatePostRequest;
@@ -6,9 +6,9 @@ import spark.Request;
 
 import java.util.function.Function;
 
-public class CreatePostRequestService implements Function<Request, CreatePostRequest> {
+public class CreateNewPostRequestService implements Function<Request, CreatePostRequest> {
 
-    public CreatePostRequestService() {
+    public CreateNewPostRequestService() {
     }
 
     public CreatePostRequest apply(Request request) {

@@ -1,4 +1,4 @@
-package org.openchat.api;
+package org.openchat.api.createNewFollowingApi;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;

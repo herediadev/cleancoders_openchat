@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openchat.api.createNewUserApi.CreateNewUserResponsePresenter;
 import org.openchat.entities.User;
 import spark.Request;
 import spark.Response;

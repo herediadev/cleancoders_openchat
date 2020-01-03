@@ -8,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
+import org.openchat.api.getTimelineForUserApi.GetTimelineForUserResponsePresenter;
 import org.openchat.entities.Post;
 import spark.Request;
 import spark.Response;
@@ -40,7 +42,7 @@ class GetTimelineForUserApiTest {
     @BeforeEach
     void setUp() {
         formatDateService = new FormatDateService();
-        getTimelineForUserApi = new GetTimelineForUserApi(getTimelineFromUserIdService, new CreateTimelineForUserResponsePresenter(formatDateService));
+        getTimelineForUserApi = new GetTimelineForUserApi(getTimelineFromUserIdService, new GetTimelineForUserResponsePresenter(formatDateService));
     }
 
     @Test

@@ -1,4 +1,4 @@
-package org.openchat.api;
+package org.openchat.api.getAllFollowingForUserApi;
 
 import org.openchat.entities.User;
 import spark.Request;
@@ -12,14 +12,14 @@ public class GetAllFollowingForUserApi implements Route {
 
     private final Function<String, List<User>> getAllFollowingForUserService;
     private final Function<String, User> findUserByIdService;
-    private final Function<List<User>, String> createFollowingForUserResponsePresenter;
+    private final Function<List<User>, String> getAllFollowingForUserResponsePresenter;
 
     public GetAllFollowingForUserApi(Function<String, List<User>> getAllFollowingForUserService,
                                      Function<String, User> findUserByIdService,
-                                     Function<List<User>, String> createFollowingForUserResponsePresenter) {
+                                     Function<List<User>, String> getAllFollowingForUserResponsePresenter) {
         this.getAllFollowingForUserService = getAllFollowingForUserService;
         this.findUserByIdService = findUserByIdService;
-        this.createFollowingForUserResponsePresenter = createFollowingForUserResponsePresenter;
+        this.getAllFollowingForUserResponsePresenter = getAllFollowingForUserResponsePresenter;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class GetAllFollowingForUserApi implements Route {
                 .compose(User::getUsername)
                 .compose(findUserByIdService)
                 .compose((Request requestParam) -> requestParam.params("followerId"))
-                .andThen(createFollowingForUserResponsePresenter)
+                .andThen(getAllFollowingForUserResponsePresenter)
                 .apply(request);
     }
 }

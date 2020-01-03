@@ -1,4 +1,4 @@
-package org.openchat.api;
+package org.openchat.api.getAllFollowingForUserApi;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
@@ -7,9 +7,9 @@ import org.openchat.entities.User;
 import java.util.List;
 import java.util.function.Function;
 
-public class CreateFollowingForUserResponsePresenter implements Function<List<User>, String> {
+public class GetAllFollowingForUserResponsePresenter implements Function<List<User>, String> {
 
-    public CreateFollowingForUserResponsePresenter() {
+    public GetAllFollowingForUserResponsePresenter() {
     }
 
     public String apply(List<User> users) {

@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserApi;
+import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserResponsePresenter;
 import org.openchat.entities.User;
 import spark.Request;
 import spark.Response;
@@ -40,7 +42,7 @@ class GetAllFollowingForUserApiTest {
 
     @BeforeEach
     void setUp() {
-        getAllFollowingForUser = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService, new CreateFollowingForUserResponsePresenter());
+        getAllFollowingForUser = new GetAllFollowingForUserApi(getAllFollowingForUserService, findUserByIdService, new GetAllFollowingForUserResponsePresenter());
     }
 
     @Test

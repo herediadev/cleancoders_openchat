@@ -1,4 +1,4 @@
-package org.openchat.api;
+package org.openchat.api.getUserWallApi;
 
 import com.eclipsesource.json.JsonArray;
 import org.openchat.entities.Post;
@@ -12,12 +12,12 @@ import java.util.function.Function;
 public class GetUserWallApi implements Route {
 
     private final Function<String, List<Post>> getUserWallService;
-    private final Function<List<Post>, JsonArray> createUserWallResponsePresenter;
+    private final Function<List<Post>, JsonArray> getUserWallResponsePresenter;
 
     public GetUserWallApi(Function<String, List<Post>> getUserWallService,
-                          Function<List<Post>, JsonArray> createUserWallResponsePresenter) {
+                          Function<List<Post>, JsonArray> getUserWallResponsePresenter) {
         this.getUserWallService = getUserWallService;
-        this.createUserWallResponsePresenter = createUserWallResponsePresenter;
+        this.getUserWallResponsePresenter = getUserWallResponsePresenter;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class GetUserWallApi implements Route {
 
         return getUserWallService
                 .compose((Request requestParam) -> requestParam.params("userId"))
-                .andThen(createUserWallResponsePresenter)
+                .andThen(getUserWallResponsePresenter)
                 .apply(request);
     }
 

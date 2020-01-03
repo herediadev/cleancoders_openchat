@@ -7,6 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openchat.api.createNewPostApi.CreateNewPostApi;
+import org.openchat.api.createNewPostApi.CreateNewPostRequestService;
+import org.openchat.api.createNewPostApi.CreateNewPostResponsePresenter;
 import org.openchat.entities.Post;
 import org.openchat.usercases.CreatePostRequest;
 import org.openchat.usercases.exceptions.InappropriateLanguageException;
@@ -39,7 +42,7 @@ class CreateNewPostApiTest {
 
     @BeforeEach
     void setUp() {
-        createNewPostApi = new CreateNewPostApi(createNewPostService, new CreatePostRequestService(), new CreateNewPostResponsePresenter(formatDateService));
+        createNewPostApi = new CreateNewPostApi(createNewPostService, new CreateNewPostRequestService(), new CreateNewPostResponsePresenter(formatDateService));
         doReturn("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx").when(request).params("userId");
         doReturn(getBody()).when(request).body();
     }
@@ -55,14 +58,14 @@ class CreateNewPostApiTest {
         doReturn(postCreated).when(createNewPostService).apply(any(CreatePostRequest.class));
 
         //act
-        String result = createNewPostApi.handle(request, response);
+        JsonObject result = (JsonObject) createNewPostApi.handle(request, response);
 
         //assert
         verify(createNewPostService).apply(any(CreatePostRequest.class));
         verify(formatDateService).apply(any(LocalDateTime.class));
         verify(response).type("application/json");
         verify(response).status(201);
-        assertThat(result).contains(getJsonResult(postCreated));
+        assertThat(result).isEqualTo(getJsonResult(postCreated));
     }
 
     @Test
@@ -71,7 +74,7 @@ class CreateNewPostApiTest {
         doThrow(InappropriateLanguageException.class).when(createNewPostService).apply(any(CreatePostRequest.class));
 
         //act
-        String result = createNewPostApi.handle(request, response);
+        String result = (String) createNewPostApi.handle(request, response);
 
         //assert
         verify(response).status(400);
@@ -84,12 +87,11 @@ class CreateNewPostApiTest {
                 .toString();
     }
 
-    private String getJsonResult(Post postCreated) {
+    private JsonObject getJsonResult(Post postCreated) {
         return new JsonObject()
                 .add("dateTime", "2018-01-10T11:30:00Z")
                 .add("postId", postCreated.getPostId())
                 .add("text", postCreated.getText())
-                .add("userId", postCreated.getUserId())
-                .toString();
+                .add("userId", postCreated.getUserId());
     }
 }

@@ -2,6 +2,7 @@ package org.openchat.api;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
+import org.openchat.api.createNewUserApi.CreateNewUserResponsePresenter;
 import org.openchat.entities.User;
 import org.openchat.usercases.LoginUserRequest;
 import org.openchat.usercases.exceptions.InvalidCredentialException;

@@ -1,4 +1,4 @@
-package org.openchat.api;
+package org.openchat.api.createNewFollowingApi;
 
 import org.openchat.usercases.FollowingRequest;
 import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
@@ -24,7 +24,7 @@ public class CreateNewFollowingApi implements Route {
     }
 
     @Override
-    public String handle(Request request, Response response) {
+    public Object handle(Request request, Response response) {
         try {
             validateFollowingExistService
                     .andThen(createNewFollowingsService)

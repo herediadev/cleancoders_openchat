@@ -7,6 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openchat.api.getUserWallApi.GetUserWallApi;
+import org.openchat.api.getUserWallApi.GetUserWallResponsePresenter;
 import org.openchat.entities.Post;
 import spark.Request;
 import spark.Response;
@@ -34,13 +36,13 @@ class GetUserWallApiTest {
     private FormatDateService formatDateService;
 
     private GetUserWallApi getUserWallApi;
-    private CreateUserWallResponsePresenter createUserWallResponsePresenter;
+    private GetUserWallResponsePresenter getUserWallResponsePresenter;
 
     @BeforeEach
     void setUp() {
         formatDateService = new FormatDateService();
-        createUserWallResponsePresenter = new CreateUserWallResponsePresenter(formatDateService);
-        getUserWallApi = new GetUserWallApi(getUserWallService, createUserWallResponsePresenter);
+        getUserWallResponsePresenter = new GetUserWallResponsePresenter(formatDateService);
+        getUserWallApi = new GetUserWallApi(getUserWallService, getUserWallResponsePresenter);
     }
 
     @Test
@@ -61,6 +63,6 @@ class GetUserWallApiTest {
         verify(response).status(200);
         verify(response).type("application/json");
         verify(getUserWallService).apply(anyString());
-        assertThat(result).isEqualTo(createUserWallResponsePresenter.apply(posts));
+        assertThat(result).isEqualTo(getUserWallResponsePresenter.apply(posts));
     }
 }

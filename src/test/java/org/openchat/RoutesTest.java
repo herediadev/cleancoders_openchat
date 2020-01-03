@@ -2,7 +2,14 @@ package org.openchat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openchat.api.*;
+import org.openchat.api.GetAllUserApi;
+import org.openchat.api.LoginUserApi;
+import org.openchat.api.createNewFollowingApi.CreateNewFollowingApi;
+import org.openchat.api.createNewPostApi.CreateNewPostApi;
+import org.openchat.api.createNewUserApi.CreateNewUserApi;
+import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserApi;
+import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
+import org.openchat.api.getUserWallApi.GetUserWallApi;
 
 import static org.mockito.Mockito.*;
 

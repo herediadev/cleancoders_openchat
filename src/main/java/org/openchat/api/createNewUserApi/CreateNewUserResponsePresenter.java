@@ -1,4 +1,4 @@
-package org.openchat.api;
+package org.openchat.api.createNewUserApi;
 
 import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.User;

@@ -1,4 +1,4 @@
-package org.openchat.api;
+package org.openchat.api.getTimelineForUserApi;
 
 import org.openchat.entities.Post;
 import spark.Request;
@@ -11,12 +11,12 @@ import java.util.function.Function;
 public class GetTimelineForUserApi implements Route {
 
     private final Function<String, List<Post>> getTimelineFromUserIdService;
-    private final Function<List<Post>, String> createTimelineForUserResponsePresenter;
+    private final Function<List<Post>, String> getTimelineForUserResponsePresenter;
 
     public GetTimelineForUserApi(Function<String, List<Post>> getTimelineFromUserIdService,
-                                 Function<List<Post>, String> createTimelineForUserResponsePresenter) {
+                                 Function<List<Post>, String> getTimelineForUserResponsePresenter) {
         this.getTimelineFromUserIdService = getTimelineFromUserIdService;
-        this.createTimelineForUserResponsePresenter = createTimelineForUserResponsePresenter;
+        this.getTimelineForUserResponsePresenter = getTimelineForUserResponsePresenter;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class GetTimelineForUserApi implements Route {
 
         return getTimelineFromUserIdService
                 .compose((Request requestParam) -> requestParam.params("userId"))
-                .andThen(createTimelineForUserResponsePresenter)
+                .andThen(getTimelineForUserResponsePresenter)
                 .apply(request);
     }
 }

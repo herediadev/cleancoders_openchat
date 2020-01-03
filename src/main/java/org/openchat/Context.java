@@ -1,6 +1,14 @@
 package org.openchat;
 
-import org.openchat.api.*;
+import org.openchat.api.FormatDateService;
+import org.openchat.api.createNewFollowingApi.CreateNewFollowingRequestService;
+import org.openchat.api.createNewPostApi.CreateNewPostRequestService;
+import org.openchat.api.createNewPostApi.CreateNewPostResponsePresenter;
+import org.openchat.api.createNewUserApi.CreateNewUserRequestService;
+import org.openchat.api.createNewUserApi.CreateNewUserResponsePresenter;
+import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserResponsePresenter;
+import org.openchat.api.getTimelineForUserApi.GetTimelineForUserResponsePresenter;
+import org.openchat.api.getUserWallApi.GetUserWallResponsePresenter;
 import org.openchat.repository.InMemoryFollowingsRepository;
 import org.openchat.repository.InMemoryPostRepository;
 import org.openchat.repository.InMemoryUserRepository;
@@ -29,8 +37,8 @@ class Context {
     static CreateNewUserRequestService createNewUserRequestService = new CreateNewUserRequestService();
     static CreateNewUserResponsePresenter createNewUserResponsePresenter = new CreateNewUserResponsePresenter();
     static CreateNewFollowingRequestService createNewFollowingRequestService = new CreateNewFollowingRequestService();
-    static CreateFollowingForUserResponsePresenter createFollowingForUserResponsePresenter = new CreateFollowingForUserResponsePresenter();
-    static CreatePostRequestService createPostRequestService = new CreatePostRequestService();
+    static GetAllFollowingForUserResponsePresenter getAllFollowingForUserResponsePresenter = new GetAllFollowingForUserResponsePresenter();
+    static CreateNewPostRequestService createNewPostRequestService = new CreateNewPostRequestService();
 
     static ValidaIfUserAlreadyExistService validaIfUserAlreadyExistService = new ValidaIfUserAlreadyExistService(userRepository);
     static ValidateFollowingExistService validateFollowingExistService = new ValidateFollowingExistService(followingsRepository);
@@ -39,8 +47,8 @@ class Context {
     static LoginUserService loginUserService = new LoginUserService(userRepository);
 
     static CreateNewPostResponsePresenter createNewPostResponsePresenter = new CreateNewPostResponsePresenter(formatDateService);
-    static CreateTimelineForUserResponsePresenter createTimelineForUserResponsePresenter = new CreateTimelineForUserResponsePresenter(formatDateService);
-    static CreateUserWallResponsePresenter createUserWallResponsePresenter = new CreateUserWallResponsePresenter(formatDateService);
+    static GetTimelineForUserResponsePresenter getTimelineForUserResponsePresenter = new GetTimelineForUserResponsePresenter(formatDateService);
+    static GetUserWallResponsePresenter getUserWallResponsePresenter = new GetUserWallResponsePresenter(formatDateService);
 
     private Context() {
     }
