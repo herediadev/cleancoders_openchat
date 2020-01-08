@@ -3,7 +3,6 @@ package org.openchat.api.createNewUserApi;
 import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.User;
 import org.openchat.usercases.CreateNewUserRequest;
-import org.openchat.usercases.exceptions.UserAlreadyExistException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -32,15 +31,12 @@ public class CreateNewUserApi implements Route {
     public Object handle(Request request, Response response) {
         response.status(201);
         response.type("application/json");
-        try {
-            return this.createNewUserService
-                    .compose(this::validaIfUserAlreadyExist)
-                    .compose(createNewUserRequestService)
-                    .andThen(createNewUserResponsePresenter)
-                    .apply(request);
-        } catch (UserAlreadyExistException e) {
-            return setUserAlreadyExistResponse(response);
-        }
+        return this.createNewUserService
+                .compose(this::validaIfUserAlreadyExist)
+                .compose(createNewUserRequestService)
+                .andThen(createNewUserResponsePresenter)
+                .apply(request);
+
     }
 
     private CreateNewUserRequest validaIfUserAlreadyExist(CreateNewUserRequest newUserRequestFromRequest) {

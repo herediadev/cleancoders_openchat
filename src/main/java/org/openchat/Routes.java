@@ -8,6 +8,7 @@ import org.openchat.api.createNewUserApi.CreateNewUserApi;
 import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserApi;
 import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
 import org.openchat.api.getUserWallApi.GetUserWallApi;
+import org.openchat.usercases.exceptions.UserAlreadyExistException;
 import spark.Route;
 
 import java.util.Objects;
@@ -19,6 +20,14 @@ class Routes {
     void create() {
         swaggerRoutes();
         openChatRoutes();
+        registerExceptionHandlers();
+    }
+
+    private void registerExceptionHandlers() {
+        exception(UserAlreadyExistException.class, (exception, request, response) -> {
+            response.status(400);
+            response.body("Username already in use.");
+        });
     }
 
     private void openChatRoutes() {

@@ -21,12 +21,12 @@ class Context {
     private static InMemoryPostRepository postRepository = new InMemoryPostRepository();
     private static InMemoryFollowingsRepository followingsRepository = new InMemoryFollowingsRepository();
 
-    static FindUserByIdService findUserByIdService = new FindUserByIdService(userRepository);
+    //services
     private static ValidateInappropriateWordService validateInappropriateWordService = new ValidateInappropriateWordService();
+    static FindUserByIdService findUserByIdService = new FindUserByIdService(userRepository);
     static GetAllFollowingForUserService getAllFollowingForUserService = new GetAllFollowingForUserService(userRepository, followingsRepository);
     static GetTimelineFromUserIdService getTimelineFromUserIdService = new GetTimelineFromUserIdService(postRepository);
 
-    //services
     private static FormatDateService formatDateService = new FormatDateService();
 
     static CreateNewUserService createNewUserService = new CreateNewUserService(userRepository);
