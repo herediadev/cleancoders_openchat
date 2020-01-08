@@ -3,7 +3,6 @@ package org.openchat.api.createNewPostApi;
 import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.Post;
 import org.openchat.usercases.CreatePostRequest;
-import org.openchat.usercases.exceptions.InappropriateLanguageException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -25,19 +24,13 @@ public class CreateNewPostApi implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) {
-        try {
-            response.status(201);
-            response.type("application/json");
+    public JsonObject handle(Request request, Response response) {
+        response.status(201);
+        response.type("application/json");
 
-            return createNewPostService
-                    .compose(createNewPostRequestService)
-                    .andThen(CreateNewPostResponsePresenter)
-                    .apply(request);
-        } catch (InappropriateLanguageException e) {
-            response.status(400);
-            return "Post contains inappropriate language.";
-        }
+        return createNewPostService
+                .compose(createNewPostRequestService)
+                .andThen(CreateNewPostResponsePresenter)
+                .apply(request);
     }
-
 }

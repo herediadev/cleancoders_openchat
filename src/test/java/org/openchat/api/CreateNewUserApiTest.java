@@ -1,6 +1,7 @@
 package org.openchat.api;
 
 import com.eclipsesource.json.JsonObject;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +57,7 @@ class CreateNewUserApiTest {
         doReturn(createNewUser()).when(createNewUserService).apply(any(CreateNewUserRequest.class));
 
         //act
-        JsonObject jsonResult = (JsonObject) createNewUserApi.handle(request, response);
+        JsonObject jsonResult = createNewUserApi.handle(request, response);
 
         //assert
         verify(response).status(201);
@@ -74,12 +75,8 @@ class CreateNewUserApiTest {
         doReturn(createRequestJsonBody()).when(request).body();
         doThrow(new UserAlreadyExistException("user already exists")).when(validaIfUserAlreadyExistService).accept(anyString());
 
-        //act
-        String userAlreadyExist = (String) createNewUserApi.handle(request, response);
-
-        //assert
-        verify(response).status(400);
-        assertThat(userAlreadyExist).isEqualTo("Username already in use.");
+        //act and assert
+        Assertions.assertThrows(UserAlreadyExistException.class, () -> createNewUserApi.handle(request, response));
     }
 
     private User createNewUser() {

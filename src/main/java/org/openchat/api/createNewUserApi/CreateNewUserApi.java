@@ -28,7 +28,7 @@ public class CreateNewUserApi implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) {
+    public JsonObject handle(Request request, Response response) {
         response.status(201);
         response.type("application/json");
         return this.createNewUserService

@@ -1,6 +1,7 @@
 package org.openchat.api;
 
 import com.eclipsesource.json.JsonObject;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,7 +59,7 @@ class CreateNewPostApiTest {
         doReturn(postCreated).when(createNewPostService).apply(any(CreatePostRequest.class));
 
         //act
-        JsonObject result = (JsonObject) createNewPostApi.handle(request, response);
+        JsonObject result = createNewPostApi.handle(request, response);
 
         //assert
         verify(createNewPostService).apply(any(CreatePostRequest.class));
@@ -73,12 +74,8 @@ class CreateNewPostApiTest {
         //arrange
         doThrow(InappropriateLanguageException.class).when(createNewPostService).apply(any(CreatePostRequest.class));
 
-        //act
-        String result = (String) createNewPostApi.handle(request, response);
-
-        //assert
-        verify(response).status(400);
-        assertThat(result).isEqualTo("Post contains inappropriate language.");
+        //act and assert
+        Assertions.assertThrows(InappropriateLanguageException.class, () -> createNewPostApi.handle(request, response));
     }
 
     private String getBody() {

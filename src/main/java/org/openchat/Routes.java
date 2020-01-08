@@ -8,6 +8,7 @@ import org.openchat.api.createNewUserApi.CreateNewUserApi;
 import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserApi;
 import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
 import org.openchat.api.getUserWallApi.GetUserWallApi;
+import org.openchat.usercases.exceptions.InappropriateLanguageException;
 import org.openchat.usercases.exceptions.UserAlreadyExistException;
 import spark.Route;
 
@@ -27,6 +28,11 @@ class Routes {
         exception(UserAlreadyExistException.class, (exception, request, response) -> {
             response.status(400);
             response.body("Username already in use.");
+        });
+
+        exception(InappropriateLanguageException.class, (exception, request, response) -> {
+            response.status(400);
+            response.body("Post contains inappropriate language.");
         });
     }
 
