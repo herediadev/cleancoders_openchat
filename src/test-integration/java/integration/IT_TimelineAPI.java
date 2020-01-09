@@ -36,7 +36,7 @@ public class IT_TimelineAPI {
     }
 
     @BeforeClass
-    public static void beforeClass() throws Exception {
+    public static void beforeClass() {
         DAVID = register(DAVID);
 
     }
