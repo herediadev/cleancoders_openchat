@@ -13,6 +13,7 @@ public class CreateNewPostResponsePresenter implements Function<Post, JsonObject
         this.formatDateService = formatDateService;
     }
 
+    @Override
     public JsonObject apply(Post postCreated) {
         return new JsonObject()
                 .add("dateTime", formatDateService.apply(postCreated.getDateTime()))

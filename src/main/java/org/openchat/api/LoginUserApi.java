@@ -24,8 +24,9 @@ public class LoginUserApi implements Route {
         response.status(200);
         response.type("application/json");
 
-        return loginUserService
+        return Function.<LoginUserRequest>identity()
                 .compose(this::createLoginUserRequestFromRequest)
+                .andThen(loginUserService)
                 .andThen(createNewUserResponsePresenter)
                 .apply(request);
     }

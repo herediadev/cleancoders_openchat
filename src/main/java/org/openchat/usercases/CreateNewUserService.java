@@ -14,6 +14,7 @@ public class CreateNewUserService implements Function<CreateNewUserRequest, User
         this.userRepository = userRepository;
     }
 
+    @Override
     public User apply(CreateNewUserRequest createNewUserRequest) {
         return Function.<User>identity()
                 .compose(this::createUser)

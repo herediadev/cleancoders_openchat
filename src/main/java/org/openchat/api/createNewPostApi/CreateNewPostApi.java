@@ -28,8 +28,9 @@ public class CreateNewPostApi implements Route {
         response.status(201);
         response.type("application/json");
 
-        return createNewPostService
+        return Function.<CreatePostRequest>identity()
                 .compose(createNewPostRequestService)
+                .andThen(createNewPostService)
                 .andThen(CreateNewPostResponsePresenter)
                 .apply(request);
     }

@@ -15,6 +15,7 @@ public class GetTimelineFromUserIdService implements Function<String, List<Post>
         this.inMemoryPostRepository = inMemoryPostRepository;
     }
 
+    @Override
     public List<Post> apply(String userId) {
         return inMemoryPostRepository.findPostsByUserId(userId)
                 .stream()

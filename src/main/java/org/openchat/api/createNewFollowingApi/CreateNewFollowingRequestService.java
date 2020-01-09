@@ -12,6 +12,7 @@ public class CreateNewFollowingRequestService implements Function<Request, Follo
     public CreateNewFollowingRequestService() {
     }
 
+    @Override
     public FollowingRequest apply(Request request) {
         JsonObject followingRequestJson = Json.parse(request.body()).asObject();
         return new FollowingRequest(

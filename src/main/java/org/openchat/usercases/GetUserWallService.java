@@ -20,6 +20,7 @@ public class GetUserWallService implements Function<String, List<Post>> {
         this.getAllFollowingForUserService = getAllFollowingForUserService;
     }
 
+    @Override
     public List<Post> apply(String userId) {
         List<User> userList = findUserByIdService
                 .andThen(this::getAllFollowingForUser)

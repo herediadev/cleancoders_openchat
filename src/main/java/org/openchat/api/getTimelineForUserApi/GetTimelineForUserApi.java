@@ -25,8 +25,9 @@ public class GetTimelineForUserApi implements Route {
         response.status(200);
         response.type("application/json");
 
-        return getTimelineFromUserIdService
+        return Function.<String>identity()
                 .compose((Request requestParam) -> requestParam.params("userId"))
+                .andThen(getTimelineFromUserIdService)
                 .andThen(getTimelineForUserResponsePresenter)
                 .apply(request);
     }

@@ -28,10 +28,11 @@ public class GetAllFollowingForUserApi implements Route {
         response.status(200);
         response.type("application/json");
 
-        return getAllFollowingForUserService
+        return Function.<String>identity()
                 .compose(User::getUsername)
                 .compose(findUserByIdService)
                 .compose((Request requestParam) -> requestParam.params("followerId"))
+                .andThen(getAllFollowingForUserService)
                 .andThen(getAllFollowingForUserResponsePresenter)
                 .apply(request);
     }

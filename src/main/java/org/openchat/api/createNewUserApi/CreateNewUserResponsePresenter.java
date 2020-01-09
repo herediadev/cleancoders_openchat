@@ -10,6 +10,7 @@ public class CreateNewUserResponsePresenter implements Function<User, JsonObject
     public CreateNewUserResponsePresenter() {
     }
 
+    @Override
     public JsonObject apply(User user) {
         return new JsonObject()
                 .add("id", user.getId())

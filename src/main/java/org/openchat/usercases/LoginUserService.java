@@ -15,6 +15,7 @@ public class LoginUserService implements Function<LoginUserRequest, User> {
         this.inMemoryUserRepository = inMemoryUserRepository;
     }
 
+    @Override
     public User apply(LoginUserRequest loginUserRequest) {
         Optional<User> userByUsername = inMemoryUserRepository.findUserByUsername(loginUserRequest.getUsername());
 

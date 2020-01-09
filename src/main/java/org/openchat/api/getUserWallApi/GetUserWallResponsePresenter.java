@@ -15,6 +15,7 @@ public class GetUserWallResponsePresenter implements Function<List<Post>, JsonAr
         this.formatDateService = formatDateService;
     }
 
+    @Override
     public JsonArray apply(List<Post> userPosts) {
         return userPosts
                 .stream()

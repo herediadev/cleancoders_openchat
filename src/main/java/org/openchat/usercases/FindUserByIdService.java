@@ -13,6 +13,7 @@ public class FindUserByIdService implements Function<String, User> {
         this.inMemoryUserRepository = inMemoryUserRepository;
     }
 
+    @Override
     public User apply(String userId) {
         return inMemoryUserRepository
                 .findUserById(userId)

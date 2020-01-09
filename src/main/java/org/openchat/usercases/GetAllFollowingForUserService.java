@@ -20,6 +20,7 @@ public class GetAllFollowingForUserService implements Function<String, List<User
         this.inMemoryFollowingsRepository = inMemoryFollowingsRepository;
     }
 
+    @Override
     public List<User> apply(String username) {
         return inMemoryUserRepository
                 .findUserByUsername(username)

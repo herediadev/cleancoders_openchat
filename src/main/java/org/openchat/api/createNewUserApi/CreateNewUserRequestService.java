@@ -12,6 +12,7 @@ public class CreateNewUserRequestService implements Function<Request, CreateNewU
     public CreateNewUserRequestService() {
     }
 
+    @Override
     public CreateNewUserRequest apply(Request request) {
         JsonObject requestBodyJson = Json.parse(request.body()).asObject();
         return new CreateNewUserRequest(

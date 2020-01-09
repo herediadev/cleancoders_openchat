@@ -31,12 +31,13 @@ public class CreateNewUserApi implements Route {
     public JsonObject handle(Request request, Response response) {
         response.status(201);
         response.type("application/json");
-        return this.createNewUserService
+
+        return Function.<CreateNewUserRequest>identity()
                 .compose(this::validaIfUserAlreadyExist)
                 .compose(createNewUserRequestService)
+                .andThen(createNewUserService)
                 .andThen(createNewUserResponsePresenter)
                 .apply(request);
-
     }
 
     private CreateNewUserRequest validaIfUserAlreadyExist(CreateNewUserRequest newUserRequestFromRequest) {

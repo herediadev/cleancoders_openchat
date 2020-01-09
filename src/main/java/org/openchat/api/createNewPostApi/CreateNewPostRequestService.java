@@ -11,6 +11,7 @@ public class CreateNewPostRequestService implements Function<Request, CreatePost
     public CreateNewPostRequestService() {
     }
 
+    @Override
     public CreatePostRequest apply(Request request) {
         String userId = request.params("userId");
         String text = getTextFromBody(request.body());

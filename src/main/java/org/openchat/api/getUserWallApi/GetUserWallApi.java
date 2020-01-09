@@ -25,10 +25,10 @@ public class GetUserWallApi implements Route {
         response.status(200);
         response.type("application/json");
 
-        return getUserWallService
+        return Function.<String>identity()
                 .compose((Request requestParam) -> requestParam.params("userId"))
+                .andThen(getUserWallService)
                 .andThen(getUserWallResponsePresenter)
                 .apply(request);
     }
-
 }

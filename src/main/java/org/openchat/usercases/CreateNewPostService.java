@@ -17,6 +17,7 @@ public class CreateNewPostService implements Function<CreatePostRequest, Post> {
         this.validateInappropriateWordService = validateInappropriateWordService;
     }
 
+    @Override
     public Post apply(CreatePostRequest createPostRequest) {
         return Function.<Post>identity()
                 .compose(this::createPost)

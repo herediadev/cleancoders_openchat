@@ -24,10 +24,23 @@ public class CreateNewFollowingApi implements Route {
 
     @Override
     public String handle(Request request, Response response) {
-        validateFollowingExistService
-                .andThen(createNewFollowingsService)
-                .accept(createNewFollowingRequestService.apply(request));
+        Function.<FollowingRequest>identity()
+                .compose(createNewFollowingRequestService)
+                .andThen(this::validateFollowingExist)
+                .andThen(this::createFollowing)
+                .apply(request);
+
         response.status(201);
         return "Following created.";
+    }
+
+    private FollowingRequest createFollowing(FollowingRequest followingRequest) {
+        createNewFollowingsService.accept(followingRequest);
+        return followingRequest;
+    }
+
+    private FollowingRequest validateFollowingExist(FollowingRequest followingRequest) {
+        validateFollowingExistService.accept(followingRequest);
+        return followingRequest;
     }
 }
