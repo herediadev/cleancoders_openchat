@@ -1,14 +1,13 @@
 package org.openchat.api;
 
-import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openchat.api.createNewUserApi.CreateNewUserResponsePresenter;
 import org.openchat.entities.User;
 import org.openchat.usercases.LoginUserRequest;
 import org.openchat.usercases.exceptions.InvalidCredentialException;
@@ -38,7 +37,8 @@ class LoginUserApiTest {
 
     @BeforeEach
     void setUp() {
-        loginUserApi = new LoginUserApi(loginUserService);
+        CreateNewUserResponsePresenter createNewUserResponsePresenter = new CreateNewUserResponsePresenter();
+        loginUserApi = new LoginUserApi(loginUserService, createNewUserResponsePresenter);
     }
 
     @Test
@@ -48,8 +48,7 @@ class LoginUserApiTest {
         doReturn(createNewUser()).when(loginUserService).apply(any(LoginUserRequest.class));
 
         //act
-        String result = loginUserApi.handle(request, response);
-        JsonObject jsonResult = Json.parse(result).asObject();
+        JsonObject jsonResult = loginUserApi.handle(request, response);
 
         //assert
         verify(response).status(200);
@@ -66,13 +65,8 @@ class LoginUserApiTest {
         doReturn(createRequestJsonBody()).when(request).body();
         doThrow(InvalidCredentialException.class).when(loginUserService).apply(any(LoginUserRequest.class));
 
-        //act
-        String result = loginUserApi.handle(request, response);
-
-        //assert
-        verify(response).status(404);
-        verify(loginUserService).apply(any(LoginUserRequest.class));
-        Assertions.assertThat(result).isEqualTo("Invalid credentials.");
+        //act and assert
+        org.junit.jupiter.api.Assertions.assertThrows(InvalidCredentialException.class, () -> loginUserApi.handle(request, response));
     }
 
     private User createNewUser() {

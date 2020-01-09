@@ -9,6 +9,7 @@ import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserApi;
 import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
 import org.openchat.api.getUserWallApi.GetUserWallApi;
 import org.openchat.usercases.exceptions.InappropriateLanguageException;
+import org.openchat.usercases.exceptions.InvalidCredentialException;
 import org.openchat.usercases.exceptions.UserAlreadyExistException;
 import spark.Route;
 
@@ -34,11 +35,16 @@ class Routes {
             response.status(400);
             response.body("Post contains inappropriate language.");
         });
+
+        exception(InvalidCredentialException.class, (exception, request, response) -> {
+            response.status(404);
+            response.body("Invalid credentials.");
+        });
     }
 
     private void openChatRoutes() {
         Route createNewUserApi = new CreateNewUserApi(Context.createNewUserService, Context.validaIfUserAlreadyExistService, Context.createNewUserRequestService, Context.createNewUserResponsePresenter);
-        Route loginUserApi = new LoginUserApi(Context.loginUserService);
+        Route loginUserApi = new LoginUserApi(Context.loginUserService, Context.createNewUserResponsePresenter);
         Route getAllUserApi = new GetAllUserApi(Context.findAllUserService, Context.createNewUserResponsePresenter);
         Route createNewFollowingApi = new CreateNewFollowingApi(Context.createNewFollowingsService, Context.validateFollowingExistService, Context.createNewFollowingRequestService);
         Route getAllFollowingForUserApi = new GetAllFollowingForUserApi(Context.getAllFollowingForUserService, Context.findUserByIdService, Context.getAllFollowingForUserResponsePresenter);

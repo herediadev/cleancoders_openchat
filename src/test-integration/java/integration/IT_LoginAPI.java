@@ -2,7 +2,9 @@ package integration;
 
 import com.eclipsesource.json.JsonObject;
 import integration.dsl.UserDSL.ITUser;
-import org.junit.Before;
+import io.restassured.response.ValidatableResponse;
+import org.assertj.core.api.Assertions;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static integration.APITestSuit.BASE_URL;
@@ -16,8 +18,8 @@ public class IT_LoginAPI {
 
     private static ITUser ANTONY = aUser().withUsername("Antony").build();
 
-    @Before
-    public void initialise() {
+    @BeforeClass
+    public static void beforeClass() throws Exception {
         ANTONY = register(ANTONY);
     }
 
@@ -34,6 +36,19 @@ public class IT_LoginAPI {
                 .body("id", is(ANTONY.id()))
                 .body("username", is(ANTONY.username()))
                 .body("about", is(ANTONY.about()));
+    }
+
+    @Test
+    public void
+    invalid_login() {
+        ValidatableResponse validatableResponse = given()
+                .body(withJsonContaining(ANTONY.username(), "wrong password"))
+                .when()
+                .post(BASE_URL + "/v2/login")
+                .then()
+                .statusCode(404);
+
+        Assertions.assertThat(validatableResponse.extract().body().asString()).isEqualTo("Invalid credentials.");
     }
 
     private String withJsonContaining(String username, String password) {
