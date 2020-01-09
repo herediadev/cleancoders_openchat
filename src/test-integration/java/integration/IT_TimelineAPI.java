@@ -8,6 +8,7 @@ import integration.dsl.PostDSL.ITPost;
 import integration.dsl.UserDSL.ITUser;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class IT_TimelineAPI {
 
     private static ITUser DAVID = aUser().withUsername("David").build();
-    private static ITUser JOHN = aUser().withUsername("John").build();
 
     private JsonArray timeline;
 
@@ -35,10 +35,15 @@ public class IT_TimelineAPI {
         return new JsonObject().add("text", text).toString();
     }
 
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        DAVID = register(DAVID);
+
+    }
+
     @Test
     public void
     retrieve_a_timeline_with_all_posts_from_a_user_in_reverse_chronological_order() {
-        DAVID = register(DAVID);
         List<ITPost> POSTS = createPostsFor(DAVID, 2);
 
         givenDavidPosts(POSTS);
@@ -51,8 +56,7 @@ public class IT_TimelineAPI {
     @Test
     public void
     retrieve_inappropriate_post_from_a_user() {
-        JOHN = register(JOHN);
-        ITPost post = aPost().withUserId(JOHN.id()).withText("Post with orange").build();
+        ITPost post = aPost().withUserId(DAVID.id()).withText("Post with orange").build();
         ValidatableResponse validatableResponse = given()
                 .body(withPostJsonContaining(post.text()))
                 .when()

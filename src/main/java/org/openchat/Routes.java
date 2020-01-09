@@ -8,6 +8,7 @@ import org.openchat.api.createNewUserApi.CreateNewUserApi;
 import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserApi;
 import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
 import org.openchat.api.getUserWallApi.GetUserWallApi;
+import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
 import org.openchat.usercases.exceptions.InappropriateLanguageException;
 import org.openchat.usercases.exceptions.InvalidCredentialException;
 import org.openchat.usercases.exceptions.UserAlreadyExistException;
@@ -39,6 +40,11 @@ class Routes {
         exception(InvalidCredentialException.class, (exception, request, response) -> {
             response.status(404);
             response.body("Invalid credentials.");
+        });
+
+        exception(FollowingAlreadyExistException.class, (exception, request, response) -> {
+            response.status(400);
+            response.body("Following already exist.");
         });
     }
 

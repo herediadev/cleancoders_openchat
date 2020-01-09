@@ -19,7 +19,7 @@ public class IT_LoginAPI {
     private static ITUser ANTONY = aUser().withUsername("Antony").build();
 
     @BeforeClass
-    public static void beforeClass() throws Exception {
+    public static void beforeClass() {
         ANTONY = register(ANTONY);
     }
 

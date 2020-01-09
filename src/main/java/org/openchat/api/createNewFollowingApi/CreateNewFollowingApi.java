@@ -1,7 +1,6 @@
 package org.openchat.api.createNewFollowingApi;
 
 import org.openchat.usercases.FollowingRequest;
-import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -24,17 +23,11 @@ public class CreateNewFollowingApi implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) {
-        try {
-            validateFollowingExistService
-                    .andThen(createNewFollowingsService)
-                    .accept(createNewFollowingRequestService.apply(request));
-            response.status(201);
-            return "Following created.";
-        } catch (FollowingAlreadyExistException e) {
-            response.status(400);
-            return "Following already exist.";
-        }
+    public String handle(Request request, Response response) {
+        validateFollowingExistService
+                .andThen(createNewFollowingsService)
+                .accept(createNewFollowingRequestService.apply(request));
+        response.status(201);
+        return "Following created.";
     }
-
 }

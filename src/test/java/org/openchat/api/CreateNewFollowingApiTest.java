@@ -40,7 +40,7 @@ class CreateNewFollowingApiTest {
         doReturn(JsonContaining()).when(request).body();
 
         //act
-        String result = (String) createNewFollowingApi.handle(request, response);
+        String result = createNewFollowingApi.handle(request, response);
 
         //assert
         verify(response).status(201);
@@ -56,13 +56,8 @@ class CreateNewFollowingApiTest {
         doThrow(FollowingAlreadyExistException.class).when(validateFollowingExistService).accept(any(FollowingRequest.class));
         doReturn(JsonContaining()).when(request).body();
 
-        //act
-        String result = (String) createNewFollowingApi.handle(request, response);
-
-        //assert
-        verify(response).status(400);
-        verify(validateFollowingExistService).accept(any(FollowingRequest.class));
-        Assertions.assertThat(result).isEqualTo("Following already exist.");
+        //act and assert
+        org.junit.jupiter.api.Assertions.assertThrows(FollowingAlreadyExistException.class, () -> createNewFollowingApi.handle(request, response));
     }
 
     private String JsonContaining() {
