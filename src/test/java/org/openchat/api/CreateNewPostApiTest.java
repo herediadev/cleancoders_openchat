@@ -44,8 +44,7 @@ class CreateNewPostApiTest {
     @BeforeEach
     void setUp() {
         createNewPostApi = new CreateNewPostApi(createNewPostService, new CreateNewPostRequestService(), new CreateNewPostResponsePresenter(formatDateService));
-        doReturn("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx").when(request).params("userId");
-        doReturn(getBody()).when(request).body();
+
     }
 
     @Test
@@ -56,6 +55,8 @@ class CreateNewPostApiTest {
                 "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                 "text",
                 LocalDateTime.of(2018, 1, 10, 11, 30, 0));
+        doReturn("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx").when(request).params("userId");
+        doReturn(getBody()).when(request).body();
         doReturn(postCreated).when(createNewPostService).apply(any(CreatePostRequest.class));
 
         //act
@@ -72,10 +73,25 @@ class CreateNewPostApiTest {
     @Test
     void given_a_request_when_creating_a_new_post_with_inappropriate_words_it_will_response_an_error() {
         //arrange
+        doReturn("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx").when(request).params("userId");
+        doReturn(getBody()).when(request).body();
         doThrow(InappropriateLanguageException.class).when(createNewPostService).apply(any(CreatePostRequest.class));
 
         //act and assert
         Assertions.assertThrows(InappropriateLanguageException.class, () -> createNewPostApi.handle(request, response));
+    }
+
+    @Test
+    void given_the_new_post_with_an_inappropriate_word_it_will_get_the_response_exception() {
+        //arrange
+        InappropriateLanguageException inappropriateLanguageException = new InappropriateLanguageException();
+
+        //act
+        CreateNewPostApi.registerExceptionHandler(inappropriateLanguageException, request, response);
+
+        //assert
+        verify(response).status(400);
+        verify(response).body("Post contains inappropriate language.");
     }
 
     private String getBody() {

@@ -79,6 +79,19 @@ class CreateNewUserApiTest {
         Assertions.assertThrows(UserAlreadyExistException.class, () -> createNewUserApi.handle(request, response));
     }
 
+    @Test
+    void given_the_same_user_name_it_will_get_the_response_from_the_exception() {
+        //arrange
+        UserAlreadyExistException userAlreadyExistException = new UserAlreadyExistException("user already exists");
+
+        //act
+        CreateNewUserApi.registerExceptionHandler(userAlreadyExistException, request, response);
+
+        //assert
+        verify(response).status(400);
+        verify(response).body("user already exists");
+    }
+
     private User createNewUser() {
         return new User("aaaaaaaa-ffff-ffff-ffff-aaaaaaaaaaaa", "username", "password", "about");
     }

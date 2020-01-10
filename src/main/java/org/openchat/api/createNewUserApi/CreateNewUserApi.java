@@ -45,8 +45,8 @@ public class CreateNewUserApi implements Route {
         return newUserRequestFromRequest;
     }
 
-    private String setUserAlreadyExistResponse(Response response) {
+    public static void registerExceptionHandler(Exception exception, Request request, Response response) {
         response.status(400);
-        return "Username already in use.";
+        response.body(exception.getMessage());
     }
 }

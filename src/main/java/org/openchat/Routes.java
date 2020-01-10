@@ -8,10 +8,6 @@ import org.openchat.api.createNewUserApi.CreateNewUserApi;
 import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserApi;
 import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
 import org.openchat.api.getUserWallApi.GetUserWallApi;
-import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
-import org.openchat.usercases.exceptions.InappropriateLanguageException;
-import org.openchat.usercases.exceptions.InvalidCredentialException;
-import org.openchat.usercases.exceptions.UserAlreadyExistException;
 import spark.Route;
 
 import java.util.Objects;
@@ -23,29 +19,6 @@ class Routes {
     void create() {
         swaggerRoutes();
         openChatRoutes();
-        registerExceptionHandlers();
-    }
-
-    private void registerExceptionHandlers() {
-        exception(UserAlreadyExistException.class, (exception, request, response) -> {
-            response.status(400);
-            response.body("Username already in use.");
-        });
-
-        exception(InappropriateLanguageException.class, (exception, request, response) -> {
-            response.status(400);
-            response.body("Post contains inappropriate language.");
-        });
-
-        exception(InvalidCredentialException.class, (exception, request, response) -> {
-            response.status(404);
-            response.body("Invalid credentials.");
-        });
-
-        exception(FollowingAlreadyExistException.class, (exception, request, response) -> {
-            response.status(400);
-            response.body("Following already exist.");
-        });
     }
 
     private void openChatRoutes() {

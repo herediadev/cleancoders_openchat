@@ -38,4 +38,9 @@ public class LoginUserApi implements Route {
                 requestBodyJson.getString("password", "")
         );
     }
+
+    public static void registerExceptionHandler(Exception exception, Request request, Response response) {
+        response.status(404);
+        response.body(exception.getMessage());
+    }
 }
