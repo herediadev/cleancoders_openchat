@@ -1,13 +1,6 @@
 package org.openchat;
 
-import org.openchat.api.LoginUserApi;
-import org.openchat.api.createNewFollowingApi.CreateNewFollowingApi;
-import org.openchat.api.createNewPostApi.CreateNewPostApi;
-import org.openchat.api.createNewUserApi.CreateNewUserApi;
-import org.openchat.usercases.exceptions.FollowingAlreadyExistException;
-import org.openchat.usercases.exceptions.InappropriateLanguageException;
-import org.openchat.usercases.exceptions.InvalidCredentialException;
-import org.openchat.usercases.exceptions.UserAlreadyExistException;
+import org.openchat.api.exceptionHandlers.ExceptionHandlerRegister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Route;
@@ -32,7 +25,7 @@ public class OpenChat {
         routes.create();
         configureInternalServerError();
         configureNotImplemented();
-        registerExceptionHandlers();
+        ExceptionHandlerRegister.init();
     }
 
     public void stop() {
@@ -66,16 +59,6 @@ public class OpenChat {
             logger.error(internalServerError + ": " + req.pathInfo());
             return internalServerError;
         };
-    }
-
-    private void registerExceptionHandlers() {
-        exception(UserAlreadyExistException.class, CreateNewUserApi::registerExceptionHandler);
-
-        exception(InappropriateLanguageException.class, CreateNewPostApi::registerExceptionHandler);
-
-        exception(InvalidCredentialException.class, LoginUserApi::registerExceptionHandler);
-
-        exception(FollowingAlreadyExistException.class, CreateNewFollowingApi::registerExceptionHandler);
     }
 
     private void setLog() {

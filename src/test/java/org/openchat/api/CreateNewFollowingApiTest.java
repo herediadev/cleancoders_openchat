@@ -60,19 +60,6 @@ class CreateNewFollowingApiTest {
         org.junit.jupiter.api.Assertions.assertThrows(FollowingAlreadyExistException.class, () -> createNewFollowingApi.handle(request, response));
     }
 
-    @Test
-    void given_the_exception_when_it_is_thrown_it_will_get_the_exception_response() {
-        //arrange
-        FollowingAlreadyExistException followingAlreadyExistException = new FollowingAlreadyExistException();
-
-        //act
-        CreateNewFollowingApi.registerExceptionHandler(followingAlreadyExistException, request, response);
-
-        //arrange
-        verify(response).status(400);
-        verify(response).body("Following already exist.");
-    }
-
     private String JsonContaining() {
         return new JsonObject()
                 .add("followeeId", "test_followeeId")

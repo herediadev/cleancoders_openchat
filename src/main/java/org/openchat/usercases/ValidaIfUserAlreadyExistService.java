@@ -21,6 +21,6 @@ public class ValidaIfUserAlreadyExistService implements Consumer<String> {
     }
 
     private void throwUserAlreadyExistException(User user) {
-        throw new UserAlreadyExistException("user " + user.getUsername() + " already exist");
+        throw new UserAlreadyExistException(user.getUsername());
     }
 }

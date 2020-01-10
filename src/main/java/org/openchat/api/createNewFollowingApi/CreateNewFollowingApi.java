@@ -43,9 +43,4 @@ public class CreateNewFollowingApi implements Route {
         validateFollowingExistService.accept(followingRequest);
         return followingRequest;
     }
-
-    public static void registerExceptionHandler(Exception exception, Request request, Response response) {
-        response.status(400);
-        response.body(exception.getMessage());
-    }
 }

@@ -69,19 +69,6 @@ class LoginUserApiTest {
         org.junit.jupiter.api.Assertions.assertThrows(InvalidCredentialException.class, () -> loginUserApi.handle(request, response));
     }
 
-    @Test
-    void given_the_exception_handler_register_it_will_check_the_response() {
-        //arrange
-        InvalidCredentialException invalidCredentialException = new InvalidCredentialException();
-
-        //act
-        LoginUserApi.registerExceptionHandler(invalidCredentialException, request, response);
-
-        //assert
-        verify(response).status(404);
-        verify(response).body("Invalid credentials.");
-    }
-
     private User createNewUser() {
         return new User("aaaaaaaa-ffff-ffff-ffff-aaaaaaaaaaaa", "username", "password", "about");
     }

@@ -44,7 +44,6 @@ class CreateNewPostApiTest {
     @BeforeEach
     void setUp() {
         createNewPostApi = new CreateNewPostApi(createNewPostService, new CreateNewPostRequestService(), new CreateNewPostResponsePresenter(formatDateService));
-
     }
 
     @Test
@@ -79,19 +78,6 @@ class CreateNewPostApiTest {
 
         //act and assert
         Assertions.assertThrows(InappropriateLanguageException.class, () -> createNewPostApi.handle(request, response));
-    }
-
-    @Test
-    void given_the_new_post_with_an_inappropriate_word_it_will_get_the_response_exception() {
-        //arrange
-        InappropriateLanguageException inappropriateLanguageException = new InappropriateLanguageException();
-
-        //act
-        CreateNewPostApi.registerExceptionHandler(inappropriateLanguageException, request, response);
-
-        //assert
-        verify(response).status(400);
-        verify(response).body("Post contains inappropriate language.");
     }
 
     private String getBody() {

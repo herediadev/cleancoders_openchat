@@ -44,9 +44,4 @@ public class CreateNewUserApi implements Route {
         validaIfUserAlreadyExistService.accept(newUserRequestFromRequest.getUsername());
         return newUserRequestFromRequest;
     }
-
-    public static void registerExceptionHandler(Exception exception, Request request, Response response) {
-        response.status(400);
-        response.body(exception.getMessage());
-    }
 }

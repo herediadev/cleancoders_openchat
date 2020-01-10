@@ -23,6 +23,6 @@ public class ValidaIfUserAlreadyExistServiceTest {
             validaIfUserAlreadyExistService.accept(username);
         });
 
-        org.assertj.core.api.Assertions.assertThat(userAlreadyExistException.getMessage()).isEqualTo("user username already exist");
+        org.assertj.core.api.Assertions.assertThat(userAlreadyExistException.getMessage()).isEqualTo("user username already exists");
     }
 }

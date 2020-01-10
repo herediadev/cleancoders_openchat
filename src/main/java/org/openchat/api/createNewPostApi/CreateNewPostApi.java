@@ -34,9 +34,4 @@ public class CreateNewPostApi implements Route {
                 .andThen(CreateNewPostResponsePresenter)
                 .apply(request);
     }
-
-    public static void registerExceptionHandler(Exception exception, Request request, Response response) {
-        response.status(400);
-        response.body(exception.getMessage());
-    }
 }

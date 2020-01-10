@@ -39,7 +39,7 @@ public class IT_RegistrationAPI {
                 .then()
                 .statusCode(400);
 
-        Assertions.assertThat(validatableResponse.extract().body().asString()).isEqualTo("user Lucy already exist");
+        Assertions.assertThat(validatableResponse.extract().body().asString()).isEqualTo("user Lucy already exists");
     }
 
     private String withJsonContaining(String username, String password, String about) {
