@@ -1,5 +1,6 @@
 package org.openchat;
 
+import org.openchat.api.CreateGetAllUserPresenter;
 import org.openchat.api.FormatDateService;
 import org.openchat.api.createNewFollowingApi.CreateNewFollowingRequestService;
 import org.openchat.api.createNewPostApi.CreateNewPostRequestService;
@@ -46,9 +47,11 @@ class Context {
     static GetUserWallService getUserWallService = new GetUserWallService(getTimelineFromUserIdService, getAllFollowingForUserService, findUserByIdService);
     static LoginUserService loginUserService = new LoginUserService(userRepository);
 
+    //Presenters
     static CreateNewPostResponsePresenter createNewPostResponsePresenter = new CreateNewPostResponsePresenter(formatDateService);
     static GetTimelineForUserResponsePresenter getTimelineForUserResponsePresenter = new GetTimelineForUserResponsePresenter(formatDateService);
     static GetUserWallResponsePresenter getUserWallResponsePresenter = new GetUserWallResponsePresenter(formatDateService);
+    static CreateGetAllUserPresenter createGetAllUserPresenter = new CreateGetAllUserPresenter(createNewUserResponsePresenter);
 
     private Context() {
     }

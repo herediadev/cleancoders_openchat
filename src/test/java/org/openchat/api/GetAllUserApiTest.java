@@ -38,7 +38,8 @@ class GetAllUserApiTest {
 
     @BeforeEach
     void setUp() {
-        getAllUserApi = new GetAllUserApi(findAllUserService, new CreateNewUserResponsePresenter());
+        final CreateNewUserResponsePresenter createNewUserResponsePresenter = new CreateNewUserResponsePresenter();
+        getAllUserApi = new GetAllUserApi(findAllUserService, new CreateGetAllUserPresenter(createNewUserResponsePresenter));
     }
 
     @Test
@@ -47,8 +48,7 @@ class GetAllUserApiTest {
         doReturn(singletonList(createNewUser())).when(findAllUserService).get();
 
         //act
-        String users = getAllUserApi.handle(request, response);
-        JsonArray userJsonList = Json.parse(users).asArray();
+        JsonArray userJsonList = getAllUserApi.handle(request, response);
         JsonObject jsonUser = Json.parse(userJsonList.get(0).toString()).asObject();
 
         //assert

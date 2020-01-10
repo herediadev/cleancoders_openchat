@@ -10,8 +10,6 @@ import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
 import org.openchat.api.getUserWallApi.GetUserWallApi;
 import spark.Route;
 
-import java.util.Objects;
-
 import static spark.Spark.*;
 
 class Routes {
@@ -24,7 +22,7 @@ class Routes {
     private void openChatRoutes() {
         Route createNewUserApi = new CreateNewUserApi(Context.createNewUserService, Context.validaIfUserAlreadyExistService, Context.createNewUserRequestService, Context.createNewUserResponsePresenter);
         Route loginUserApi = new LoginUserApi(Context.loginUserService, Context.createNewUserResponsePresenter);
-        Route getAllUserApi = new GetAllUserApi(Context.findAllUserService, Context.createNewUserResponsePresenter);
+        Route getAllUserApi = new GetAllUserApi(Context.findAllUserService, Context.createGetAllUserPresenter);
         Route createNewFollowingApi = new CreateNewFollowingApi(Context.createNewFollowingsService, Context.validateFollowingExistService, Context.createNewFollowingRequestService);
         Route getAllFollowingForUserApi = new GetAllFollowingForUserApi(Context.getAllFollowingForUserService, Context.findUserByIdService, Context.getAllFollowingForUserResponsePresenter);
         Route createNewPostApi = new CreateNewPostApi(Context.createNewPostService, Context.createNewPostRequestService, Context.createNewPostResponsePresenter);
@@ -43,11 +41,11 @@ class Routes {
     }
 
     void createPostRoute(String path, Route route) {
-        post(path, route, Objects::toString);
+        post(path, route);
     }
 
     void createGetRoute(String path, Route route) {
-        get(path, route, Objects::toString);
+        get(path, route);
     }
 
     private void swaggerRoutes() {

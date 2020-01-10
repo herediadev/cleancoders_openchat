@@ -5,6 +5,7 @@ import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
 
+import static org.eclipse.jetty.http.HttpStatus.NOT_FOUND_404;
 import static spark.Spark.exception;
 
 public class InvalidCredentialExceptionHandler implements ExceptionHandler {
@@ -15,7 +16,7 @@ public class InvalidCredentialExceptionHandler implements ExceptionHandler {
 
     @Override
     public void handle(Exception exception, Request request, Response response) {
-        response.status(404);
+        response.status(NOT_FOUND_404);
         response.body(exception.getMessage());
     }
 }
