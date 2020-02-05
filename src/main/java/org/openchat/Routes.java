@@ -9,7 +9,6 @@ import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserApi;
 import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
 import org.openchat.api.getUserWallApi.GetUserWallApi;
 import spark.Route;
-
 import static spark.Spark.*;
 
 class Routes {
