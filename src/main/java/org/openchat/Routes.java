@@ -12,7 +12,6 @@ import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
 import org.openchat.api.getUserWallApi.GetUserWallApi;
 import spark.ResponseTransformer;
 import spark.Route;
-
 import static spark.Spark.*;
 
 class Routes {
