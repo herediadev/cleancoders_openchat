@@ -1,7 +1,5 @@
 package org.openchat.api;
 
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +15,7 @@ import spark.Response;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,30 +55,16 @@ class GetTimelineForUserApiTest {
         doReturn(posts).when(getTimelineFromUserIdService).apply(anyString());
 
         //act
-        JsonArray result = getTimelineForUserApi.handle(request, response);
+        List<Map<String, String>> result = getTimelineForUserApi.handle(request, response);
 
         //assert
         verify(request).params(eq("userId"));
         verify(response).status(200);
         verify(response).type("application/json");
         verify(getTimelineFromUserIdService).apply(anyString());
-        assertThat(result).isEqualTo(getJson(posts));
-    }
-
-    private JsonArray getJson(List<Post> posts) {
-        JsonArray jsonResponse = new JsonArray();
-        posts.stream()
-                .map(this::createJsonPost)
-                .forEach(jsonResponse::add);
-
-        return jsonResponse;
-    }
-
-    private JsonObject createJsonPost(Post post) {
-        return new JsonObject()
-                .add("dateTime", formatDateService.apply(post.getDateTime()))
-                .add("postId", post.getPostId())
-                .add("text", post.getText())
-                .add("userId", post.getUserId());
+        assertThat(result.get(0).get("dateTime")).isEqualTo(formatDateService.apply(posts.get(0).getDateTime()));
+        assertThat(result.get(0).get("postId")).isEqualTo(posts.get(0).getPostId());
+        assertThat(result.get(0).get("text")).isEqualTo(posts.get(0).getText());
+        assertThat(result.get(0).get("userId")).isEqualTo(posts.get(0).getUserId());
     }
 }

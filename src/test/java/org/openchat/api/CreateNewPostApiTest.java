@@ -18,6 +18,7 @@ import spark.Request;
 import spark.Response;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,16 +58,18 @@ class CreateNewPostApiTest {
         doReturn("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx").when(request).params("userId");
         doReturn(getBody()).when(request).body();
         doReturn(postCreated).when(createNewPostService).apply(any(CreatePostRequest.class));
-
         //act
-        JsonObject result = createNewPostApi.handle(request, response);
+        Map<String, String> result = createNewPostApi.handle(request, response);
 
         //assert
         verify(createNewPostService).apply(any(CreatePostRequest.class));
         verify(formatDateService).apply(any(LocalDateTime.class));
         verify(response).type("application/json");
         verify(response).status(201);
-        assertThat(result).isEqualTo(getJsonResult(postCreated));
+        assertThat(result.get("dateTime")).isEqualTo(formatDateService.apply(postCreated.getDateTime()));
+        assertThat(result.get("postId")).isEqualTo(postCreated.getPostId());
+        assertThat(result.get("text")).isEqualTo(postCreated.getText());
+        assertThat(result.get("userId")).isEqualTo(postCreated.getUserId());
     }
 
     @Test
@@ -84,13 +87,5 @@ class CreateNewPostApiTest {
         return new JsonObject()
                 .add("text", "text")
                 .toString();
-    }
-
-    private JsonObject getJsonResult(Post postCreated) {
-        return new JsonObject()
-                .add("dateTime", "2018-01-10T11:30:00Z")
-                .add("postId", postCreated.getPostId())
-                .add("text", postCreated.getText())
-                .add("userId", postCreated.getUserId());
     }
 }

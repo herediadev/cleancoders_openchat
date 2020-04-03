@@ -1,29 +1,31 @@
 package org.openchat.api.getAllFollowingForUserApi;
 
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.User;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class GetAllFollowingForUserResponsePresenter implements Function<List<User>, JsonArray> {
+public class GetAllFollowingForUserResponsePresenter implements Function<List<User>, List<Map<String, String>>> {
 
     public GetAllFollowingForUserResponsePresenter() {
     }
 
     @Override
-    public JsonArray apply(List<User> users) {
+    public List<Map<String, String>> apply(List<User> users) {
         return users
                 .stream()
                 .map(this::createUserJson)
-                .collect(JsonArray::new, JsonArray::add, (jsonValues, jsonValues2) -> jsonValues2.forEach(jsonValues::add));
+                .collect(Collectors.toList());
     }
 
-    private JsonObject createUserJson(User user) {
-        return new JsonObject()
-                .add("id", user.getId())
-                .add("username", user.getUsername())
-                .add("about", user.getAbout());
+    private Map<String, String> createUserJson(User user) {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("id", user.getId());
+        map.put("username", user.getUsername());
+        map.put("about", user.getAbout());
+        return map;
     }
 }

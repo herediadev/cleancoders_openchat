@@ -14,6 +14,7 @@ import org.openchat.usercases.exceptions.InvalidCredentialException;
 import spark.Request;
 import spark.Response;
 
+import java.util.Map;
 import java.util.function.Function;
 
 import static integration.APITestSuit.UUID_PATTERN;
@@ -48,15 +49,15 @@ class LoginUserApiTest {
         doReturn(createNewUser()).when(loginUserService).apply(any(LoginUserRequest.class));
 
         //act
-        JsonObject jsonResult = loginUserApi.handle(request, response);
+        Map<String, String> result = loginUserApi.handle(request, response);
 
         //assert
         verify(response).status(200);
         verify(response).type("application/json");
         verify(loginUserService).apply(any(LoginUserRequest.class));
-        assertThat(jsonResult.getString("id", "")).matches(UUID_PATTERN);
-        assertThat(jsonResult.getString("username", "")).isEqualTo("username");
-        assertThat(jsonResult.getString("about", "")).isEqualTo("about");
+        assertThat(result.get("id")).matches(UUID_PATTERN);
+        assertThat(result.get("username")).isEqualTo("username");
+        assertThat(result.get("about")).isEqualTo("about");
     }
 
     @Test

@@ -8,19 +8,20 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.util.Map;
 import java.util.function.Function;
 
 public class LoginUserApi implements Route {
 
     private final Function<LoginUserRequest, User> loginUserService;
-    private final Function<User, JsonObject> createNewUserResponsePresenter;
+    private final Function<User, Map<String, String>> createNewUserResponsePresenter;
 
-    public LoginUserApi(Function<LoginUserRequest, User> loginUserService, Function<User, JsonObject> createNewUserResponsePresenter) {
+    public LoginUserApi(Function<LoginUserRequest, User> loginUserService, Function<User, Map<String, String>> createNewUserResponsePresenter) {
         this.loginUserService = loginUserService;
         this.createNewUserResponsePresenter = createNewUserResponsePresenter;
     }
 
-    public JsonObject handle(Request request, Response response) {
+    public Map<String, String> handle(Request request, Response response) {
         response.status(200);
         response.type("application/json");
 

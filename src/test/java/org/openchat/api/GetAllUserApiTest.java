@@ -1,8 +1,5 @@
 package org.openchat.api;
 
-import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +12,7 @@ import spark.Request;
 import spark.Response;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import static integration.APITestSuit.UUID_PATTERN;
@@ -48,17 +46,16 @@ class GetAllUserApiTest {
         doReturn(singletonList(createNewUser())).when(findAllUserService).get();
 
         //act
-        JsonArray userJsonList = getAllUserApi.handle(request, response);
-        JsonObject jsonUser = Json.parse(userJsonList.get(0).toString()).asObject();
+        List<Map<String, String>> result = getAllUserApi.handle(request, response);
 
         //assert
         verify(response).status(200);
         verify(response).type("application/json");
         verify(findAllUserService).get();
-        Assertions.assertThat(userJsonList.size()).isEqualTo(1);
-        Assertions.assertThat(jsonUser.getString("id", "")).matches(UUID_PATTERN);
-        Assertions.assertThat(jsonUser.getString("username", "")).isEqualTo("username");
-        Assertions.assertThat(jsonUser.getString("about", "")).isEqualTo("about");
+        Assertions.assertThat(result.size()).isEqualTo(1);
+        Assertions.assertThat(result.get(0).get("id")).matches(UUID_PATTERN);
+        Assertions.assertThat(result.get(0).get("username")).isEqualTo("username");
+        Assertions.assertThat(result.get(0).get("about")).isEqualTo("about");
     }
 
     private User createNewUser() {

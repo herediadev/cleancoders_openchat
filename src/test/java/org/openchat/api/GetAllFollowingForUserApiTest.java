@@ -18,6 +18,7 @@ import spark.Response;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -54,14 +55,16 @@ class GetAllFollowingForUserApiTest {
         doReturn(Collections.singletonList(user)).when(getAllFollowingForUserService).apply(eq(user.getUsername()));
 
         //act
-        JsonArray result = getAllFollowingForUser.handle(request, response);
+        List<Map<String, String>> result = getAllFollowingForUser.handle(request, response);
 
         //assert
         Mockito.verify(response).status(200);
         Mockito.verify(response).type("application/json");
         Mockito.verify(getAllFollowingForUserService).apply(anyString());
         Mockito.verify(findUserByIdService).apply(anyString());
-        Assertions.assertThat(result).isEqualTo(JsonContaining(user));
+        Assertions.assertThat(result.get(0).get("id")).isEqualTo(user.getId());
+        Assertions.assertThat(result.get(0).get("username")).isEqualTo(user.getUsername());
+        Assertions.assertThat(result.get(0).get("about")).isEqualTo(user.getAbout());
     }
 
     private JsonArray JsonContaining(User user) {

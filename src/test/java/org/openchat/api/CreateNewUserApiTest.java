@@ -17,6 +17,7 @@ import org.openchat.usercases.exceptions.UserAlreadyExistException;
 import spark.Request;
 import spark.Response;
 
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -57,16 +58,16 @@ class CreateNewUserApiTest {
         doReturn(createNewUser()).when(createNewUserService).apply(any(CreateNewUserRequest.class));
 
         //act
-        JsonObject jsonResult = createNewUserApi.handle(request, response);
+        Map<String, String> result = createNewUserApi.handle(request, response);
 
         //assert
         verify(response).status(201);
         verify(response).type("application/json");
         verify(createNewUserService).apply(any(CreateNewUserRequest.class));
         verify(validaIfUserAlreadyExistService).accept(anyString());
-        assertThat(jsonResult.getString("id", "")).matches(UUID_PATTERN);
-        assertThat(jsonResult.getString("username", "")).isEqualTo("username");
-        assertThat(jsonResult.getString("about", "")).isEqualTo("about");
+        assertThat(result.get("id")).matches(UUID_PATTERN);
+        assertThat(result.get("username")).isEqualTo("username");
+        assertThat(result.get("about")).isEqualTo("about");
     }
 
     @Test

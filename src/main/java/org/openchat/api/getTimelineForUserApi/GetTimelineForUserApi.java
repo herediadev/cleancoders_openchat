@@ -7,21 +7,22 @@ import spark.Response;
 import spark.Route;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class GetTimelineForUserApi implements Route {
 
     private final Function<String, List<Post>> getTimelineFromUserIdService;
-    private final Function<List<Post>, JsonArray> getTimelineForUserResponsePresenter;
+    private final Function<List<Post>, List<Map<String, String>>> getTimelineForUserResponsePresenter;
 
     public GetTimelineForUserApi(Function<String, List<Post>> getTimelineFromUserIdService,
-                                 Function<List<Post>, JsonArray> getTimelineForUserResponsePresenter) {
+                                 Function<List<Post>, List<Map<String, String>>> getTimelineForUserResponsePresenter) {
         this.getTimelineFromUserIdService = getTimelineFromUserIdService;
         this.getTimelineForUserResponsePresenter = getTimelineForUserResponsePresenter;
     }
 
     @Override
-    public JsonArray handle(Request request, Response response) {
+    public List<Map<String, String>> handle(Request request, Response response) {
         response.status(200);
         response.type("application/json");
 

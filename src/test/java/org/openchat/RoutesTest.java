@@ -10,6 +10,7 @@ import org.openchat.api.createNewUserApi.CreateNewUserApi;
 import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserApi;
 import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
 import org.openchat.api.getUserWallApi.GetUserWallApi;
+import spark.ResponseTransformer;
 
 import static org.mockito.Mockito.*;
 
@@ -28,7 +29,7 @@ class RoutesTest {
         spyRoute.create();
 
         //assert
-        verify(spyRoute).createGetRoute(eq("v2/users"), isA(GetAllUserApi.class));
+        verify(spyRoute).createGetRoute(eq("v2/users"), isA(GetAllUserApi.class), isA(ResponseTransformer.class));
     }
 
     @Test
@@ -37,7 +38,7 @@ class RoutesTest {
         spyRoute.create();
 
         //assert
-        verify(spyRoute).createPostRoute(eq("v2/users"), isA(CreateNewUserApi.class));
+        verify(spyRoute).createPostRoute(eq("v2/users"), isA(CreateNewUserApi.class), isA(ResponseTransformer.class));
     }
 
     @Test
@@ -46,7 +47,7 @@ class RoutesTest {
         spyRoute.create();
 
         //assert
-        verify(spyRoute).createPostRoute(eq("v2/login"), isA(LoginUserApi.class));
+        verify(spyRoute).createPostRoute(eq("v2/login"), isA(LoginUserApi.class), isA(ResponseTransformer.class));
     }
 
     @Test
@@ -55,7 +56,7 @@ class RoutesTest {
         spyRoute.create();
 
         //assert
-        verify(spyRoute).createPostRoute(eq("v2/followings"), isA(CreateNewFollowingApi.class));
+        verify(spyRoute).createPostRoute(eq("v2/followings"), isA(CreateNewFollowingApi.class), isA(ResponseTransformer.class));
     }
 
     @Test
@@ -64,7 +65,7 @@ class RoutesTest {
         spyRoute.create();
 
         //assert
-        verify(spyRoute).createGetRoute(eq("v2/followings/:followerId/followees"), isA(GetAllFollowingForUserApi.class));
+        verify(spyRoute).createGetRoute(eq("v2/followings/:followerId/followees"), isA(GetAllFollowingForUserApi.class), isA(ResponseTransformer.class));
     }
 
     @Test
@@ -73,7 +74,7 @@ class RoutesTest {
         spyRoute.create();
 
         //assert
-        verify(spyRoute).createPostRoute(eq("v2/users/:userId/timeline"), isA(CreateNewPostApi.class));
+        verify(spyRoute).createPostRoute(eq("v2/users/:userId/timeline"), isA(CreateNewPostApi.class), isA(ResponseTransformer.class));
     }
 
     @Test
@@ -82,7 +83,7 @@ class RoutesTest {
         spyRoute.create();
 
         //assert
-        verify(spyRoute).createGetRoute(eq("v2/users/:userId/timeline"), isA(GetTimelineForUserApi.class));
+        verify(spyRoute).createGetRoute(eq("v2/users/:userId/timeline"), isA(GetTimelineForUserApi.class), isA(ResponseTransformer.class));
     }
 
     @Test
@@ -91,6 +92,6 @@ class RoutesTest {
         spyRoute.create();
 
         //assert
-        verify(spyRoute).createGetRoute(eq("v2/users/:userId/wall"), isA(GetUserWallApi.class));
+        verify(spyRoute).createGetRoute(eq("v2/users/:userId/wall"), isA(GetUserWallApi.class), isA(ResponseTransformer.class));
     }
 }

@@ -1,12 +1,13 @@
 package org.openchat.api.createNewPostApi;
 
-import com.eclipsesource.json.JsonObject;
 import org.openchat.entities.Post;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
-public class CreateNewPostResponsePresenter implements Function<Post, JsonObject> {
+public class CreateNewPostResponsePresenter implements Function<Post, Map<String, String>> {
     private Function<LocalDateTime, String> formatDateService;
 
     public CreateNewPostResponsePresenter(Function<LocalDateTime, String> formatDateService) {
@@ -14,11 +15,12 @@ public class CreateNewPostResponsePresenter implements Function<Post, JsonObject
     }
 
     @Override
-    public JsonObject apply(Post postCreated) {
-        return new JsonObject()
-                .add("dateTime", formatDateService.apply(postCreated.getDateTime()))
-                .add("postId", postCreated.getPostId())
-                .add("text", postCreated.getText())
-                .add("userId", postCreated.getUserId());
+    public Map<String, String> apply(Post postCreated) {
+        Map<String, String> map = new HashMap<>();
+        map.put("dateTime", formatDateService.apply(postCreated.getDateTime()));
+        map.put("postId", postCreated.getPostId());
+        map.put("text", postCreated.getText());
+        map.put("userId", postCreated.getUserId());
+        return map;
     }
 }

@@ -1,6 +1,8 @@
 package org.openchat;
 
 import org.openchat.api.GetAllUserApi;
+import org.openchat.api.JsonFormatterListObjects;
+import org.openchat.api.JsonFormatterSingleObject;
 import org.openchat.api.LoginUserApi;
 import org.openchat.api.createNewFollowingApi.CreateNewFollowingApi;
 import org.openchat.api.createNewPostApi.CreateNewPostApi;
@@ -8,6 +10,7 @@ import org.openchat.api.createNewUserApi.CreateNewUserApi;
 import org.openchat.api.getAllFollowingForUserApi.GetAllFollowingForUserApi;
 import org.openchat.api.getTimelineForUserApi.GetTimelineForUserApi;
 import org.openchat.api.getUserWallApi.GetUserWallApi;
+import spark.ResponseTransformer;
 import spark.Route;
 
 import static spark.Spark.*;
@@ -29,23 +32,23 @@ class Routes {
         Route getTimelineFromUserApi = new GetTimelineForUserApi(Context.getTimelineFromUserIdService, Context.getTimelineForUserResponsePresenter);
         Route getUserWallApi = new GetUserWallApi(Context.getUserWallService, Context.getUserWallResponsePresenter);
 
-        createGetRoute("status", (req, res) -> "OpenChat: OK!");
-        createPostRoute("v2/users", createNewUserApi);
-        createGetRoute("v2/users", getAllUserApi);
-        createPostRoute("v2/login", loginUserApi);
-        createPostRoute("v2/followings", createNewFollowingApi);
-        createGetRoute("v2/followings/:followerId/followees", getAllFollowingForUserApi);
-        createPostRoute("v2/users/:userId/timeline", createNewPostApi);
-        createGetRoute("v2/users/:userId/timeline", getTimelineFromUserApi);
-        createGetRoute("v2/users/:userId/wall", getUserWallApi);
+        createGetRoute("status", (req, res) -> "OpenChat: OK!", Object::toString);
+        createPostRoute("v2/users", createNewUserApi, model -> new JsonFormatterSingleObject().render(model));
+        createGetRoute("v2/users", getAllUserApi, model -> new JsonFormatterListObjects().render(model));
+        createPostRoute("v2/login", loginUserApi, model -> new JsonFormatterSingleObject().render(model));
+        createPostRoute("v2/followings", createNewFollowingApi, Object::toString);
+        createGetRoute("v2/followings/:followerId/followees", getAllFollowingForUserApi, model -> new JsonFormatterListObjects().render(model));
+        createPostRoute("v2/users/:userId/timeline", createNewPostApi, model -> new JsonFormatterSingleObject().render(model));
+        createGetRoute("v2/users/:userId/timeline", getTimelineFromUserApi, model -> new JsonFormatterListObjects().render(model));
+        createGetRoute("v2/users/:userId/wall", getUserWallApi, model -> new JsonFormatterListObjects().render(model));
     }
 
-    void createPostRoute(String path, Route route) {
-        post(path, route);
+    void createPostRoute(String path, Route route, ResponseTransformer responseTransformer) {
+        post(path, route, responseTransformer);
     }
 
-    void createGetRoute(String path, Route route) {
-        get(path, route);
+    void createGetRoute(String path, Route route, ResponseTransformer responseTransformer) {
+        get(path, route, responseTransformer);
     }
 
     private void swaggerRoutes() {

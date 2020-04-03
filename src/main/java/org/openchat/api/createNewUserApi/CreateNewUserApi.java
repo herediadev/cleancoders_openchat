@@ -7,6 +7,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -15,12 +16,12 @@ public class CreateNewUserApi implements Route {
     private final Function<CreateNewUserRequest, User> createNewUserService;
     private final Consumer<String> validaIfUserAlreadyExistService;
     private final Function<Request, CreateNewUserRequest> createNewUserRequestService;
-    private final Function<User, JsonObject> createNewUserResponsePresenter;
+    private final Function<User, Map<String, String>> createNewUserResponsePresenter;
 
     public CreateNewUserApi(Function<CreateNewUserRequest, User> createNewUserService,
                             Consumer<String> validaIfUserAlreadyExistService,
                             Function<Request, CreateNewUserRequest> createNewUserRequestService,
-                            Function<User, JsonObject> createNewUserResponsePresenter) {
+                            Function<User, Map<String, String>> createNewUserResponsePresenter) {
         this.createNewUserService = createNewUserService;
         this.validaIfUserAlreadyExistService = validaIfUserAlreadyExistService;
         this.createNewUserRequestService = createNewUserRequestService;
@@ -28,7 +29,7 @@ public class CreateNewUserApi implements Route {
     }
 
     @Override
-    public JsonObject handle(Request request, Response response) {
+    public Map<String, String> handle(Request request, Response response) {
         response.status(201);
         response.type("application/json");
 

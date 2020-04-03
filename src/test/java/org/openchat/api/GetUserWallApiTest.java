@@ -16,6 +16,7 @@ import spark.Response;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,7 +57,7 @@ class GetUserWallApiTest {
         doReturn(posts).when(getUserWallService).apply(anyString());
 
         //act
-        JsonArray result = getUserWallApi.handle(request, response);
+        List<Map<String, String>> result = getUserWallApi.handle(request, response);
 
         //assert
         verify(request).params(eq("userId"));
